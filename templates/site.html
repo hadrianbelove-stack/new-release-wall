@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>{{ site_title }}</title>
+  <style>
+    :root { --bg:#0b0d10; --card:#12161b; --ink:#e9eef5; --muted:#a8b3c2; --pill:#1f2630; --accent:#7cc3ff; }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial}
+    a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+    .wrap{max-width:1100px;margin:24px auto;padding:0 16px}
+    header h1{margin:0 0 4px}
+    header .meta{color:var(--muted);margin-bottom:20px}
+    /* grid */
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px;align-items:start}
+    .card{background:var(--card);border-radius:16px;padding:12px;box-shadow:0 1px 0 rgba(255,255,255,.05) inset}
+    .poster{width:100%;height:auto;border-radius:10px;background:#0e1318}
+    .title{font-weight:700;margin:10px 0 6px}
+    .meta2{color:var(--muted);font-size:14px;margin-bottom:8px}
+    .pills{display:flex;flex-wrap:wrap;gap:8px}
+    .pill{background:var(--pill);padding:4px 8px;border-radius:999px;font-size:12px;white-space:nowrap}
+    footer{color:var(--muted);font-size:12px;margin:28px 0 16px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>{{ site_title }}</h1>
+      <div class="meta">Window: {{ window_label }} • Region: {{ region }} • Stores: {{ ', '.join(store_names) if store_names else 'Any' }}</div>
+    </header>
+
+    <main class="grid">
+      {% for it in items %}
+      <article class="card">
+        {% if it.poster_url %}<img class="poster" src="{{ it.poster_url }}" alt="{{ it.title }} poster">{% endif %}
+        <div class="title">{{ it.title }} {% if it.year %}({{ it.year }}){% endif %}</div>
+        <div class="meta2">
+          RT: {{ it.rt_score if it.rt_score is not none else '—' }} • TMDB: {{ it.tmdb_vote if it.tmdb_vote else '—' }}
+          {% if it.release_date %} • US Digital: {{ it.release_date }}{% endif %}
+        </div>
+        <div class="pills">
+          {% for p in it.providers %}<span class="pill">{{ p }}</span>{% endfor %}
+        </div>
+        <div class="meta2">
+          <a href="{{ it.tmdb_watch_link }}">Watch options</a> •
+          <a href="{{ it.justwatch_search_link }}">JustWatch</a> •
+          <a href="{{ it.tmdb_url }}">TMDB</a>
+          {% if it.trailer_url %} • <a href="{{ it.trailer_url }}">Trailer</a>{% endif %}
+        </div>
+      </article>
+      {% endfor %}
+    </main>
+
+    <footer>
+      Data & images by TMDB — this product uses the TMDB API but is not endorsed or certified by TMDB.
+      <div>Generated: {{ generated_at }}</div>
+    </footer>
+  </div>
+</body>
+</html>
