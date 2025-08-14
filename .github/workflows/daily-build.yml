@@ -1,0 +1,55 @@
+name: Daily New Release Wall
+on:
+  schedule:
+    - cron: '0 17 0 * *'  # 9 AM PT daily
+  push:
+    branches: [ main ]
+  workflow_dispatch:  # Manual trigger
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+    - name: Generate site
+      env:
+        TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
+        OMDB_API_KEY: ${{ secrets.OMDB_API_KEY }}
+      run: |
+        python -u new_release_wall.py \
+          --region US \
+          --days 14 \
+          --stores "Netflix,Amazon Prime Video,Apple TV,YouTube,Max,MUBI,Criterion Channel,Disney Plus,Hulu" \
+          --digital \
+          --max-pages 20
+    - name: Create summary
+      run: |
+        python -c "
+        import json, datetime
+        data = json.load(open('output/data.json'))
+        with open('output/LATEST_RUN.md', 'w') as f:
+            f.write(f'# Latest Run Summary\n\n')
+            f.write(f'**Generated:** {datetime.datetime.now()}\n')
+            f.write(f'**Total titles:** {len(data)}\n\n')
+            old = [i for i in data if int(i.get('year', 2025)) < 2024]
+            if old:
+                f.write(f'## ⚠️ Old Movies Found ({len(old)})\n')
+                for i in old[:5]:
+                    f.write(f'- {i[\"title\"]} ({i[\"year\"]}) - {i.get(\"availabilityDate\", \"no date\")}\n')
+            recent = [i for i in data if int(i.get('year', 2025)) >= 2024][:15]
+            f.write(f'\n## Recent Releases ({len(recent)})\n')
+            for i in recent:
+                f.write(f'- {i[\"title\"]} ({i[\"year\"]}) - {i.get(\"availabilityDate\", \"no date\")}\n')
+        "
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./output/site
+        publish_branch: gh-pages
