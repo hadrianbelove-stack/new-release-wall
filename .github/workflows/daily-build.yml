@@ -17,10 +17,15 @@ jobs:
     - name: Install dependencies
       run: |
         pip install -r requirements.txt
+    - name: Create config file
+      run: |
+        cat > config.yaml << 'EOL'
+        tmdb_api_key: "${{ secrets.TMDB_API_KEY }}"
+        omdb_api_key: "${{ secrets.OMDB_API_KEY }}"
+        min_rotten_tomatoes: 0
+        site_title: "The New Release Wall"
+        EOL
     - name: Generate site
-      env:
-        TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
-        OMDB_API_KEY: ${{ secrets.OMDB_API_KEY }}
       run: |
         python -u new_release_wall.py \
           --region US \
