@@ -193,18 +193,18 @@ def movie_watch_providers(tmdb_id, region, api_key):
             if pname:
                 providers.add(pname)
     tmdb_watch_link = loc.get("link") or f"https://www.themoviedb.org/movie/{tmdb_id}/watch"
-    return sorted(list(providers)), tmdb_watch_link
+    return sorted(list(providers)) if providers else [], tmdb_watch_link
 
 # ---------- Output ----------
 def render_markdown(items, site_title, window_label, region, store_names):
     lines = [f"# {site_title}", "", f"_Window: {window_label} • Region: {region} • Stores: {', '.join(store_names) if store_names else 'Any'}_", ""]
     for it in items:
-        providers = ", ".join(it["providers"]) if it["providers"] else "—"
-        rt = f'{it["rt_score"]}%' if it["rt_score"] is not None else "—"
-        tm = f'{it.get("tmdb_vote","—")}'
+        providers = ", ".join(it.get("providers", [])) if it.get("providers") else "—"
+        rt = f'{it.get("rt_score", 0)}%' if it.get("rt_score") is not None else "—"
+        tm = f'{it.get("tmdb_vote", "—")}'
         lines.append(
-            f"- **{it['title']}** ({it.get('year','—')}) — RT: {rt} • TMDB: {tm} • Providers: {providers} — "
-            f"[Watch options]({it['tmdb_watch_link']}) | [JustWatch]({it['justwatch_search_link']}) | [TMDB]({it['tmdb_url']})"
+            f"- **{it.get('title', 'Unknown')}** ({it.get('year', '—')}) — RT: {rt} • TMDB: {tm} • Providers: {providers} — "
+            f"[Watch options]({it.get('tmdb_watch_link', '#')}) | [JustWatch]({it.get('justwatch_search_link', '#')}) | [TMDB]({it.get('tmdb_url', '#')})"
         )
     return "\n".join(lines) + "\n"
 
@@ -268,6 +268,80 @@ def main():
     # dedupe by (title_lower, year)
     seen, cleaned = set(), []
     for m in movies:
-       
+        title0 = (m.get("title") or m.get("original_title") or "").strip()
+        year0 = (m.get("release_date") or "0000-00-00")[:4]
+        key = (title0.lower(), year0)
+        if key in seen:
+            continue
+        seen.add(key)
+        cleaned.append(m)
 
-       
+    # ---- Build final items ----
+    items = []
+    store_set = set([s.lower() for s in store_names]) if store_names else set()
+    current_year = str(datetime.date.today().year)
+    for m in cleaned:
+        tmdb_id = m.get("id")
+        title = (m.get("title") or m.get("original_title") or "").strip()
+        release_date = (m.get("release_date") or "")[:10]
+        year = release_date[:4] if release_date else None
+
+        # optional: only current-year releases
+        if args.only_current_year and year and year != current_year:
+            continue
+
+        # region-specific US Digital/TV date
+        us_digital_date = get_us_digital_date(tmdb_id, tmdb_key, args.region)
+        if args.digital and not us_digital_date:
+            continue
+
+        # watch providers + filter against requested stores
+        providers, tmdb_watch_link = movie_watch_providers(tmdb_id, args.region, tmdb_key)
+        if store_set:
+            prov_canon = {p.lower() for p in providers}
+            if not (prov_canon & store_set):
+                continue
+
+        # poster (TMDB path → URL; else v4 search fallback if configured)
+        poster_url = None
+        ppath = m.get("poster_path")
+        if ppath:
+            poster_url = f"https://image.tmdb.org/t/p/w500{ppath}"
+        if not poster_url:
+            poster_url = fetch_poster(title, int(year) if year and year.isdigit() else None)
+
+        # scores: TMDB vote + OMDb Rotten Tomatoes
+        imdb_id = tmdb_imdb_id(tmdb_id, tmdb_key)
+        rt_score = omdb_rt_score(title, year, omdb_key, imdb_id=imdb_id)
+
+        item = {
+            "title": title,
+            "year": year,
+            "tmdb_url": f"https://www.themoviedb.org/movie/{tmdb_id}",
+            "tmdb_vote": m.get("vote_average"),
+            "rt_score": rt_score,
+            "providers": providers,  # Ensure providers is always included
+            "tmdb_watch_link": tmdb_watch_link,
+            "justwatch_search_link": f"https://www.justwatch.com/us/search?q={quote_plus(title)}",
+            "poster_url": poster_url,
+            "us_digital_date": us_digital_date,
+            "trailer_url": tmdb_trailer_url(tmdb_id, tmdb_key),
+        }
+
+        item = normalize_title(item)
+        items.append(item)
+
+    # sort: latest US Digital/TV first, then title
+    items.sort(key=lambda x: (x.get("us_digital_date") or "0000-00-00", x.get("title") or ""), reverse=True)
+
+    # ---- Write outputs ----
+    os.makedirs("output", exist_ok=True)
+    md = render_markdown(items, site_title, window_label, args.region, store_names)
+    with open(os.path.join("output", "list.md"), "w", encoding="utf-8") as f:
+        f.write(md)
+    render_site(items, site_title, window_label, args.region, store_names)
+
+    print(f"Done. {len(items)} titles.", flush=True)
+
+if __name__ == "__main__":
+    main()
