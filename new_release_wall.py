@@ -1,14 +1,25 @@
 #!/usr/bin/env python3
 import argparse, os, sys, json, datetime, time
+from typing import Optional
 import requests, yaml
 from urllib.parse import quote_plus
 from jinja2 import Template
 
+# --- Optional normalizer: if adapter.py isn't present, use a no-op ---
+try:
+    from adapter import normalize_title  # type: ignore
+except Exception:
+    def normalize_title(rec):  # fallback
+        return rec
+
+# Optional TMDB v4 bearer for poster fallback (ok if absent)
+TMDB_BEARER = os.getenv("TMDB_BEARER")
+
 # ---------- Simple, resilient HTTP helper ----------
-def safe_json_get(url, params=None, timeout=10, retries=3):
+def safe_json_get(url, params=None, timeout=10, retries=3, headers=None):
     for i in range(retries):
         try:
-            r = requests.get(url, params=params or {}, timeout=timeout)
+            r = requests.get(url, params=params or {}, headers=headers or {}, timeout=timeout)
             r.raise_for_status()
             return r.json()
         except Exception:
@@ -32,14 +43,17 @@ def omdb_rt_score(title, year, omdb_api_key, imdb_id=None):
     if not omdb_api_key:
         return None
     try:
+        q = {"apikey": omdb_api_key, "tomatoes": "true", "type": "movie"}
         if imdb_id:
-            q = {"i": imdb_id, "apikey": omdb_api_key, "tomatoes": "true", "type": "movie"}
+            q["i"] = imdb_id
         else:
-            q = {"t": title, "y": year, "apikey": omdb_api_key, "tomatoes": "true", "type": "movie"}
+            q["t"] = title
+            if year:
+                q["y"] = year
         data = safe_json_get("https://www.omdbapi.com/", params=q, timeout=8, retries=3)
         if data.get("Response") != "True":
             return None
-        for rsrc in data.get("Ratings", []):
+        for rsrc in data.get("Ratings", []) or []:
             if rsrc.get("Source") == "Rotten Tomatoes":
                 val = (rsrc.get("Value") or "").strip().rstrip("%")
                 return int(val) if val.isdigit() else None
@@ -47,11 +61,33 @@ def omdb_rt_score(title, year, omdb_api_key, imdb_id=None):
     except Exception:
         return None
 
+def fetch_poster(title: str, year: Optional[int]):
+    """
+    Optional fallback: search TMDB for a poster via v4 bearer.
+    Returns None if TMDB_BEARER is not set or nothing found.
+    """
+    if not TMDB_BEARER:
+        return None
+    headers = {"Authorization": f"Bearer {TMDB_BEARER}"}
+    params = {"query": title}
+    if year:
+        params["year"] = year
+    try:
+        data = safe_json_get("https://api.themoviedb.org/3/search/movie",
+                             params=params, headers=headers, timeout=10, retries=3)
+        results = data.get("results", []) or []
+        if results:
+            poster_path = results[0].get("poster_path")
+            if poster_path:
+                return f"https://image.tmdb.org/t/p/w500{poster_path}"
+    except Exception:
+        pass
+    return None
 
 def get_provider_map(region, api_key):
     data = tmdb_get("/watch/providers/movie", {"watch_region": region}, api_key)
     name_to_id, id_to_name = {}, {}
-    for p in data.get("results", []):
+    for p in data.get("results", []) or []:
         pid = p.get("provider_id")
         pname = p.get("provider_name")
         if pid and pname:
@@ -84,10 +120,10 @@ def normalize_store_names(store_csv, name_to_id):
     return sorted(list(set(wanted)))
 
 # ---------- Discovery (broad fetch, no provider pre-filter) ----------
-def discover_movies(region, start_date, end_date, provider_ids, api_key, max_pages=10):
+def discover_movies(region, start_date, end_date, provider_ids, api_key, max_pages=0):
     results = []
     page = 1
-    while page <= max_pages:
+    while True:
         print(f"Fetching page {page}...", flush=True)
         params = {
             "sort_by": "primary_release_date.desc",
@@ -95,23 +131,30 @@ def discover_movies(region, start_date, end_date, provider_ids, api_key, max_pag
             "watch_region": region,
             "include_adult": "false",
             "include_video": "false",
-            "with_release_type": "3|4|5|6",  # wide net: theatrical/digital
+            "with_release_type": "3|4|5|6",  # theatrical/digital/TV (wide)
             "release_date.gte": start_date,
             "with_watch_monetization_types": "flatrate|ads|rent|buy|free",
             "release_date.lte": end_date,
             "page": page,
         }
-        # do NOT pre-filter by providers here; we filter per-title later
         data = tmdb_get("/discover/movie", params, api_key)
-        results.extend(data.get("results", []))
-        if page >= data.get("total_pages", 1):
+        page_items = data.get("results", []) or []
+        results.extend(page_items)
+
+        if not page_items:
+            break
+        total_pages = int(data.get("total_pages", page))
+        if page >= total_pages:
+            break
+        if max_pages and page >= max_pages:
             break
         page += 1
     return results
+
 def get_us_digital_date(tmdb_id, api_key, region):
-    # Look up region-specific digital/TV release dates (4 = Digital, 6 = TV)
+    # Region-specific digital/TV release dates (4 = Digital, 6 = TV)
     data = tmdb_get(f"/movie/{tmdb_id}/release_dates", {}, api_key)
-    for rec in data.get("results", []):
+    for rec in data.get("results", []) or []:
         if rec.get("iso_3166_1") != region:
             continue
         dates = rec.get("release_dates", []) or []
@@ -126,7 +169,6 @@ def tmdb_imdb_id(tmdb_id, api_key):
     return data.get("imdb_id")
 
 def tmdb_trailer_url(tmdb_id, api_key):
-    # Find a YouTube Trailer for the movie (prefer "official")
     data = tmdb_get(f"/movie/{tmdb_id}/videos",
                     {"include_video_language": "en,null"}, api_key)
     vids = data.get("results", []) or []
@@ -134,14 +176,12 @@ def tmdb_trailer_url(tmdb_id, api_key):
     for v in vids:
         if v.get("site") == "YouTube" and v.get("type") == "Trailer":
             if v.get("official"):
-                best = v
-                break
+                best = v; break
             if not best:
                 best = v
     if best and best.get("key"):
         return f"https://www.youtube.com/watch?v={best['key']}"
     return None
-
 
 def movie_watch_providers(tmdb_id, region, api_key):
     data = tmdb_get(f"/movie/{tmdb_id}/watch/providers", {}, api_key)
@@ -150,7 +190,8 @@ def movie_watch_providers(tmdb_id, region, api_key):
     for cat in ["flatrate", "rent", "buy", "ads", "free"]:
         for p in loc.get(cat, []) or []:
             pname = p.get("provider_name")
-            if pname: providers.add(pname)
+            if pname:
+                providers.add(pname)
     tmdb_watch_link = loc.get("link") or f"https://www.themoviedb.org/movie/{tmdb_id}/watch"
     return sorted(list(providers)), tmdb_watch_link
 
@@ -201,7 +242,7 @@ def main():
     parser.add_argument("--start", type=str, help="Start date YYYY-MM-DD")
     parser.add_argument("--end", type=str, help="End date YYYY-MM-DD")
     parser.add_argument("--stores", type=str, default="Netflix,Amazon Prime Video,Apple TV,YouTube", help="Comma-separated store names to include")
-    parser.add_argument("--max-pages", type=int, default=10, help="Max TMDB pages to search")
+    parser.add_argument("--max-pages", type=int, default=0, help="Max TMDB pages to search (0 = all)")
     parser.add_argument("--digital", action="store_true", help="Filter by region-specific DIGITAL/TV date (type 4/6)")
     parser.add_argument("--only-current-year", action="store_true", help="Exclude reissues; keep only titles whose original release year is the current year.")
     args = parser.parse_args()
@@ -212,7 +253,7 @@ def main():
     min_rt = int(cfg.get("min_rotten_tomatoes", 1))
     site_title = cfg.get("site_title", "The New Release Wall")
 
-    # pick window label + dates
+    # window
     start_date, end_date, window_label = within_date_window(args.days, args.start, args.end)
 
     # providers
@@ -233,82 +274,4 @@ def main():
         if key in seen:
             continue
         seen.add(key)
-        cleaned.append(m)
-    print(f"DEBUG dedup: {len(cleaned)}", flush=True)
-
-    # Enrich and filter
-    items = []
-    for m in cleaned:
-        tmdb_id = m["id"]
-        title = m.get("title") or m.get("original_title") or ""
-        release_date = (m.get("release_date") or "")[:10]
-        year = release_date[:4] if release_date else None
-
-        # keep only first-ever US digital/TV releases within window (if --digital)
-        us_digital_date = get_us_digital_date(tmdb_id, tmdb_key, args.region)
-        if args.digital:
-            if not us_digital_date or not (start_date <= us_digital_date <= end_date):
-                continue
-
-        # optional: drop catalog/reissues by original year
-        try:
-            current_year = datetime.date.today().year
-            orig_year = int(year) if year else 0
-        except Exception:
-            orig_year = 0
-        if args.only_current_year and orig_year != current_year:
-            continue
-
-        providers, tmdb_watch_link = movie_watch_providers(tmdb_id, args.region, tmdb_key)
-        if not providers:
-            continue
-
-        # store filter (fuzzy both ways)
-        if store_names:
-            wanted = [w.lower() for w in store_names]
-            provs = [p.lower() for p in providers]
-            matches = any(any(w in p or p in w for w in wanted) for p in provs)
-            if not matches:
-                continue
-
-        # Rotten Tomatoes via OMDb (prefer IMDb ID for accuracy)
-        imdb_id = tmdb_imdb_id(tmdb_id, tmdb_key)
-        rt = omdb_rt_score(title, year, omdb_key, imdb_id=imdb_id)
-        if min_rt > 0 and (rt is None or rt < min_rt):
-            continue
-
-        # Poster + Trailer
-        poster_path = m.get("poster_path") or ""
-        poster_url = f"https://image.tmdb.org/t/p/w342{poster_path}" if poster_path else None
-        trailer_url = tmdb_trailer_url(tmdb_id, tmdb_key) or f"https://www.youtube.com/results?search_query={quote_plus(title + ' trailer')}"
-
-        items.append({
-            "title": title,
-            "year": year,
-            "rt_score": rt,
-            "tmdb_vote": m.get("vote_average"),
-            "runtime": None,
-            "providers": providers,
-            "tmdb_watch_link": tmdb_watch_link,
-            "tmdb_url": f"https://www.themoviedb.org/movie/{tmdb_id}",
-            "justwatch_search_link": f"https://www.justwatch.com/{args.region.lower()}/search?q={quote_plus(title)}",
-            "release_date": us_digital_date or release_date,
-            "poster_url": poster_url,
-            "trailer_url": trailer_url,
-        })
-
-
-
-    items.sort(key=lambda x: x.get("release_date") or "", reverse=True)
-
-    # write outputs
-    md = render_markdown(items, site_title, window_label, args.region, store_names)
-    os.makedirs("output", exist_ok=True)
-    with open("output/list.md", "w", encoding="utf-8") as f:
-        f.write(md)
-    render_site(items, site_title, window_label, args.region, store_names)
-
-    print(f"Done. {len(items)} titles written to output/list.md and output/site/index.html")
-
-if __name__ == "__main__":
-    main()
+        cleaned.
