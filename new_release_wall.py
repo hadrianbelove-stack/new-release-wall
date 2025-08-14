@@ -120,7 +120,7 @@ def normalize_store_names(store_csv, name_to_id):
     return sorted(list(set(wanted)))
 
 # ---------- Discovery (broad fetch, no provider pre-filter) ----------
-def discover_movies(region, start_date, end_date, provider_ids, api_key, max_pages=0):
+def discover_movies(region, start_date, end_date, provider_ids, api_key, max_pages=10):
     results = []
     page = 1
     while True:
@@ -268,10 +268,6 @@ def main():
     # dedupe by (title_lower, year)
     seen, cleaned = set(), []
     for m in movies:
-        title = (m.get("title") or m.get("original_title") or "").strip()
-        year = (m.get("release_date") or "0000-00-00")[:4]
-        key = (title.lower(), year)
-        if key in seen:
-            continue
-        seen.add(key)
-        cleaned.
+       
+
+       
