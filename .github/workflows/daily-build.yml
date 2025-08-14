@@ -17,35 +17,39 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.9'
-        
+        python-version: '3.11'
+    
     - name: Install dependencies
       run: |
+        python -m pip install --upgrade pip
         pip install -r requirements.txt
-        
-    - name: Create config
+    
+    - name: Create config.yaml
       run: |
-        cat > config.yaml << 'EOL'
+        cat > config.yaml << 'CONFIG'
         tmdb_api_key: "${{ secrets.TMDB_API_KEY }}"
         omdb_api_key: "${{ secrets.OMDB_API_KEY }}"
-        min_rotten_tomatoes: 0
-        site_title: "The New Release Wall"
-        EOL
-        
-    - name: Generate new release data
+        CONFIG
+    
+    - name: Run scraper
       run: |
-        python -u new_release_wall.py \
-          --region US \
-          --days 7 \
-          --stores "Netflix,Amazon Prime Video,Apple TV,YouTube,Max,MUBI,Criterion Channel,Disney Plus,Hulu" \
-          --digital \
-          --max-pages 15
-          
+        python new_release_wall.py --region US --days 7 --stores "Netflix,Amazon Prime Video,Apple TV,YouTube,Max,MUBI,Criterion Channel,Disney Plus,Hulu" --digital --max-pages 15
+    
+    - name: List output files
+      run: |
+        echo "Files created:"
+        ls -la output/ || echo "No output directory created"
+    
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: output
+        path: output/
+    
     - name: Deploy to GitHub Pages
+      if: github.ref == 'refs/heads/main' && success()
       uses: peaceiris/actions-gh-pages@v3
-      if: github.ref == 'refs/heads/main'
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./output/site
-        publish_branch: gh-pages
-        force_orphan: true
