@@ -1,7 +1,7 @@
 name: Daily New Release Wall
 on:
   schedule:
-    - cron: '0 17 0 * *'  # 9 AM PT daily
+    - cron: '0 17 * * *'  # 9 AM PT daily
   push:
     branches: [ main ]
   workflow_dispatch:  # Manual trigger
