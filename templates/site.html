@@ -12,10 +12,10 @@
     .wrap{max-width:1100px;margin:24px auto;padding:0 16px}
     header h1{margin:0 0 4px}
     header .meta{color:var(--muted);margin-bottom:20px}
-    /* grid */
     .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px;align-items:start}
     .card{background:var(--card);border-radius:16px;padding:12px;box-shadow:0 1px 0 rgba(255,255,255,.05) inset}
     .poster{width:100%;height:auto;border-radius:10px;background:#0e1318}
+    .poster img { width: 100%; height: auto; }
     .title{font-weight:700;margin:10px 0 6px}
     .meta2{color:var(--muted);font-size:14px;margin-bottom:8px}
     .pills{display:flex;flex-wrap:wrap;gap:8px}
@@ -27,31 +27,37 @@
   <div class="wrap">
     <header>
       <h1>{{ site_title }}</h1>
-      <div class="meta">Window: {{ window_label }} • Region: {{ region }} • Stores: {{ ', '.join(store_names) if store_names else 'Any' }}</div>
+      <div class="meta">Window: {{ window_label }} • Region: {{ region }} • Stores: {{ store_names|join(', ') if store_names else 'Any' }}</div>
     </header>
-
     <main class="grid">
-      {% for it in items %}
+      {% for item in items %}
       <article class="card">
-        {% if it.poster_url %}<img class="poster" src="{{ it.poster_url }}" alt="{{ it.title }} poster">{% endif %}
-        <div class="title">{{ it.title }} {% if it.year %}({{ it.year }}){% endif %}</div>
+        {% if item.poster %}
+        <div class="poster">
+          <img src="{{ item.poster }}" alt="{{ item.title }}">
+        </div>
+        {% else %}
+        <div class="poster">
+          <img src="https://placehold.co/200x300" alt="No Poster">
+        </div>
+        {% endif %}
+        <div class="title">{{ item.title }} ({{ item.year if item.year else '—' }})</div>
         <div class="meta2">
-          RT: {{ it.rt_score if it.rt_score is not none else '—' }} • TMDB: {{ it.tmdb_vote if it.tmdb_vote else '—' }}
-          {% if it.release_date %} • US Digital: {{ it.release_date }}{% endif %}
+          RT: {{ item.rt_score }}% if item.rt_score is not none else '—' • TMDB: {{ item.tmdb_vote if item.tmdb_vote else '—' }}
         </div>
         <div class="pills">
-          {% for p in it.providers %}<span class="pill">{{ p }}</span>{% endfor %}
+          {% for provider in item.providers %}
+          <span class="pill">{{ provider }}</span>
+          {% endfor %}
         </div>
         <div class="meta2">
-          <a href="{{ it.tmdb_watch_link }}">Watch options</a> •
-          <a href="{{ it.justwatch_search_link }}">JustWatch</a> •
-          <a href="{{ it.tmdb_url }}">TMDB</a>
-          {% if it.trailer_url %} • <a href="{{ it.trailer_url }}">Trailer</a>{% endif %}
+          <a href="{{ item.tmdb_watch_link if item.tmdb_watch_link else '#' }}">Watch options</a> •
+          <a href="{{ item.justwatch_search_link if item.justwatch_search_link else '#' }}">JustWatch</a> •
+          <a href="{{ item.tmdb_url if item.tmdb_url else '#' }}">TMDB</a>
         </div>
       </article>
       {% endfor %}
     </main>
-
     <footer>
       Data & images by TMDB — this product uses the TMDB API but is not endorsed or certified by TMDB.
       <div>Generated: {{ generated_at }}</div>

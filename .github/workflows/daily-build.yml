@@ -1,23 +1,29 @@
 name: Daily New Release Wall
+
 on:
-  schedule:
-    - cron: '0 17 * * *'  # 9 AM PT daily
   push:
     branches: [ main ]
-  workflow_dispatch:  # Manual trigger
+  schedule:
+    - cron: '0 10 * * *'  # Daily at 10 AM UTC
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    
     steps:
     - uses: actions/checkout@v3
-    - uses: actions/setup-python@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
       with:
         python-version: '3.9'
+        
     - name: Install dependencies
       run: |
         pip install -r requirements.txt
-    - name: Create config file
+        
+    - name: Create config
       run: |
         cat > config.yaml << 'EOL'
         tmdb_api_key: "${{ secrets.TMDB_API_KEY }}"
@@ -25,36 +31,21 @@ jobs:
         min_rotten_tomatoes: 0
         site_title: "The New Release Wall"
         EOL
-    - name: Generate site
+        
+    - name: Generate new release data
       run: |
         python -u new_release_wall.py \
           --region US \
-          --days 14 \
+          --days 7 \
           --stores "Netflix,Amazon Prime Video,Apple TV,YouTube,Max,MUBI,Criterion Channel,Disney Plus,Hulu" \
           --digital \
-          --max-pages 20
-    - name: Create summary
-      run: |
-        python -c "
-        import json, datetime
-        data = json.load(open('output/data.json'))
-        with open('output/LATEST_RUN.md', 'w') as f:
-            f.write(f'# Latest Run Summary\n\n')
-            f.write(f'**Generated:** {datetime.datetime.now()}\n')
-            f.write(f'**Total titles:** {len(data)}\n\n')
-            old = [i for i in data if int(i.get('year', 2025)) < 2024]
-            if old:
-                f.write(f'## ⚠️ Old Movies Found ({len(old)})\n')
-                for i in old[:5]:
-                    f.write(f'- {i[\"title\"]} ({i[\"year\"]}) - {i.get(\"availabilityDate\", \"no date\")}\n')
-            recent = [i for i in data if int(i.get('year', 2025)) >= 2024][:15]
-            f.write(f'\n## Recent Releases ({len(recent)})\n')
-            for i in recent:
-                f.write(f'- {i[\"title\"]} ({i[\"year\"]}) - {i.get(\"availabilityDate\", \"no date\")}\n')
-        "
+          --max-pages 15
+          
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
+      if: github.ref == 'refs/heads/main'
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./output/site
         publish_branch: gh-pages
+        force_orphan: true
