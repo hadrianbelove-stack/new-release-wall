@@ -8,7 +8,7 @@ def load_config():
         return yaml.safe_load(f)
 
 def check_has_reviews(title, year, config):
-    """Quick check if movie has any critical reviews via OMDb"""
+    """Check if movie has critical reviews via OMDb"""
     try:
         params = {
             'apikey': config['omdb_api_key'],
@@ -23,33 +23,38 @@ def check_has_reviews(title, year, config):
         if data.get('Response') == 'True':
             review_info = {}
             
-            # Check for any review data (more lenient than smart version)
+            # Check Metacritic
             if data.get('Metascore', 'N/A') != 'N/A':
                 review_info['metacritic'] = data['Metascore']
             
+            # Check Rotten Tomatoes
             for rating in data.get('Ratings', []):
                 if rating['Source'] == 'Rotten Tomatoes':
                     review_info['rt_score'] = rating['Value'].rstrip('%')
             
-            # More lenient IMDB threshold (10+ votes instead of 50+)
+            # Check IMDB votes
             votes_str = data.get('imdbVotes', '0').replace(',', '').replace('N/A', '0')
             if votes_str and votes_str != '0':
                 votes = int(votes_str)
-                if votes > 10:  # Lowered from 50 to 10
+                if votes > 50:  # At least 50 IMDB votes
                     review_info['imdb_votes'] = votes
                     review_info['imdb_rating'] = data.get('imdbRating', 'N/A')
             
-            return bool(review_info), review_info
+            # Return True if ANY review source exists
+            if review_info:
+                return True, review_info
                 
         return False, None
     except Exception as e:
+        print(f"  Error checking {title}: {e}")
         return False, None
 
-def get_balanced_releases(region="US", days=14, max_pages=5):
-    """Get releases with balanced filtering - less restrictive than smart version"""
+def get_smart_releases(region="US", days=14, max_pages=5, min_reviews=True):
+    """Get releases with smart filtering"""
     config = load_config()
     api_key = config['tmdb_api_key']
     
+    # Calculate date range
     today = datetime.now()
     start_date = (today - timedelta(days=days)).strftime("%Y-%m-%d")
     end_date = today.strftime("%Y-%m-%d")
@@ -58,8 +63,9 @@ def get_balanced_releases(region="US", days=14, max_pages=5):
     
     all_movies = []
     
+    # Fetch multiple pages
     for page in range(1, max_pages + 1):
-        print(f"Fetching page {page}...")
+        print(f"\nFetching page {page}...")
         
         params = {
             'api_key': api_key,
@@ -78,44 +84,44 @@ def get_balanced_releases(region="US", days=14, max_pages=5):
             break
             
         all_movies.extend(movies)
-        time.sleep(0.3)
+        time.sleep(0.3)  # Be nice to API
     
-    print(f"\nFound {len(all_movies)} total movies. Applying balanced filtering...")
+    print(f"\nFound {len(all_movies)} total movies. Filtering...")
     
+    # Smart filtering
     curated = []
-    included_count = 0
+    skipped_no_reviews = []
     
     for movie in all_movies:
         title = movie.get('title', '')
         year = movie.get('release_date', '')[:4] if movie.get('release_date') else None
         
+        # Determine if we should include this movie
         include = False
         reason = ""
         review_data = {}
         
-        # Tier 1: Auto-include popular movies (lowered thresholds)
-        if movie.get('vote_count', 0) >= 20:  # Lowered from 50 to 20
+        # Auto-include if already popular on TMDB
+        if movie.get('vote_count', 0) >= 50:
             include = True
-            reason = f"TMDB popular ({movie['vote_count']} votes)"
+            reason = f"Popular on TMDB ({movie['vote_count']} votes)"
+            print(f"  ✓ {title[:40]:40} | {reason}")
         
-        # Tier 2: Auto-include trending movies (lowered threshold)
-        elif movie.get('popularity', 0) >= 10:  # Lowered from 20 to 10
+        # Auto-include if high popularity score
+        elif movie.get('popularity', 0) >= 20:
             include = True
-            reason = f"Trending (pop: {movie['popularity']:.1f})"
+            reason = f"High buzz (popularity: {movie['popularity']:.1f})"
+            print(f"  ✓ {title[:40]:40} | {reason}")
         
-        # Tier 3: Include English films with minimal activity
-        elif movie.get('original_language') in ['en'] and movie.get('vote_count', 0) >= 3:  # Lowered from 5 to 3
-            include = True
-            reason = f"English film ({movie['vote_count']} votes)"
-        
-        # Tier 4: Check for reviews (but don't require them)
-        elif title:
-            time.sleep(0.15)  # Faster rate limit
+        # Check for critical reviews
+        elif min_reviews and title:
+            time.sleep(0.2)  # Rate limit for OMDb
             has_review, review_info = check_has_reviews(title, year, config)
             
             if has_review:
                 include = True
                 review_data = review_info
+                # Create readable reason
                 parts = []
                 if 'rt_score' in review_info:
                     parts.append(f"RT: {review_info['rt_score']}%")
@@ -124,29 +130,32 @@ def get_balanced_releases(region="US", days=14, max_pages=5):
                 if 'imdb_votes' in review_info:
                     parts.append(f"IMDB: {review_info['imdb_votes']} votes")
                 reason = " | ".join(parts)
+                print(f"  ✓ {title[:40]:40} | {reason}")
             else:
-                # Tier 5: Very lenient catch-all for any movie with basic data
-                if movie.get('title') and movie.get('release_date'):  # Has title and release date
-                    include = True
-                    reason = "Recent release"
+                skipped_no_reviews.append(title)
+                print(f"  ✗ {title[:40]:40} | No reviews found")
+        
+        # Include major language films with some activity
+        elif movie.get('original_language') in ['en'] and movie.get('vote_count', 0) >= 5:
+            include = True
+            reason = f"English with {movie['vote_count']} votes"
+            print(f"  ✓ {title[:40]:40} | {reason}")
         
         if include:
-            included_count += 1
+            # Add our filtering metadata
             movie['inclusion_reason'] = reason
             movie['review_data'] = review_data
             curated.append(movie)
-            print(f"  ✓ {title[:40]:40} | {reason}")
-        else:
-            print(f"  ✗ {title[:40]:40} | No qualifying criteria")
     
     print(f"\n{'='*60}")
-    print(f"BALANCED RESULTS: {included_count} movies included")
-    print(f"Inclusion rate: {included_count/len(all_movies)*100:.1f}%")
+    print(f"RESULTS: {len(curated)} movies passed filters")
+    print(f"Skipped {len(skipped_no_reviews)} movies without reviews")
     
-    # Sort by release date and popularity
+    # Sort by combination of date and importance
     curated.sort(key=lambda x: (
         x.get('release_date', ''),
-        x.get('popularity', 0)
+        x.get('popularity', 0),
+        x.get('vote_count', 0)
     ), reverse=True)
     
     return curated
@@ -195,20 +204,8 @@ def generate_html(movies):
         
         # TMDB vote
         movie['tmdb_vote'] = movie.get('vote_average')
-        
-        # Add URL fields for template
-        movie['tmdb_url'] = f"https://www.themoviedb.org/movie/{movie['id']}"
-        movie['tmdb_watch_link'] = f"https://www.themoviedb.org/movie/{movie['id']}/watch"
-        movie['justwatch_search_link'] = f"https://www.justwatch.com/us/search?q={movie['title'].replace(' ', '%20')}"
     
-    html = template.render(
-        items=movies,
-        site_title="New Release Wall (Balanced)",
-        window_label=f"Last {args.days} days",
-        region=args.region,
-        store_names=[],
-        generated_at=datetime.now().strftime("%Y-%m-%d %H:%M")
-    )
+    html = template.render(items=movies)
     
     with open('output/site/index.html', 'w') as f:
         f.write(html)
@@ -216,37 +213,35 @@ def generate_html(movies):
     print(f"Generated HTML with {len(movies)} movies")
 
 def main():
-    global args
     parser = argparse.ArgumentParser()
     parser.add_argument('--region', default='US')
     parser.add_argument('--days', type=int, default=14)
     parser.add_argument('--max-pages', type=int, default=5)
+    parser.add_argument('--check-reviews', action='store_true', default=True)
     args = parser.parse_args()
     
-    # Get balanced filtered movies
-    movies = get_balanced_releases(
+    # Get smart filtered movies
+    movies = get_smart_releases(
         region=args.region,
         days=args.days,
-        max_pages=args.max_pages
+        max_pages=args.max_pages,
+        min_reviews=args.check_reviews
     )
     
-    # Add streaming providers for ALL movies (not just top 25)
+    # Add streaming providers
     config = load_config()
-    print(f"\nFetching streaming providers for all {len(movies)} movies...")
-    for i, movie in enumerate(movies):
+    print("\nFetching streaming providers...")
+    for movie in movies[:20]:  # Only check first 20 to save time
         providers = get_watch_providers(movie['id'], args.region, config['tmdb_api_key'])
         movie['providers'] = providers
         if providers:
             print(f"  {movie['title'][:30]:30} | {', '.join(providers[:3])}")
-        else:
-            print(f"  {movie['title'][:30]:30} | No providers")
-        time.sleep(0.2)  # Rate limit every request
     
     # Generate output
     generate_html(movies)
     
     print(f"\n✓ Complete! View at http://localhost:8080")
-    print(f"  Found {len(movies)} balanced releases")
+    print(f"  Found {len(movies)} curated releases")
     print(f"  {sum(1 for m in movies if m.get('providers'))} have streaming info")
 
 if __name__ == "__main__":
