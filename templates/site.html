@@ -43,7 +43,7 @@
         {% endif %}
         <div class="title">{{ item.title }} ({{ item.year if item.year else '—' }})</div>
         <div class="meta2">
-          RT: {{ item.rt_score }}% if item.rt_score is not none else '—' • TMDB: {{ item.tmdb_vote if item.tmdb_vote else '—' }}
+          RT: {{ item.rt_score ~ '%' if item.rt_score is not none else '—' }} • TMDB: {{ item.tmdb_vote if item.tmdb_vote else '—' }}
         </div>
         <div class="pills">
           {% for provider in item.providers %}
