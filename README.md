@@ -42,3 +42,5 @@ Outputs:
 - **Country/Region**: Defaults to `US`. Change `--region` as needed.
 - **Extending stores**: Pass any set of store names found by TMDB (the script will auto-match provider names).
 
+
+Last updated: Thu Aug 14 17:13:53 PDT 2025
