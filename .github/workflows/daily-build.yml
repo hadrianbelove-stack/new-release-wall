@@ -38,7 +38,7 @@ jobs:
     
     - name: Run scraper
       run: |
-        python new_release_wall_balanced.py --region US --days 7 --stores "Netflix,Amazon Prime Video,Apple TV,YouTube,Max,MUBI,Criterion Channel,Disney Plus,Hulu" --digital --max-pages 15 --only-current-year
+        python new_release_wall_balanced.py --region US --days 7 --max-pages 5
     
     - name: List output files
       run: |
