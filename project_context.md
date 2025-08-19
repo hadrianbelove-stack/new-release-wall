@@ -162,3 +162,58 @@ python3 generate_from_tracker.py 30
 - Add release date prediction models
 - Enhance provider data accuracy
 - Add notification system for new releases
+## SESSION HISTORY UPDATE - 2025-08-18 (PM Session)
+
+### Major Discoveries:
+- **TMDB Type 4 Reliability:** Confirmed type 4 dates indicate actual digital availability, not pre-orders
+- **Provider Data Accuracy:** Provider data is 100% accurate for "available now" but lacks historical dates
+- **Release Windows:** Found 25-117 day theatrical-to-digital windows (most 60 days, but outliers exist)
+- **Coverage Requirements:** 99% coverage requires tracking 365+ days of movies
+- **Tracking Solution:** Built movie_tracker.py database that detects state changes
+
+### Implementation Progress:
+- Created movie_tracker.py - tracks movies and detects digital transitions
+- Created generate_from_tracker.py - generates lists from tracking database
+- Created admin.py - Flask admin panel for curation
+- Created site_enhanced.html - flip cards with hover effects, smaller posters
+- Added comprehensive caching system to main scrapers
+
+### Key Insights:
+- Pre-orders do NOT appear in provider data (Weapons example proved this)
+- Same-day releases show providers on release day (Bad Guys 2 at 9pm example)
+- Hostile Takeover case: Has providers but no type 4 (data inconsistency)
+- Need to track state changes ourselves for "new to digital this week" feature
+
+### Next Steps:
+- Bootstrap tracking database with full 365-day history
+- Integrate enhanced site template with real data
+- Deploy admin panel for curation workflow
+- Add Netflix/Shudder exclusive detection
+
+## SESSION HISTORY UPDATE - 2025-08-18 (PM Session)
+
+### Major Discoveries:
+- **TMDB Type 4 Reliability:** Confirmed type 4 dates indicate actual digital availability, not pre-orders
+- **Provider Data Accuracy:** Provider data is 100% accurate for "available now" but lacks historical dates
+- **Release Windows:** Found 25-117 day theatrical-to-digital windows (most 60 days, but outliers exist)
+- **Coverage Requirements:** 99% coverage requires tracking 365+ days of movies
+- **Tracking Solution:** Built movie_tracker.py database that detects state changes
+
+### Implementation Progress:
+- Created movie_tracker.py - tracks movies and detects digital transitions
+- Created generate_from_tracker.py - generates lists from tracking database
+- Created admin.py - Flask admin panel for curation
+- Created site_enhanced.html - flip cards with hover effects, smaller posters
+- Added comprehensive caching system to main scrapers
+
+### Key Insights:
+- Pre-orders do NOT appear in provider data (Weapons example proved this)
+- Same-day releases show providers on release day (Bad Guys 2 at 9pm example)
+- Hostile Takeover case: Has providers but no type 4 (data inconsistency)
+- Need to track state changes ourselves for "new to digital this week" feature
+
+### Next Steps:
+- Bootstrap tracking database with full 365-day history
+- Integrate enhanced site template with real data
+- Deploy admin panel for curation workflow
+- Add Netflix/Shudder exclusive detection
