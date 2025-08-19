@@ -1,253 +1,426 @@
-import argparse, os, sys, json, time
+#!/usr/bin/env python3
+"""
+Fixed TMDB scraper that properly handles movies with multiple release types
+Key insight: Movies can have BOTH theatrical (3) and digital (4) releases
+We should include any movie that has type 4, regardless of other types
+"""
+
+import json
+import requests
+import time
 from datetime import datetime, timedelta
-import requests, yaml
-from jinja2 import Template
+from typing import List, Dict, Tuple
 
-def load_config():
-    with open("config.yaml", "r") as f:
-        return yaml.safe_load(f)
-
-def check_has_reviews(title, year, config):
-    """Quick check if movie has any critical reviews via OMDb"""
-    try:
-        params = {
-            'apikey': config['omdb_api_key'],
-            't': title,
-        }
-        if year:
-            params['y'] = str(year)
-            
-        response = requests.get('http://www.omdbapi.com/', params=params)
-        data = response.json()
+class ProperTMDBScraper:
+    """TMDB scraper that correctly handles multi-type releases"""
+    
+    RELEASE_TYPES = {
+        1: "Premiere",
+        2: "Theatrical (limited)",
+        3: "Theatrical",
+        4: "Digital",
+        5: "Physical",
+        6: "TV"
+    }
+    
+    def __init__(self, api_key="99b122ce7fa3e9065d7b7dc6e660772d", omdb_key="8eb019b"):
+        self.tmdb_key = api_key
+        self.omdb_key = omdb_key
+        self.base_url = "https://api.themoviedb.org/3"
         
-        if data.get('Response') == 'True':
-            review_info = {}
+    def fetch_recent_movies(self, days=30, max_pages=10) -> List[Dict]:
+        """
+        Fetch ALL recent movies, then filter by release type presence
+        Instead of using release_type in query, we check each movie's actual releases
+        """
+        print(f"Fetching movies from last {days} days...")
+        
+        end_date = datetime.now()
+        start_date = end_date - timedelta(days=days)
+        
+        all_movies = {}
+        
+        # Step 1: Get ALL movies from the time period (no release_type filter)
+        print("\nStep 1: Fetching all recent movies (no type filter)...")
+        
+        for page in range(1, max_pages + 1):
+            url = f"{self.base_url}/discover/movie"
+            params = {
+                'api_key': self.tmdb_key,
+                'region': 'US',
+                'primary_release_date.gte': start_date.strftime('%Y-%m-%d'),
+                'primary_release_date.lte': end_date.strftime('%Y-%m-%d'),
+                'sort_by': 'popularity.desc',
+                'page': page
+            }
             
-            # Check for any review data (more lenient than smart version)
-            if data.get('Metascore', 'N/A') != 'N/A':
-                review_info['metacritic'] = data['Metascore']
-            
-            for rating in data.get('Ratings', []):
-                if rating['Source'] == 'Rotten Tomatoes':
-                    review_info['rt_score'] = rating['Value'].rstrip('%')
-            
-            # More lenient IMDB threshold (10+ votes instead of 50+)
-            votes_str = data.get('imdbVotes', '0').replace(',', '').replace('N/A', '0')
-            if votes_str and votes_str != '0':
-                votes = int(votes_str)
-                if votes > 10:  # Lowered from 50 to 10
-                    review_info['imdb_votes'] = votes
-                    review_info['imdb_rating'] = data.get('imdbRating', 'N/A')
-            
-            return bool(review_info), review_info
+            response = requests.get(url, params=params)
+            if response.status_code == 200:
+                data = response.json()
+                movies = data.get('results', [])
                 
-        return False, None
-    except Exception as e:
-        return False, None
-
-def get_balanced_releases(region="US", days=14, max_pages=5):
-    """Get releases with balanced filtering - less restrictive than smart version"""
-    config = load_config()
-    api_key = config['tmdb_api_key']
-    
-    today = datetime.now()
-    start_date = (today - timedelta(days=days)).strftime("%Y-%m-%d")
-    end_date = today.strftime("%Y-%m-%d")
-    
-    print(f"Fetching releases from {start_date} to {end_date}...")
-    
-    all_movies = []
-    
-    for page in range(1, max_pages + 1):
-        print(f"Fetching page {page}...")
+                if not movies:
+                    break
+                
+                for movie in movies:
+                    all_movies[movie['id']] = movie
+                
+                print(f"  Page {page}: Found {len(movies)} movies (total: {len(all_movies)})")
+            
+            time.sleep(0.25)  # Rate limiting
         
-        params = {
-            'api_key': api_key,
-            'region': region,
-            'with_release_type': '4|6',  # Digital and TV
-            'primary_release_date.gte': start_date,
-            'primary_release_date.lte': end_date,
-            'sort_by': 'release_date.desc',
-            'page': page
+        print(f"\nTotal movies found: {len(all_movies)}")
+        
+        # Step 2: Check each movie's actual release types
+        print("\nStep 2: Checking release types for each movie...")
+        
+        movies_with_digital = []
+        movies_theatrical_only = []
+        movies_unknown = []
+        
+        for i, (movie_id, movie) in enumerate(all_movies.items(), 1):
+            if i % 10 == 0:
+                print(f"  Checked {i}/{len(all_movies)} movies...")
+            
+            # Get detailed release information
+            release_info = self.get_release_types(movie_id)
+            
+            movie['us_release_types'] = release_info['types']
+            movie['us_releases'] = release_info['releases']
+            movie['digital_date'] = release_info['digital_date']
+            movie['theatrical_date'] = release_info['theatrical_date']
+            movie['has_digital'] = 4 in release_info['types'] or 6 in release_info['types']
+            movie['has_theatrical'] = 2 in release_info['types'] or 3 in release_info['types']
+            
+            # Categorize
+            if movie['has_digital']:
+                movies_with_digital.append(movie)
+            elif movie['has_theatrical']:
+                movies_theatrical_only.append(movie)
+            else:
+                movies_unknown.append(movie)
+            
+            time.sleep(0.1)  # Rate limiting
+        
+        print(f"\nRelease type breakdown:")
+        print(f"  Digital available: {len(movies_with_digital)}")
+        print(f"  Theatrical only: {len(movies_theatrical_only)}")
+        print(f"  Unknown/Other: {len(movies_unknown)}")
+        
+        # Step 3: Include theatrical movies that are old enough to likely be digital
+        print("\nStep 3: Including likely-digital theatrical releases...")
+        
+        likely_digital = []
+        digital_window_days = 30  # Theatrical usually goes digital after 30 days
+        
+        for movie in movies_theatrical_only:
+            theatrical_date = movie.get('theatrical_date')
+            if theatrical_date:
+                try:
+                    release_dt = datetime.strptime(theatrical_date[:10], '%Y-%m-%d')
+                    days_since_theatrical = (datetime.now() - release_dt).days
+                    
+                    if days_since_theatrical >= digital_window_days:
+                        movie['likely_digital'] = True
+                        movie['days_since_theatrical'] = days_since_theatrical
+                        likely_digital.append(movie)
+                except:
+                    pass
+        
+        print(f"  Added {len(likely_digital)} theatrical releases likely digital now")
+        
+        # Step 4: Combine and enrich all qualifying movies
+        final_movies = movies_with_digital + likely_digital
+        
+        print(f"\nStep 4: Enriching {len(final_movies)} movies with additional data...")
+        
+        enriched = []
+        for movie in final_movies:
+            enriched_movie = self.enrich_movie(movie)
+            enriched.append(enriched_movie)
+        
+        # Sort by relevance
+        enriched.sort(key=self.calculate_priority, reverse=True)
+        
+        return enriched
+    
+    def get_release_types(self, movie_id: int) -> Dict:
+        """Get all US release types for a movie"""
+        url = f"{self.base_url}/movie/{movie_id}/release_dates"
+        params = {'api_key': self.tmdb_key}
+        
+        result = {
+            'types': [],
+            'releases': [],
+            'digital_date': None,
+            'theatrical_date': None
         }
         
-        response = requests.get('https://api.themoviedb.org/3/discover/movie', params=params)
-        movies = response.json().get('results', [])
+        try:
+            response = requests.get(url, params=params)
+            if response.status_code == 200:
+                data = response.json()
+                
+                # Find US releases
+                for country in data.get('results', []):
+                    if country['iso_3166_1'] == 'US':
+                        for release in country['release_dates']:
+                            release_type = release['type']
+                            release_date = release['release_date']
+                            
+                            result['types'].append(release_type)
+                            result['releases'].append({
+                                'type': release_type,
+                                'type_name': self.RELEASE_TYPES.get(release_type, f"Type {release_type}"),
+                                'date': release_date,
+                                'note': release.get('note', '')
+                            })
+                            
+                            # Track earliest digital and theatrical dates
+                            if release_type in [4, 6]:  # Digital or TV
+                                if not result['digital_date'] or release_date < result['digital_date']:
+                                    result['digital_date'] = release_date
+                            elif release_type in [2, 3]:  # Theatrical
+                                if not result['theatrical_date'] or release_date < result['theatrical_date']:
+                                    result['theatrical_date'] = release_date
+                        
+                        break
+        except Exception as e:
+            print(f"    Error getting release types for movie {movie_id}: {e}")
         
-        if not movies:
-            break
-            
-        all_movies.extend(movies)
-        time.sleep(0.3)
+        return result
     
-    print(f"\nFound {len(all_movies)} total movies. Applying balanced filtering...")
+    def enrich_movie(self, movie: Dict) -> Dict:
+        """Add streaming providers, scores, and other data"""
+        movie_id = movie['id']
+        
+        # Get watch providers
+        url = f"{self.base_url}/movie/{movie_id}/watch/providers"
+        params = {'api_key': self.tmdb_key}
+        
+        try:
+            response = requests.get(url, params=params)
+            if response.status_code == 200:
+                us_providers = response.json().get('results', {}).get('US', {})
+                
+                all_providers = []
+                provider_categories = {}
+                
+                if 'flatrate' in us_providers:
+                    providers = [p['provider_name'] for p in us_providers['flatrate']]
+                    all_providers.extend(providers)
+                    provider_categories['streaming'] = providers
+                
+                if 'rent' in us_providers:
+                    providers = [p['provider_name'] for p in us_providers['rent']]
+                    all_providers.extend(providers)
+                    provider_categories['rent'] = providers
+                
+                if 'buy' in us_providers:
+                    providers = [p['provider_name'] for p in us_providers['buy']]
+                    all_providers.extend(providers)
+                    provider_categories['buy'] = providers
+                
+                movie['providers'] = list(set(all_providers))
+                movie['provider_categories'] = provider_categories
+                movie['justwatch_url'] = us_providers.get('link', '')
+        except:
+            movie['providers'] = []
+            movie['provider_categories'] = {}
+        
+        # Try to get RT score from OMDb
+        if self.omdb_key:
+            try:
+                url = "http://www.omdbapi.com/"
+                params = {
+                    'apikey': self.omdb_key,
+                    't': movie['title'],
+                    'y': movie.get('release_date', '')[:4] if movie.get('release_date') else None,
+                    'type': 'movie'
+                }
+                
+                response = requests.get(url, params=params, timeout=3)
+                if response.status_code == 200:
+                    data = response.json()
+                    if data.get('Response') == 'True':
+                        for rating in data.get('Ratings', []):
+                            if rating['Source'] == 'Rotten Tomatoes':
+                                rt_score = rating['Value'].replace('%', '')
+                                movie['rt_score'] = int(rt_score) if rt_score.isdigit() else None
+                                break
+                        
+                        movie['imdb_rating'] = data.get('imdbRating')
+            except:
+                pass
+        
+        # Format data
+        movie['poster'] = f"https://image.tmdb.org/t/p/w500{movie['poster_path']}" if movie.get('poster_path') else ''
+        movie['year'] = movie.get('release_date', '')[:4] if movie.get('release_date') else ''
+        
+        # Create inclusion reason
+        movie['inclusion_reason'] = self.get_inclusion_reason(movie)
+        
+        return movie
     
-    curated = []
-    included_count = 0
-    
-    for movie in all_movies:
-        title = movie.get('title', '')
-        year = movie.get('release_date', '')[:4] if movie.get('release_date') else None
+    def get_inclusion_reason(self, movie: Dict) -> str:
+        """Generate clear reason for inclusion"""
+        reasons = []
         
-        include = False
-        reason = ""
-        review_data = {}
-        
-        # Tier 1: Auto-include popular movies (lowered thresholds)
-        if movie.get('vote_count', 0) >= 20:  # Lowered from 50 to 20
-            include = True
-            reason = f"TMDB popular ({movie['vote_count']} votes)"
-        
-        # Tier 2: Auto-include trending movies (lowered threshold)
-        elif movie.get('popularity', 0) >= 10:  # Lowered from 20 to 10
-            include = True
-            reason = f"Trending (pop: {movie['popularity']:.1f})"
-        
-        # Tier 3: Include English films with minimal activity
-        elif movie.get('original_language') in ['en'] and movie.get('vote_count', 0) >= 3:  # Lowered from 5 to 3
-            include = True
-            reason = f"English film ({movie['vote_count']} votes)"
-        
-        # Tier 4: Check for reviews (but don't require them)
-        elif title:
-            time.sleep(0.15)  # Faster rate limit
-            has_review, review_info = check_has_reviews(title, year, config)
-            
-            if has_review:
-                include = True
-                review_data = review_info
-                parts = []
-                if 'rt_score' in review_info:
-                    parts.append(f"RT: {review_info['rt_score']}%")
-                if 'metacritic' in review_info:
-                    parts.append(f"Meta: {review_info['metacritic']}")
-                if 'imdb_votes' in review_info:
-                    parts.append(f"IMDB: {review_info['imdb_votes']} votes")
-                reason = " | ".join(parts)
+        # Release type info
+        if movie.get('has_digital'):
+            if movie.get('digital_date'):
+                date = movie['digital_date'][:10]
+                reasons.append(f"Digital release: {date}")
             else:
-                # Tier 5: Very lenient catch-all for any movie with basic data
-                if movie.get('title') and movie.get('release_date'):  # Has title and release date
-                    include = True
-                    reason = "Recent release"
+                reasons.append("Digital release available")
+        elif movie.get('likely_digital'):
+            days = movie.get('days_since_theatrical', 0)
+            reasons.append(f"Theatrical {days} days ago (likely digital)")
         
-        if include:
-            included_count += 1
-            movie['inclusion_reason'] = reason
-            movie['review_data'] = review_data
-            curated.append(movie)
-            print(f"  ✓ {title[:40]:40} | {reason}")
-        else:
-            print(f"  ✗ {title[:40]:40} | No qualifying criteria")
+        # Provider info
+        if movie.get('providers'):
+            count = len(movie['providers'])
+            categories = movie.get('provider_categories', {})
+            
+            if 'rent' in categories:
+                reasons.append(f"Rentable on {len(categories['rent'])} platforms")
+            if 'streaming' in categories:
+                reasons.append(f"Streaming on {len(categories['streaming'])} platforms")
+        
+        # Popularity indicators
+        if movie.get('popularity', 0) > 100:
+            reasons.append("High popularity")
+        elif movie.get('vote_average', 0) > 7.5 and movie.get('vote_count', 0) > 50:
+            reasons.append(f"Highly rated ({movie['vote_average']}/10)")
+        
+        return " • ".join(reasons) if reasons else "Recent release"
     
-    print(f"\n{'='*60}")
-    print(f"BALANCED RESULTS: {included_count} movies included")
-    print(f"Inclusion rate: {included_count/len(all_movies)*100:.1f}%")
+    def calculate_priority(self, movie: Dict) -> float:
+        """Calculate sort priority for display order"""
+        score = 0
+        
+        # Confirmed digital release is highest priority
+        if movie.get('has_digital'):
+            score += 1000
+            # More recent digital releases score higher
+            if movie.get('digital_date'):
+                days_since = (datetime.now() - datetime.strptime(movie['digital_date'][:10], '%Y-%m-%d')).days
+                score += max(0, 100 - days_since)
+        
+        # Likely digital is next priority
+        if movie.get('likely_digital'):
+            score += 500
+            # Longer since theatrical = more likely to be digital
+            score += min(movie.get('days_since_theatrical', 0), 90)
+        
+        # Has providers is important
+        if movie.get('providers'):
+            score += 200 + (len(movie['providers']) * 10)
+        
+        # Popularity and ratings
+        score += min(movie.get('popularity', 0), 200)
+        score += movie.get('vote_average', 0) * 10
+        score += min(movie.get('vote_count', 0) / 10, 100)
+        
+        return score
     
-    # Sort by release date and popularity
-    curated.sort(key=lambda x: (
-        x.get('release_date', ''),
-        x.get('popularity', 0)
-    ), reverse=True)
-    
-    return curated
+    def save_output(self, movies: List[Dict], filename='output/data.json'):
+        """Save in format compatible with existing pipeline"""
+        # Format for adapter.py compatibility
+        formatted = []
+        for movie in movies:
+            formatted_movie = {
+                'title': movie.get('title', ''),
+                'year': movie.get('year', ''),
+                'release_date': movie.get('release_date', ''),
+                'poster': movie.get('poster', ''),
+                'tmdb_id': movie.get('id', 0),
+                'tmdb_vote': movie.get('vote_average', 0),
+                'rt_score': movie.get('rt_score'),
+                'providers': movie.get('providers', []),
+                'overview': movie.get('overview', ''),
+                'inclusion_reason': movie.get('inclusion_reason', ''),
+                'has_digital': movie.get('has_digital', False),
+                'digital_date': movie.get('digital_date', ''),
+                'theatrical_date': movie.get('theatrical_date', ''),
+                'justwatch_url': movie.get('justwatch_url', ''),
+                'review_data': {
+                    'rt_score': str(movie['rt_score']) if movie.get('rt_score') else None,
+                    'imdb_rating': movie.get('imdb_rating')
+                }
+            }
+            formatted.append(formatted_movie)
+        
+        with open(filename, 'w') as f:
+            json.dump(formatted, f, indent=2)
+        
+        print(f"\nSaved {len(formatted)} movies to {filename}")
+        return filename
 
-def get_watch_providers(movie_id, region, api_key):
-    """Get streaming providers for a movie"""
-    url = f"https://api.themoviedb.org/3/movie/{movie_id}/watch/providers"
-    try:
-        response = requests.get(url, params={'api_key': api_key})
-        data = response.json()
-        
-        providers = []
-        if 'results' in data and region in data['results']:
-            region_data = data['results'][region]
-            for provider_type in ['flatrate', 'rent', 'buy']:
-                if provider_type in region_data:
-                    for provider in region_data[provider_type]:
-                        name = provider['provider_name']
-                        if name not in providers:
-                            providers.append(name)
-        
-        return providers
-    except:
-        return []
-
-def generate_html(movies):
-    """Generate HTML output"""
-    os.makedirs('output/site', exist_ok=True)
-    
-    with open('templates/site.html', 'r') as f:
-        template = Template(f.read())
-    
-    # Process movies for display
-    for movie in movies:
-        # Add poster URL
-        if movie.get('poster_path'):
-            movie['poster'] = f"https://image.tmdb.org/t/p/w500{movie['poster_path']}"
-        
-        # Extract RT score if available
-        if 'review_data' in movie and 'rt_score' in movie['review_data']:
-            movie['rt_score'] = movie['review_data']['rt_score']
-        
-        # Build display title with year
-        year = movie.get('release_date', '')[:4] if movie.get('release_date') else ''
-        movie['year'] = year
-        
-        # TMDB vote
-        movie['tmdb_vote'] = movie.get('vote_average')
-        
-        # Add URL fields for template
-        movie['tmdb_url'] = f"https://www.themoviedb.org/movie/{movie['id']}"
-        movie['tmdb_watch_link'] = f"https://www.themoviedb.org/movie/{movie['id']}/watch"
-        movie['justwatch_search_link'] = f"https://www.justwatch.com/us/search?q={movie['title'].replace(' ', '%20')}"
-    
-    html = template.render(
-        items=movies,
-        site_title="New Release Wall (Balanced)",
-        window_label=f"Last {args.days} days",
-        region=args.region,
-        store_names=[],
-        generated_at=datetime.now().strftime("%Y-%m-%d %H:%M")
-    )
-    
-    with open('output/site/index.html', 'w') as f:
-        f.write(html)
-    
-    print(f"Generated HTML with {len(movies)} movies")
 
 def main():
-    global args
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--region', default='US')
-    parser.add_argument('--days', type=int, default=14)
-    parser.add_argument('--max-pages', type=int, default=5)
-    args = parser.parse_args()
+    """Run the fixed TMDB scraper"""
+    print("="*60)
+    print("FIXED TMDB SCRAPER - Proper Release Type Handling")
+    print("="*60)
     
-    # Get balanced filtered movies
-    movies = get_balanced_releases(
-        region=args.region,
-        days=args.days,
-        max_pages=args.max_pages
-    )
+    scraper = ProperTMDBScraper()
     
-    # Add streaming providers for ALL movies (not just top 25)
-    config = load_config()
-    print(f"\nFetching streaming providers for all {len(movies)} movies...")
-    for i, movie in enumerate(movies):
-        providers = get_watch_providers(movie['id'], args.region, config['tmdb_api_key'])
-        movie['providers'] = providers
+    # Fetch movies with proper type checking
+    movies = scraper.fetch_recent_movies(days=45, max_pages=5)
+    
+    # Save output
+    output_file = scraper.save_output(movies)
+    
+    # Summary
+    print("\n" + "="*60)
+    print("SUMMARY")
+    print("="*60)
+    print(f"Total movies found: {len(movies)}")
+    
+    # Breakdown by status
+    with_digital = [m for m in movies if m.get('has_digital')]
+    likely_digital = [m for m in movies if m.get('likely_digital')]
+    with_providers = [m for m in movies if m.get('providers')]
+    
+    print(f"\nBy release status:")
+    print(f"  Confirmed digital: {len(with_digital)}")
+    print(f"  Likely digital: {len(likely_digital)}")
+    print(f"  With providers: {len(with_providers)}")
+    
+    # Show top 10
+    print(f"\nTop 10 movies:")
+    for i, movie in enumerate(movies[:10], 1):
+        providers = movie.get('providers', [])
+        provider_str = f" ({', '.join(providers[:3])})" if providers else " (No providers yet)"
+        
+        print(f"\n{i}. {movie['title']} ({movie.get('year', 'Unknown')})")
+        print(f"   {movie['inclusion_reason']}")
         if providers:
-            print(f"  {movie['title'][:30]:30} | {', '.join(providers[:3])}")
+            print(f"   Available on: {provider_str}")
+        
+        # Show release types
+        if movie.get('us_release_types'):
+            types = [f"{t}:{scraper.RELEASE_TYPES.get(t, t)}" for t in movie['us_release_types']]
+            print(f"   Release types: {', '.join(types)}")
+    
+    # Check for specific movies
+    print(f"\n" + "="*60)
+    print("CHECKING FOR KNOWN MISSING MOVIES")
+    print("="*60)
+    
+    target_titles = ["Eddington", "Ebony & Ivory", "Elio", "Wicked", "Gladiator II", "Red One"]
+    found_titles = {m['title'].lower(): m for m in movies}
+    
+    for target in target_titles:
+        if target.lower() in found_titles:
+            movie = found_titles[target.lower()]
+            print(f"✓ {target} - FOUND")
+            print(f"  Types: {movie.get('us_release_types', [])}")
+            print(f"  Digital: {movie.get('has_digital', False)}")
         else:
-            print(f"  {movie['title'][:30]:30} | No providers")
-        time.sleep(0.2)  # Rate limit every request
-    
-    # Generate output
-    generate_html(movies)
-    
-    print(f"\n✓ Complete! View at http://localhost:8080")
-    print(f"  Found {len(movies)} balanced releases")
-    print(f"  {sum(1 for m in movies if m.get('providers'))} have streaming info")
+            print(f"✗ {target} - NOT FOUND")
+
 
 if __name__ == "__main__":
     main()
