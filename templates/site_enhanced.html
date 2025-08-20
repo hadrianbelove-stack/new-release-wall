@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Release Wall</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 2rem 1rem;
+            background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
+            border-bottom: 1px solid #333;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header .subtitle {
+            color: #888;
+            font-size: 1rem;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .controls button {
+            padding: 0.5rem 1.5rem;
+            background: #222;
+            color: #fff;
+            border: 1px solid #444;
+            border-radius: 2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        .controls button:hover {
+            background: #333;
+            border-color: #666;
+        }
+        
+        .controls button.active {
+            background: #e50914;
+            border-color: #e50914;
+        }
+        
+        .movie-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .movie-card {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 2/3;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            cursor: pointer;
+        }
+        
+        .movie-card:hover {
+            transform: rotateY(180deg);
+        }
+        
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #1a1a1a;
+        }
+        
+        .card-front {
+            z-index: 2;
+        }
+        
+        .card-back {
+            transform: rotateY(180deg);
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            color: #fff;
+        }
+        
+        .movie-poster {
+            width: 100%;
+            height: 75%;
+            object-fit: cover;
+            background: #2a2a2a;
+        }
+        
+        .movie-info {
+            padding: 0.75rem;
+            background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
+            height: 25%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .movie-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .movie-year {
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 0.25rem;
+        }
+        
+        .movie-credits {
+            font-size: 0.75rem;
+            color: #aaa;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        /* Card Back Styles */
+        .back-header {
+            margin-bottom: 1rem;
+        }
+        
+        .back-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .back-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            color: #aaa;
+            margin-bottom: 0.5rem;
+        }
+        
+        .rt-score {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            color: #fa320a;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .rt-score:hover {
+            color: #ff6b4a;
+        }
+        
+        .synopsis {
+            flex: 1;
+            font-size: 0.8rem;
+            line-height: 1.4;
+            color: #ccc;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+        }
+        
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .action-row {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 0.5rem;
+            background: #333;
+            color: #fff;
+            border: 1px solid #555;
+            border-radius: 4px;
+            text-decoration: none;
+            text-align: center;
+            font-size: 0.75rem;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            background: #444;
+            border-color: #777;
+        }
+        
+        .btn-rent {
+            background: #2a5a2a;
+            border-color: #3a7a3a;
+        }
+        
+        .btn-rent:hover {
+            background: #3a7a3a;
+        }
+        
+        .btn-buy {
+            background: #5a2a2a;
+            border-color: #7a3a3a;
+        }
+        
+        .btn-buy:hover {
+            background: #7a3a3a;
+        }
+        
+        .btn-trailer {
+            background: #e50914;
+            border-color: #e50914;
+        }
+        
+        .btn-trailer:hover {
+            background: #ff0a16;
+        }
+        
+        .featured-badge {
+            position: absolute;
+            top: 0.5rem;
+            left: 0.5rem;
+            background: gold;
+            color: #000;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            z-index: 3;
+        }
+        
+        @media (max-width: 768px) {
+            .movie-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 1rem;
+                padding: 1rem;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>The New Release Wall</h1>
+        <div class="subtitle">What's New to Digital This Week</div>
+    </div>
+    
+    <div class="controls">
+        <button class="active" onclick="filterMovies('all')">All Movies</button>
+        <button onclick="filterMovies('featured')">Featured</button>
+        <button onclick="filterMovies('streaming')">Streaming</button>
+        <button onclick="filterMovies('rental')">Rental</button>
+        <button onclick="sortMovies('date')">Sort by Date</button>
+        <button onclick="sortMovies('rating')">Sort by Rating</button>
+    </div>
+    
+    <div class="movie-grid" id="movieGrid">
+        <!-- Movie cards will be generated here -->
+    </div>
+    
+    <script>
+        // Sample movie data - will be replaced with real data from generator
+        const movies = [
+            {
+                id: 1,
+                title: "Example Movie",
+                year: 2025,
+                poster: "https://via.placeholder.com/300x450",
+                director: "Director Name",
+                cast: "Actor 1, Actor 2",
+                runtime: "120 min",
+                studio: "Studio Name",
+                rtScore: 85,
+                rtUrl: "https://www.rottentomatoes.com/",
+                synopsis: "A compelling story about...",
+                trailerUrl: "https://youtube.com/",
+                rentUrl: "https://www.amazon.com/",
+                buyUrl: "https://www.apple.com/",
+                featured: false,
+                hidden: false
+            }
+        ];
+        
+        function renderMovies(moviesToRender = movies) {
+            const grid = document.getElementById('movieGrid');
+            grid.innerHTML = '';
+            
+            moviesToRender.forEach(movie => {
+                if (movie.hidden) return;
+                
+                const card = document.createElement('div');
+                card.className = 'movie-card';
+                card.innerHTML = `
+                    ${movie.featured ? '<div class="featured-badge">⭐ Featured</div>' : ''}
+                    <div class="card-face card-front">
+                        <img src="${movie.poster}" alt="${movie.title}" class="movie-poster">
+                        <div class="movie-info">
+                            <div class="movie-title">${movie.title}</div>
+                            <div class="movie-year">${movie.year}</div>
+                            <div class="movie-credits">Dir: ${movie.director}</div>
+                            <div class="movie-credits">${movie.cast}</div>
+                        </div>
+                    </div>
+                    <div class="card-face card-back">
+                        <div class="back-header">
+                            <div class="back-title">${movie.title}</div>
+                            <div class="back-meta">
+                                <span>${movie.runtime}</span>
+                                <span>•</span>
+                                <span>${movie.studio}</span>
+                                <span>•</span>
+                                <a href="${movie.rtUrl}" target="_blank" class="rt-score">
+                                    🍅 ${movie.rtScore}%
+                                </a>
+                            </div>
+                        </div>
+                        <div class="synopsis">${movie.synopsis}</div>
+                        <div class="action-buttons">
+                            <div class="action-row">
+                                ${movie.rentUrl ? `<a href="${movie.rentUrl}" target="_blank" class="btn btn-rent">Rent $5.99</a>` : ''}
+                                ${movie.buyUrl ? `<a href="${movie.buyUrl}" target="_blank" class="btn btn-buy">Buy $19.99</a>` : ''}
+                            </div>
+                            ${movie.trailerUrl ? `<a href="${movie.trailerUrl}" target="_blank" class="btn btn-trailer">▶ Watch Trailer</a>` : ''}
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+        
+        function filterMovies(type) {
+            // Update active button
+            document.querySelectorAll('.controls button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            let filtered = movies;
+            switch(type) {
+                case 'featured':
+                    filtered = movies.filter(m => m.featured);
+                    break;
+                case 'streaming':
+                    filtered = movies.filter(m => m.streamingUrl);
+                    break;
+                case 'rental':
+                    filtered = movies.filter(m => m.rentUrl);
+                    break;
+            }
+            renderMovies(filtered);
+        }
+        
+        function sortMovies(by) {
+            let sorted = [...movies];
+            switch(by) {
+                case 'date':
+                    sorted.sort((a, b) => b.year - a.year);
+                    break;
+                case 'rating':
+                    sorted.sort((a, b) => b.rtScore - a.rtScore);
+                    break;
+            }
+            renderMovies(sorted);
+        }
+        
+        // Initial render
+        renderMovies();
+        
+        // Load real data from JSON
+        fetch('data.json')
+            .then(response => response.json())
+            .then(data => {
+                // Transform data to match our structure
+                movies.length = 0;
+                movies.push(...data);
+                renderMovies();
+            })
+            .catch(err => console.log('Using sample data'));
+    </script>
+</body>
+</html>

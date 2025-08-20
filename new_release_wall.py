@@ -123,6 +123,40 @@ def get_release_types(movie_id, api_key):
     except Exception:
         return {'types': [], 'us_releases': [], 'digital_date': None}
 
+def tmdb_get(endpoint, params, api_key):
+    """Generic TMDB API GET request"""
+    url = f"https://api.themoviedb.org/3{endpoint}"
+    params['api_key'] = api_key
+    try:
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        return response.json()
+    except Exception:
+        return {}
+
+def get_movie_credits(tmdb_id, api_key):
+    data = tmdb_get(f"/movie/{tmdb_id}/credits", {}, api_key)
+    director = None
+    cast = []
+    
+    for crew in data.get("crew", []):
+        if crew.get("job") == "Director":
+            director = crew.get("name")
+            break
+    
+    for actor in data.get("cast", [])[:5]:  # Top 5 cast
+        cast.append(actor.get("name"))
+    
+    return director, cast
+
+def get_movie_details(tmdb_id, api_key):
+    data = tmdb_get(f"/movie/{tmdb_id}", {}, api_key)
+    return {
+        "synopsis": data.get("overview"),
+        "runtime": data.get("runtime"),
+        "studio": (data.get("production_companies") or [{}])[0].get("name")
+    }
+
 def check_has_reviews(title, year, config):
     """Quick check if movie has any critical reviews via OMDb"""
     global _review_cache

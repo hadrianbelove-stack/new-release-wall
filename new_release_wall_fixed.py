@@ -253,25 +253,10 @@ class ProperTMDBScraper:
             except:
                 pass
         
-        # Get detailed movie information
-        details = self.tmdb_movie_details(movie_id)
-        movie.update(details)
-        
         # Format data
         movie['poster'] = f"https://image.tmdb.org/t/p/w500{movie['poster_path']}" if movie.get('poster_path') else ''
         movie['year'] = movie.get('release_date', '')[:4] if movie.get('release_date') else ''
         
-        # Add additional URLs
-        movie['tmdb_url'] = f"https://www.themoviedb.org/movie/{movie_id}"
-        movie['rt_url'] = f"https://www.rottentomatoes.com/search?search={movie['title'].replace(' ', '%20')}"
-        movie['wikipedia_url'] = self.get_wikipedia_url(movie['title'], movie['year'])
-        
-        # Get studio (first production company)
-        if details['production_companies']:
-            movie['studio'] = details['production_companies'][0].get('name')
-        else:
-            movie['studio'] = None
-            
         # Create inclusion reason
         movie['inclusion_reason'] = self.get_inclusion_reason(movie)
         
@@ -309,73 +294,6 @@ class ProperTMDBScraper:
             reasons.append(f"Highly rated ({movie['vote_average']}/10)")
         
         return " • ".join(reasons) if reasons else "Recent release"
-
-    def tmdb_movie_details(self, tmdb_id: int) -> Dict:
-        """Get director, cast, and other details."""
-        try:
-            # Get credits
-            credits_url = f"{self.base_url}/movie/{tmdb_id}/credits"
-            credits_response = requests.get(credits_url, params={'api_key': self.tmdb_key})
-            credits = credits_response.json()
-            
-            # Find director
-            director = None
-            for crew in credits.get("crew", []):
-                if crew.get("job") == "Director":
-                    director = crew.get("name")
-                    break
-            
-            # Get top 3 cast
-            cast_list = []
-            for actor in credits.get("cast", [])[:3]:
-                cast_list.append(actor.get("name"))
-            cast = ", ".join(cast_list) if cast_list else None
-            
-            # Get movie details
-            details_url = f"{self.base_url}/movie/{tmdb_id}"
-            details_response = requests.get(details_url, params={'api_key': self.tmdb_key})
-            details = details_response.json()
-            
-            # Get content rating
-            release_info_url = f"{self.base_url}/movie/{tmdb_id}/release_dates"
-            release_response = requests.get(release_info_url, params={'api_key': self.tmdb_key})
-            release_info = release_response.json()
-            
-            rating = None
-            for country in release_info.get("results", []):
-                if country["iso_3166_1"] == "US":
-                    for release in country["release_dates"]:
-                        if release.get("certification"):
-                            rating = release["certification"]
-                            break
-                    break
-            
-            time.sleep(0.1)  # Rate limiting
-            
-            return {
-                "director": director,
-                "cast": cast,
-                "runtime": details.get("runtime"),
-                "overview": details.get("overview"),
-                "production_companies": details.get("production_companies", []),
-                "rating": rating or "NR"
-            }
-        except Exception as e:
-            print(f"Error getting details for movie {tmdb_id}: {e}")
-            return {
-                "director": None,
-                "cast": None,
-                "runtime": None,
-                "overview": None,
-                "production_companies": [],
-                "rating": "NR"
-            }
-
-    def get_wikipedia_url(self, title: str, year: str) -> str:
-        """Generate Wikipedia URL (basic approach)."""
-        # This is simplified - in production you'd use Wikipedia API
-        search_title = title.replace(" ", "_")
-        return f"https://en.wikipedia.org/wiki/{search_title}_(film)"
     
     def calculate_priority(self, movie: Dict) -> float:
         """Calculate sort priority for display order"""
@@ -426,15 +344,6 @@ class ProperTMDBScraper:
                 'digital_date': movie.get('digital_date', ''),
                 'theatrical_date': movie.get('theatrical_date', ''),
                 'justwatch_url': movie.get('justwatch_url', ''),
-                # Enhanced data fields
-                'director': movie.get('director'),
-                'cast': movie.get('cast'),
-                'runtime': movie.get('runtime'),
-                'studio': movie.get('studio'),
-                'rating': movie.get('rating', 'NR'),
-                'tmdb_url': movie.get('tmdb_url', ''),
-                'rt_url': movie.get('rt_url', ''),
-                'wikipedia_url': movie.get('wikipedia_url', ''),
                 'review_data': {
                     'rt_score': str(movie['rt_score']) if movie.get('rt_score') else None,
                     'imdb_rating': movie.get('imdb_rating')

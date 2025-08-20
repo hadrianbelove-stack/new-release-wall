@@ -88,32 +88,38 @@ class MovieTracker:
             print(f"Error getting release info for {movie_id}: {e}")
             return None
     
-    def bootstrap_database(self, days_back=365):
-        """Initial population: scan movies from last X days"""
+    def bootstrap_database(self, days_back=730):
+        """Bootstrap database with movies from past N days"""
         print(f"🚀 Bootstrapping database with movies from last {days_back} days...")
         
         end_date = datetime.now()
         start_date = end_date - timedelta(days=days_back)
         
         all_movies = []
-        for page in range(1, 11):  # Scan 10 pages = 200 movies
+        page = 1
+        total_pages = 999  # Will be updated from API response
+        
+        while page <= total_pages:
             print(f"  Scanning page {page}...")
             
             params = {
-                'api_key': self.api_key,
-                'primary_release_date.gte': start_date.strftime('%Y-%m-%d'),
-                'primary_release_date.lte': end_date.strftime('%Y-%m-%d'),
-                'sort_by': 'popularity.desc',
-                'page': page
+                "sort_by": "primary_release_date.desc",
+                "region": "US",
+                "primary_release_date.gte": start_date.strftime("%Y-%m-%d"),
+                "primary_release_date.lte": end_date.strftime("%Y-%m-%d"),
+                "page": page
             }
             
-            response = requests.get('https://api.themoviedb.org/3/discover/movie', params=params)
-            movies = response.json().get('results', [])
+            data = self.tmdb_get("/discover/movie", params)
+            all_movies.extend(data.get("results", []))
             
-            if not movies:
+            # Update total_pages from API
+            total_pages = min(data.get("total_pages", 1), 500)  # TMDB caps at 500
+            
+            if page >= total_pages:
                 break
-            
-            all_movies.extend(movies)
+                
+            page += 1
             time.sleep(0.2)
         
         print(f"  Found {len(all_movies)} movies, checking release status...")
