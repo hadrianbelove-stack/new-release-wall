@@ -245,23 +245,22 @@
                     <img src="{{ movie.poster_url or 'https://via.placeholder.com/160x240' }}" alt="{{ movie.title }}" class="movie-poster">
                     <div class="movie-info">
                         <div class="movie-title">{{ movie.title }}</div>
-                        <div class="movie-details">
-                            <div>{{ movie.director or 'Director N/A' }} • {{ movie.year or '2025' }}</div>
-                            <div>{{ movie.cast[:2] | join(', ') if movie.cast else 'Cast N/A' }}</div>
-                        </div>
                     </div>
                 </div>
                 <div class="card-face card-back" onclick="window.open('{{ movie.watch_link or '#' }}', '_blank')">
                     <div class="back-synopsis">
                         {{ movie.synopsis or 'No synopsis available. This film was recently released to digital platforms and is now available for streaming or rental.' }}
+                        <br><br>
+                        <strong>Dir:</strong> {{ movie.director or 'Director N/A' }}<br>
+                        <strong>Cast:</strong> {{ movie.cast[:3] | join(', ') if movie.cast else 'Cast N/A' }}
                     </div>
                     <div class="back-buttons">
                         <a href="{{ movie.trailer_url or '#' }}" class="mini-btn btn-trailer" onclick="event.stopPropagation()" target="_blank">Trailer</a>
                         <a href="{{ movie.rt_url or 'https://www.rottentomatoes.com/search?search=' + movie.title }}" class="mini-btn btn-rt" onclick="event.stopPropagation()" target="_blank">RT {{ movie.rt_score or 'N/A' }}%</a>
-                        <a href="https://en.wikipedia.org/wiki/{{ movie.title.replace(' ', '_') }}" class="mini-btn btn-wiki" onclick="event.stopPropagation()" target="_blank">Wiki</a>
+                        <a href="https://en.wikipedia.org/wiki/{{ movie.title.replace(' ', '_') }}{% if movie.title in ['Stans', 'Red Sonja', 'The Home', 'Superman', 'Site', 'Fixed', 'Dream', 'Elio', 'Shaman', 'Hierarchy', 'Smurfs', 'Eddington', 'Birthrite'] %}_({{ movie.year }}_film){% endif %}" class="mini-btn btn-wiki" onclick="event.stopPropagation()" target="_blank">Wiki</a>
                     </div>
                     <div class="back-meta">
-                        {{ movie.runtime or '?' }} min • {{ movie.studio or 'Studio' }} • USA • {{ movie.rating or 'NR' }}
+                        {{ movie.runtime or '?' }} min • {{ movie.studio or 'Studio' }} • {{ movie.year or '2025' }}
                     </div>
                 </div>
             </div>

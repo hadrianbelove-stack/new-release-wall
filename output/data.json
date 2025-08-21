@@ -13,8 +13,31 @@
       ],
       "buy": [],
       "stream": []
-    },
-    "rt_score": 83
+    }
+  },
+  {
+    "title": "The Bad Guys 2",
+    "tmdb_id": 1175942,
+    "theatrical_date": "2025-08-01",
+    "digital_date": "2025-08-19",
+    "status": "resolved",
+    "added_to_db": "2025-08-18",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube"
+      ],
+      "stream": []
+    }
   },
   {
     "title": "Mission: Impossible - The Final Reckoning",
@@ -33,8 +56,7 @@
         "YouTube"
       ],
       "stream": []
-    },
-    "rt_score": 80
+    }
   },
   {
     "title": "Elio",
@@ -54,8 +76,7 @@
         "Apple TV"
       ],
       "stream": []
-    },
-    "rt_score": 83
+    }
   },
   {
     "title": "Whisper of the Witch",
@@ -73,8 +94,7 @@
         "Apple TV"
       ],
       "stream": []
-    },
-    "rt_score": null
+    }
   },
   {
     "title": "House on Eden",
@@ -99,8 +119,7 @@
         "YouTube"
       ],
       "stream": []
-    },
-    "rt_score": null
+    }
   },
   {
     "title": "Night Always Comes",
@@ -117,8 +136,7 @@
         "Netflix",
         "Netflix Standard with Ads"
       ]
-    },
-    "rt_score": 50
+    }
   },
   {
     "title": "Descendent",
@@ -142,8 +160,7 @@
         "Fandango At Home"
       ],
       "stream": []
-    },
-    "rt_score": 89
+    }
   },
   {
     "title": "Trouble Man!",
@@ -601,6 +618,1465 @@
         "Pure Flix",
         "Great American Pure Flix Amazon Channel"
       ]
+    }
+  },
+  {
+    "title": "The Pickup",
+    "tmdb_id": 1106289,
+    "theatrical_date": null,
+    "digital_date": "2025-08-06",
+    "status": "resolved",
+    "added_to_db": "2025-08-18",
+    "last_checked": "2025-08-18",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Amazon Prime Video",
+        "Amazon Prime Video with Ads"
+      ]
+    }
+  },
+  {
+    "title": "Jurassic World Rebirth",
+    "tmdb_id": 1234821,
+    "theatrical_date": "2025-07-02",
+    "digital_date": "2025-08-05",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home",
+        "Spectrum On Demand"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": []
+    }
+  },
+  {
+    "title": "Abraham's Boys",
+    "tmdb_id": 1452176,
+    "theatrical_date": null,
+    "digital_date": "2025-08-05",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": []
+    }
+  },
+  {
+    "title": "Sorry, Baby",
+    "tmdb_id": 1205515,
+    "theatrical_date": "2025-07-18",
+    "digital_date": "2025-08-05",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home",
+        "Plex"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": []
+    }
+  },
+  {
+    "title": "Rascal Does Not Dream of a Knapsack Kid",
+    "tmdb_id": 1086591,
+    "theatrical_date": null,
+    "digital_date": "2025-08-02",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Crunchyroll",
+        "Crunchyroll Amazon Channel"
+      ]
+    }
+  },
+  {
+    "title": "My Oxford Year",
+    "tmdb_id": 1307078,
+    "theatrical_date": null,
+    "digital_date": "2025-08-01",
+    "status": "resolved",
+    "added_to_db": "2025-08-18",
+    "last_checked": "2025-08-18",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Netflix",
+        "Netflix Standard with Ads"
+      ]
+    }
+  },
+  {
+    "title": "Queen of Bones",
+    "tmdb_id": 1018852,
+    "theatrical_date": null,
+    "digital_date": "2025-08-01",
+    "status": "resolved",
+    "added_to_db": "2025-08-18",
+    "last_checked": "2025-08-18",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Plex"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV"
+      ],
+      "stream": []
+    }
+  },
+  {
+    "title": "Risqu\u00e9",
+    "tmdb_id": 1512623,
+    "theatrical_date": null,
+    "digital_date": "2025-08-01",
+    "status": "resolved",
+    "added_to_db": "2025-08-18",
+    "last_checked": "2025-08-18",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Plex"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "Fandango At Home"
+      ],
+      "stream": []
+    }
+  },
+  {
+    "title": "Halfway to Amarillo",
+    "tmdb_id": 1157112,
+    "theatrical_date": null,
+    "digital_date": "2025-08-01",
+    "status": "resolved",
+    "added_to_db": "2025-08-18",
+    "last_checked": "2025-08-18",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": [
+        "Amazon Prime Video",
+        "Amazon Prime Video with Ads"
+      ]
+    }
+  },
+  {
+    "title": "Marc Maron: Panicked",
+    "tmdb_id": 1503451,
+    "theatrical_date": null,
+    "digital_date": "2025-08-01",
+    "status": "resolved",
+    "added_to_db": "2025-08-18",
+    "last_checked": "2025-08-18",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "HBO Max",
+        "HBO Max Amazon Channel"
+      ]
+    }
+  },
+  {
+    "title": "An Honest Life",
+    "tmdb_id": 1187436,
+    "theatrical_date": null,
+    "digital_date": "2025-07-31",
+    "status": "resolved",
+    "added_to_db": "2025-08-18",
+    "last_checked": "2025-08-18",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Netflix",
+        "Netflix Standard with Ads"
+      ]
+    }
+  },
+  {
+    "title": "War of the Worlds",
+    "tmdb_id": 755898,
+    "theatrical_date": null,
+    "digital_date": "2025-07-30",
+    "status": "resolved",
+    "added_to_db": "2025-08-18",
+    "last_checked": "2025-08-18",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Amazon Prime Video",
+        "Amazon Prime Video with Ads"
+      ]
+    }
+  },
+  {
+    "title": "Night Carnage",
+    "tmdb_id": 986206,
+    "theatrical_date": null,
+    "digital_date": "2025-07-29",
+    "status": "resolved",
+    "added_to_db": "2025-08-18",
+    "last_checked": "2025-08-18",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home",
+        "FlixFling",
+        "Plex"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": []
+    }
+  },
+  {
+    "title": "Dusty Slay: Wet Heat",
+    "tmdb_id": 1507191,
+    "theatrical_date": null,
+    "digital_date": "2025-07-29",
+    "status": "resolved",
+    "added_to_db": "2025-08-18",
+    "last_checked": "2025-08-18",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Netflix",
+        "Netflix Standard with Ads"
+      ]
+    }
+  },
+  {
+    "title": "28 Years Later",
+    "tmdb_id": 1100988,
+    "theatrical_date": "2025-06-20",
+    "digital_date": "2025-07-29",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home",
+        "Spectrum On Demand"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": []
+    }
+  },
+  {
+    "title": "The Life of Chuck",
+    "tmdb_id": 842924,
+    "theatrical_date": "2025-06-13",
+    "digital_date": "2025-07-29",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home",
+        "Spectrum On Demand",
+        "Plex"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": []
+    }
+  },
+  {
+    "title": "Osiris",
+    "tmdb_id": 1241470,
+    "theatrical_date": null,
+    "digital_date": "2025-07-25",
+    "status": "resolved",
+    "added_to_db": "2025-08-18",
+    "last_checked": "2025-08-18",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home",
+        "Spectrum On Demand",
+        "Plex"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": []
+    }
+  },
+  {
+    "title": "Happy Gilmore 2",
+    "tmdb_id": 1263256,
+    "theatrical_date": null,
+    "digital_date": "2025-07-25",
+    "status": "resolved",
+    "added_to_db": "2025-08-18",
+    "last_checked": "2025-08-18",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Netflix",
+        "Netflix Standard with Ads"
+      ]
+    }
+  },
+  {
+    "title": "Monster Island",
+    "tmdb_id": 1214140,
+    "theatrical_date": null,
+    "digital_date": "2025-07-25",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "AMC Plus Apple TV Channel ",
+        "AMC+ Amazon Channel",
+        "AMC+",
+        "Philo",
+        "Shudder",
+        "Shudder Amazon Channel",
+        "Shudder Apple TV Channel"
+      ]
+    }
+  },
+  {
+    "title": "A Normal Woman",
+    "tmdb_id": 1285728,
+    "theatrical_date": null,
+    "digital_date": "2025-07-24",
+    "status": "resolved",
+    "added_to_db": "2025-08-18",
+    "last_checked": "2025-08-18",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Netflix",
+        "Netflix Standard with Ads"
+      ]
+    }
+  },
+  {
+    "title": "Trainwreck: P.I. Moms",
+    "tmdb_id": 1484267,
+    "theatrical_date": null,
+    "digital_date": "2025-07-22",
+    "status": "resolved",
+    "added_to_db": "2025-08-18",
+    "last_checked": "2025-08-18",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Netflix",
+        "Netflix Standard with Ads"
+      ]
+    }
+  },
+  {
+    "title": "Bait",
+    "tmdb_id": 1358210,
+    "theatrical_date": null,
+    "digital_date": "2025-07-22",
+    "status": "resolved",
+    "added_to_db": "2025-08-18",
+    "last_checked": "2025-08-18",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube"
+      ],
+      "stream": []
+    }
+  },
+  {
+    "title": "Lilo & Stitch",
+    "tmdb_id": 552524,
+    "theatrical_date": "2025-05-23",
+    "digital_date": "2025-07-22",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Fandango At Home"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": []
+    }
+  },
+  {
+    "title": "Materialists",
+    "tmdb_id": 1136867,
+    "theatrical_date": "2025-06-13",
+    "digital_date": "2025-07-22",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home",
+        "Plex"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": []
+    }
+  },
+  {
+    "title": "Dangerous Animals",
+    "tmdb_id": 1285965,
+    "theatrical_date": "2025-06-06",
+    "digital_date": "2025-07-22",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home",
+        "Plex"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": []
+    }
+  },
+  {
+    "title": "40 Acres",
+    "tmdb_id": 1319951,
+    "theatrical_date": "2025-07-02",
+    "digital_date": "2025-07-22",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home",
+        "Spectrum On Demand",
+        "Plex"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": []
+    }
+  },
+  {
+    "title": "Sunday Best: The Untold Story of Ed Sullivan",
+    "tmdb_id": 1516539,
+    "theatrical_date": null,
+    "digital_date": "2025-07-21",
+    "status": "resolved",
+    "added_to_db": "2025-08-18",
+    "last_checked": "2025-08-18",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Netflix",
+        "Netflix Standard with Ads"
+      ]
+    }
+  },
+  {
+    "title": "Guns Up",
+    "tmdb_id": 1181540,
+    "theatrical_date": null,
+    "digital_date": "2025-07-18",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home",
+        "Plex"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": []
+    }
+  },
+  {
+    "title": "Almost Family",
+    "tmdb_id": 1429834,
+    "theatrical_date": null,
+    "digital_date": "2025-07-18",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Netflix",
+        "Netflix Standard with Ads"
+      ]
+    }
+  },
+  {
+    "title": "Wall to Wall",
+    "tmdb_id": 1269208,
+    "theatrical_date": null,
+    "digital_date": "2025-07-18",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Netflix",
+        "Netflix Standard with Ads"
+      ]
+    }
+  },
+  {
+    "title": "Follow",
+    "tmdb_id": 1236197,
+    "theatrical_date": null,
+    "digital_date": "2025-07-18",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Amazon Prime Video",
+        "Amazon Prime Video with Ads"
+      ]
+    }
+  },
+  {
+    "title": "I'm Still a Superstar",
+    "tmdb_id": 1508562,
+    "theatrical_date": null,
+    "digital_date": "2025-07-18",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Netflix",
+        "Netflix Standard with Ads"
+      ]
+    }
+  },
+  {
+    "title": "Saint Clare",
+    "tmdb_id": 1026222,
+    "theatrical_date": null,
+    "digital_date": "2025-07-18",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home",
+        "Plex"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": []
+    }
+  },
+  {
+    "title": "Vir Das: Fool Volume",
+    "tmdb_id": 1495110,
+    "theatrical_date": null,
+    "digital_date": "2025-07-18",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Netflix",
+        "Netflix Standard with Ads"
+      ]
+    }
+  },
+  {
+    "title": "How to Train Your Dragon",
+    "tmdb_id": 1087192,
+    "theatrical_date": "2025-06-13",
+    "digital_date": "2025-07-15",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": []
+    }
+  },
+  {
+    "title": "M3GAN 2.0",
+    "tmdb_id": 1071585,
+    "theatrical_date": "2025-06-27",
+    "digital_date": "2025-07-15",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home",
+        "Spectrum On Demand"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": []
+    }
+  },
+  {
+    "title": "Trainwreck: Balloon Boy",
+    "tmdb_id": 1477566,
+    "theatrical_date": null,
+    "digital_date": "2025-07-15",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Netflix",
+        "Netflix Standard with Ads"
+      ]
+    }
+  },
+  {
+    "title": "Apocalypse in the Tropics",
+    "tmdb_id": 1320400,
+    "theatrical_date": null,
+    "digital_date": "2025-07-14",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Netflix",
+        "Netflix Standard with Ads"
+      ]
+    }
+  },
+  {
+    "title": "Kaiju No. 8: Mission Recon",
+    "tmdb_id": 1326106,
+    "theatrical_date": "2025-04-13",
+    "digital_date": "2025-07-13",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Crunchyroll",
+        "Crunchyroll Amazon Channel"
+      ]
+    }
+  },
+  {
+    "title": "Almost Cops",
+    "tmdb_id": 1374534,
+    "theatrical_date": null,
+    "digital_date": "2025-07-11",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Netflix",
+        "Netflix Standard with Ads"
+      ]
+    }
+  },
+  {
+    "title": "Z-O-M-B-I-E-S 4: Dawn of the Vampires",
+    "tmdb_id": 1243341,
+    "theatrical_date": null,
+    "digital_date": "2025-07-11",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [],
+      "buy": [
+        "Amazon Video",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": [
+        "Disney Plus",
+        "fuboTV"
+      ]
+    }
+  },
+  {
+    "title": "Aap Jaisa Koi",
+    "tmdb_id": 1391013,
+    "theatrical_date": null,
+    "digital_date": "2025-07-11",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Netflix",
+        "Netflix Standard with Ads"
+      ]
+    }
+  },
+  {
+    "title": "Madea's Destination Wedding",
+    "tmdb_id": 1246310,
+    "theatrical_date": null,
+    "digital_date": "2025-07-11",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Netflix",
+        "Netflix Standard with Ads"
+      ]
+    }
+  },
+  {
+    "title": "It's Worth It by Dani Rovira",
+    "tmdb_id": 1506130,
+    "theatrical_date": null,
+    "digital_date": "2025-07-11",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Netflix",
+        "Netflix Standard with Ads"
+      ]
+    }
+  },
+  {
+    "title": "Jaws @ 50: The Definitive Inside Story",
+    "tmdb_id": 1308619,
+    "theatrical_date": null,
+    "digital_date": "2025-07-11",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Disney Plus",
+        "Hulu",
+        "fuboTV"
+      ]
+    }
+  },
+  {
+    "title": "Sovereign",
+    "tmdb_id": 1130022,
+    "theatrical_date": null,
+    "digital_date": "2025-07-11",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home",
+        "Spectrum On Demand"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": []
+    }
+  },
+  {
+    "title": "Brick",
+    "tmdb_id": 1425045,
+    "theatrical_date": null,
+    "digital_date": "2025-07-10",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Netflix",
+        "Netflix Standard with Ads"
+      ]
+    }
+  },
+  {
+    "title": "Ziam",
+    "tmdb_id": 1429744,
+    "theatrical_date": null,
+    "digital_date": "2025-07-09",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Netflix",
+        "Netflix Standard with Ads"
+      ]
+    }
+  },
+  {
+    "title": "Karate Kid: Legends",
+    "tmdb_id": 1011477,
+    "theatrical_date": "2025-05-30",
+    "digital_date": "2025-07-08",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": []
+    }
+  },
+  {
+    "title": "The Phoenician Scheme",
+    "tmdb_id": 1137350,
+    "theatrical_date": "2025-06-06",
+    "digital_date": "2025-07-08",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": [
+        "Peacock Premium",
+        "Peacock Premium Plus"
+      ]
+    }
+  },
+  {
+    "title": "The Unholy Trinity",
+    "tmdb_id": 1195518,
+    "theatrical_date": null,
+    "digital_date": "2025-07-08",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home",
+        "Plex"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": []
+    }
+  },
+  {
+    "title": "Pretty Thing",
+    "tmdb_id": 1223690,
+    "theatrical_date": null,
+    "digital_date": "2025-07-04",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": []
+    }
+  },
+  {
+    "title": "Long Distance",
+    "tmdb_id": 605722,
+    "theatrical_date": null,
+    "digital_date": "2025-07-03",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Hulu"
+      ]
+    }
+  },
+  {
+    "title": "Heads of State",
+    "tmdb_id": 749170,
+    "theatrical_date": null,
+    "digital_date": "2025-07-02",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Amazon Prime Video",
+        "Amazon Prime Video with Ads"
+      ]
+    }
+  },
+  {
+    "title": "The Old Guard 2",
+    "tmdb_id": 846422,
+    "theatrical_date": null,
+    "digital_date": "2025-07-02",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Netflix",
+        "Netflix Standard with Ads"
+      ]
+    }
+  },
+  {
+    "title": "Dora and the Search for Sol Dorado",
+    "tmdb_id": 1287536,
+    "theatrical_date": null,
+    "digital_date": "2025-07-02",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home",
+        "FlixFling",
+        "Plex"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": [
+        "Paramount Plus",
+        "Paramount+ Amazon Channel",
+        "Paramount+ Roku Premium Channel"
+      ]
+    }
+  },
+  {
+    "title": "Ballerina",
+    "tmdb_id": 541671,
+    "theatrical_date": "2025-06-06",
+    "digital_date": "2025-07-01",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home",
+        "Plex"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": []
+    }
+  },
+  {
+    "title": "Ice Road: Vengeance",
+    "tmdb_id": 1119878,
+    "theatrical_date": null,
+    "digital_date": "2025-07-01",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home",
+        "Plex"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": []
+    }
+  },
+  {
+    "title": "Thunderbolts*",
+    "tmdb_id": 986056,
+    "theatrical_date": "2025-05-02",
+    "digital_date": "2025-07-01",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": []
+    }
+  },
+  {
+    "title": "Bring Her Back",
+    "tmdb_id": 1151031,
+    "theatrical_date": "2025-05-30",
+    "digital_date": "2025-07-01",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home",
+        "FlixFling",
+        "Plex"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": []
+    }
+  },
+  {
+    "title": "Vera and the Pleasure of Others",
+    "tmdb_id": 1086548,
+    "theatrical_date": null,
+    "digital_date": "2025-07-01",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": []
+    }
+  },
+  {
+    "title": "Jurassic World Rebirth: The Making of a New Era",
+    "tmdb_id": 1505898,
+    "theatrical_date": null,
+    "digital_date": "2025-06-28",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Peacock Premium",
+        "Peacock Premium Plus"
+      ]
+    }
+  },
+  {
+    "title": "Fight or Flight",
+    "tmdb_id": 1212855,
+    "theatrical_date": "2025-05-09",
+    "digital_date": "2025-06-27",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": []
+    }
+  },
+  {
+    "title": "In Vitro",
+    "tmdb_id": 1103731,
+    "theatrical_date": null,
+    "digital_date": "2025-06-27",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home",
+        "Plex"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": []
+    }
+  },
+  {
+    "title": "Squid Game in Conversation",
+    "tmdb_id": 1504735,
+    "theatrical_date": null,
+    "digital_date": "2025-06-27",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Netflix",
+        "Netflix Standard with Ads"
+      ]
+    }
+  },
+  {
+    "title": "given the Movie: To the Sea",
+    "tmdb_id": 1317276,
+    "theatrical_date": null,
+    "digital_date": "2025-06-26",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Crunchyroll Amazon Channel"
+      ]
+    }
+  },
+  {
+    "title": "Night Shift",
+    "tmdb_id": 1208808,
+    "theatrical_date": null,
+    "digital_date": "2025-06-24",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "Fandango At Home"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "Fandango At Home"
+      ],
+      "stream": []
     }
   }
 ]
