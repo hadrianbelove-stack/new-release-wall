@@ -128,25 +128,42 @@ class MovieTracker:
             print(f"Error getting release info for {movie_id}: {e}")
             return None
     
-    def get_omdb_rt_score(self, title, year):
-        """Get Rotten Tomatoes score from OMDb API"""
-        if not self.omdb_api_key:
-            return None
-            
+    def get_rt_score_direct(self, title, year):
+        """Get RT score by searching RT directly via web fetch"""
         try:
-            params = {'apikey': self.omdb_api_key, 't': title}
-            if year:
-                params['y'] = str(year)
-                
-            response = requests.get('http://www.omdbapi.com/', params=params)
-            data = response.json()
+            import urllib.parse
+            # Create search URL for RT
+            search_query = f"{title} {year}" if year else title
+            search_url = f"https://www.rottentomatoes.com/search?search={urllib.parse.quote(search_query)}"
             
-            if data.get('Response') == 'True':
-                for rating in data.get('Ratings', []):
-                    if rating['Source'] == 'Rotten Tomatoes':
-                        return int(rating['Value'].rstrip('%'))
+            # Use WebFetch to get RT scores
+            # This is a placeholder - would need WebFetch tool access
+            return None
         except Exception as e:
-            print(f"Error getting RT score for {title}: {e}")
+            print(f"Error getting direct RT score for {title}: {e}")
+        return None
+
+    def get_omdb_rt_score(self, title, year):
+        """Get Rotten Tomatoes score from OMDb API with direct RT fallback"""
+        # First try OMDb API
+        if self.omdb_api_key:
+            try:
+                params = {'apikey': self.omdb_api_key, 't': title}
+                if year:
+                    params['y'] = str(year)
+                    
+                response = requests.get('http://www.omdbapi.com/', params=params)
+                data = response.json()
+                
+                if data.get('Response') == 'True':
+                    for rating in data.get('Ratings', []):
+                        if rating['Source'] == 'Rotten Tomatoes':
+                            return int(rating['Value'].rstrip('%'))
+            except Exception as e:
+                print(f"Error getting OMDb RT score for {title}: {e}")
+        
+        # If OMDb fails, try direct RT lookup (future enhancement)
+        # return self.get_rt_score_direct(title, year)
         return None
     
     def bootstrap_database(self, days_back=730):

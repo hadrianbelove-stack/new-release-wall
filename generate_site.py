@@ -162,10 +162,13 @@ def get_tmdb_movie_details(tmdb_id):
             if production_companies:
                 result['studio'] = production_companies[0].get('name', 'Studio N/A')
             
-            # Try to create RT URL using IMDB ID
-            imdb_id = movie_data.get('imdb_id')
-            if imdb_id:
-                result['rt_url'] = f"https://www.rottentomatoes.com/m/{imdb_id}"
+            # Create RT search URL using movie title and year
+            title = result.get('title', '')
+            year = result.get('year', '')
+            if title:
+                import urllib.parse
+                search_query = f"{title} {year}" if year else title
+                result['rt_url'] = f"https://www.rottentomatoes.com/search?search={urllib.parse.quote(search_query)}"
         
         if credits_response.status_code == 200:
             credits_data = credits_response.json()
@@ -265,15 +268,37 @@ def render_site_enhanced(items, site_title, window_label, region, store_names):
 def generate_site():
     """Generate the VHS-style website"""
     
-    # Load movie data
-    with open('output/data.json', 'r') as f:
-        movies = json.load(f)
+    # Load movie data from current releases (recent movies only)
+    try:
+        with open('current_releases.json', 'r') as f:
+            movies = json.load(f)
+    except FileNotFoundError:
+        # Fallback to output/data.json if current_releases.json doesn't exist
+        with open('output/data.json', 'r') as f:
+            movies = json.load(f)
     
-    print(f"Loaded {len(movies)} movies")
+    # Load RT scores from main tracking database
+    rt_scores = {}
+    try:
+        with open('movie_tracking.json', 'r') as f:
+            tracking_db = json.load(f)
+            for movie_id, movie_data in tracking_db.get('movies', {}).items():
+                if movie_data.get('rt_score'):
+                    rt_scores[movie_id] = movie_data['rt_score']
+    except:
+        pass
+    
+    print(f"Loaded {len(movies)} movies with {len(rt_scores)} RT scores")
     
     # Transform tracking data for new template
     items = []
-    for movie in movies:
+    # Handle both list and dictionary formats
+    if isinstance(movies, dict):
+        movie_list = list(movies.values())
+    else:
+        movie_list = movies
+    
+    for movie in movie_list:
         # Extract year from digital_date if available
         year = '2025'
         if movie.get('digital_date'):
@@ -310,7 +335,10 @@ def generate_site():
         
         # Try to get RT score from multiple sources
         rt_score = None
-        if movie.get('rt_score'):
+        movie_id = str(movie.get('tmdb_id', ''))
+        if movie_id in rt_scores:
+            rt_score = rt_scores[movie_id]
+        elif movie.get('rt_score'):
             rt_score = movie['rt_score']
         elif movie.get('review_data') and isinstance(movie['review_data'], dict):
             rt_score = movie['review_data'].get('rt_score')

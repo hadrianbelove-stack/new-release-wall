@@ -173,6 +173,16 @@
             font-size: 0.7rem;
         }
         
+        .back-credits {
+            font-size: 0.65rem;
+            line-height: 1.3;
+            margin-bottom: 0.5rem;
+            padding: 0.3rem 0;
+            border-top: 1px solid #333;
+            border-bottom: 1px solid #333;
+            color: #ddd;
+        }
+        
         .back-buttons {
             display: flex;
             gap: 0.3rem;
@@ -209,6 +219,51 @@
         .btn-wiki {
             background: rgba(50, 50, 50, 0.3);
             border-color: rgba(100, 100, 100, 0.5);
+        }
+        
+        /* Streaming Information Styles */
+        .streaming-info {
+            margin-bottom: 0.5rem;
+            padding: 0.3rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            font-size: 0.6rem;
+        }
+        
+        .streaming-title {
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.3rem;
+            text-align: center;
+        }
+        
+        .streaming-section {
+            margin-bottom: 0.2rem;
+        }
+        
+        .streaming-label {
+            font-weight: 500;
+            color: #ccc;
+            margin-bottom: 0.1rem;
+        }
+        
+        .streaming-option {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.05rem;
+            padding: 0.1rem 0;
+        }
+        
+        .platform {
+            color: #fff;
+            font-size: 0.55rem;
+        }
+        
+        .price {
+            color: #4CAF50;
+            font-size: 0.55rem;
+            font-weight: 500;
         }
         
         /* Lighter metadata for readability */
@@ -248,17 +303,61 @@
                     </div>
                 </div>
                 <div class="card-face card-back" onclick="window.open('{{ movie.watch_link or '#' }}', '_blank')">
-                    <div class="back-synopsis">
-                        {{ movie.synopsis or 'No synopsis available. This film was recently released to digital platforms and is now available for streaming or rental.' }}
-                        <br><br>
+                    <div class="back-credits">
                         <strong>Dir:</strong> {{ movie.director or 'Director N/A' }}<br>
                         <strong>Cast:</strong> {{ movie.cast[:3] | join(', ') if movie.cast else 'Cast N/A' }}
+                    </div>
+                    <div class="back-synopsis">
+                        {{ movie.synopsis or 'No synopsis available. This film was recently released to digital platforms and is now available for streaming or rental.' }}
                     </div>
                     <div class="back-buttons">
                         <a href="{{ movie.trailer_url or '#' }}" class="mini-btn btn-trailer" onclick="event.stopPropagation()" target="_blank">Trailer</a>
                         <a href="{{ movie.rt_url or 'https://www.rottentomatoes.com/search?search=' + movie.title }}" class="mini-btn btn-rt" onclick="event.stopPropagation()" target="_blank">RT {{ movie.rt_score or 'N/A' }}%</a>
                         <a href="https://en.wikipedia.org/wiki/{{ movie.title.replace(' ', '_') }}{% if movie.title in ['Stans', 'Red Sonja', 'The Home', 'Superman', 'Site', 'Fixed', 'Dream', 'Elio', 'Shaman', 'Hierarchy', 'Smurfs', 'Eddington', 'Birthrite'] %}_({{ movie.year }}_film){% endif %}" class="mini-btn btn-wiki" onclick="event.stopPropagation()" target="_blank">Wiki</a>
                     </div>
+                    
+                    <!-- Streaming Information -->
+                    {% if movie.streaming_info %}
+                    <div class="streaming-info">
+                        <div class="streaming-title">Watch Now:</div>
+                        
+                        {% if movie.streaming_info.streaming %}
+                        <div class="streaming-section">
+                            <div class="streaming-label">Streaming:</div>
+                            {% for option in movie.streaming_info.streaming %}
+                            <div class="streaming-option">
+                                <span class="platform">{{ option.platform }}</span>
+                                <span class="price">{{ option.price }}</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        
+                        {% if movie.streaming_info.rental %}
+                        <div class="streaming-section">
+                            <div class="streaming-label">Rent:</div>
+                            {% for option in movie.streaming_info.rental %}
+                            <div class="streaming-option">
+                                <span class="platform">{{ option.platform }}</span>
+                                <span class="price">{{ option.price }}</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        
+                        {% if movie.streaming_info.purchase %}
+                        <div class="streaming-section">
+                            <div class="streaming-label">Buy:</div>
+                            {% for option in movie.streaming_info.purchase %}
+                            <div class="streaming-option">
+                                <span class="platform">{{ option.platform }}</span>
+                                <span class="price">{{ option.price }}</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
                     <div class="back-meta">
                         {{ movie.runtime or '?' }} min • {{ movie.studio or 'Studio' }} • {{ movie.year or '2025' }}
                     </div>
