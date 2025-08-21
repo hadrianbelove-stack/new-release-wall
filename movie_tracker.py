@@ -282,6 +282,41 @@ class MovieTracker:
         print(f"  Movies that went digital: {newly_digital}")
         print(f"  Still tracking: {self.db['stats']['still_tracking']}")
     
+    def backfill_rt_scores(self):
+        """Add RT scores to existing movies that don't have them"""
+        movies_without_rt = {k: v for k, v in self.db['movies'].items() 
+                           if not v.get('rt_score')}
+        
+        if not movies_without_rt:
+            print("✅ All movies already have RT scores")
+            return 0
+        
+        print(f"🍅 Backfilling RT scores for {len(movies_without_rt)} movies...")
+        
+        updated_count = 0
+        for movie_id, movie_data in movies_without_rt.items():
+            # Get year from theatrical or digital date
+            year = None
+            if movie_data.get('theatrical_date'):
+                year = movie_data['theatrical_date'][:4]
+            elif movie_data.get('digital_date'):
+                year = movie_data['digital_date'][:4]
+            
+            rt_score = self.get_omdb_rt_score(movie_data['title'], year)
+            if rt_score:
+                movie_data['rt_score'] = rt_score
+                updated_count += 1
+                print(f"  ✅ {movie_data['title']}: {rt_score}%")
+            else:
+                movie_data['rt_score'] = None
+                print(f"  ❌ {movie_data['title']}: No RT score found")
+            
+            time.sleep(0.2)  # Rate limiting for OMDb API
+        
+        print(f"✅ Updated {updated_count} movies with RT scores")
+        self.save_database()
+        return updated_count
+
     def show_status(self):
         """Show current database status"""
         stats = self.db['stats']
@@ -305,7 +340,8 @@ class MovieTracker:
         if recent_digital:
             print(f"\nRecently went digital (sample):")
             for movie_id, movie in list(recent_digital.items())[:5]:
-                print(f"  • {movie['title']} - Digital: {movie.get('digital_date')}")
+                rt_text = f" (RT: {movie.get('rt_score')}%)" if movie.get('rt_score') else ""
+                print(f"  • {movie['title']} - Digital: {movie.get('digital_date')}{rt_text}")
 
 def main():
     tracker = MovieTracker()
@@ -321,8 +357,10 @@ def main():
             tracker.daily_update()
         elif command == 'status':
             tracker.show_status()
+        elif command == 'backfill-rt':
+            tracker.backfill_rt_scores()
         else:
-            print("Usage: python movie_tracker.py [bootstrap|daily|status]")
+            print("Usage: python movie_tracker.py [bootstrap|daily|status|backfill-rt]")
     else:
         tracker.show_status()
 
