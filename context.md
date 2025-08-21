@@ -245,8 +245,72 @@ ls -la movie_tracking.json
 - **JavaScript:** Minimal dependencies
 - **Responsive:** Mobile-friendly design
 
+## Enhanced Movie Tracking System
+
+### Implementation (August 21, 2025)
+- **Created `movie_tracker_enhanced.py`** - Comprehensive tracking system
+- **Tracks ALL release types**: Types 1 (Premiere), 2 (Limited), 3 (Theatrical), 4 (Digital)
+- **Provider-based detection**: Uses JustWatch data to detect when movies actually go digital
+- **Missing film recovery**: Successfully added "Ebony & Ivory", "Harvest", "Familiar Touch"
+
+### Key Features
+1. **Multiple discovery methods** during bootstrap:
+   - Primary release dates (theatrical)
+   - All release dates (premieres, festivals)
+   - Popularity scanning (trending indies)
+
+2. **Provider comparison logic**:
+   - Detects when providers appear = "NEW to digital"
+   - More reliable than TMDB Type 4 dates for indie films
+   - Tracks provider count changes over time
+
+3. **Manual film addition**:
+   ```bash
+   python3 movie_tracker_enhanced.py add "Movie Title" 2024
+   ```
+
+4. **Enhanced daily updates**:
+   - Check TMDB digital dates
+   - Check provider availability changes
+   - Dual detection for maximum accuracy
+
+### Results
+- **"Ebony & Ivory"**: Found with 10 providers (missed by original tracker)
+- **"Harvest"**: Type 1 premiere, tracking for providers
+- **"Familiar Touch"**: Found as resolved, 98% RT score
+
+### Enhanced Database Structure
+```json
+{
+  "movies": {
+    "movie_id": {
+      "title": "...",
+      "premiere_date": "2024-01-01",    // Type 1
+      "limited_date": "2024-02-01",     // Type 2  
+      "theatrical_date": "2024-03-01",  // Type 3
+      "digital_date": "2024-06-01",     // Type 4
+      "earliest_release": "2024-01-01", // Earliest of any type
+      "provider_count": 10,
+      "has_providers": true,
+      "detected_via_providers": false,  // Found via provider scanning
+      "status": "resolved|tracking"
+    }
+  }
+}
+```
+
+## Git Management
+
+### Push Policy
+**"Please push to GitHub after any significant code changes or every hour, whichever comes first"**
+
+This ensures:
+- Regular backups of work
+- Synchronization between Claude instances
+- No loss of significant changes
+
 ---
 
-**Last Updated:** August 20, 2025
-**Current Status:** 95 movies displaying, 1,132 in database, bootstrap process ongoing
-**Next Steps:** Monitor bootstrap completion, consider admin interface implementation
+**Last Updated:** August 21, 2025
+**Current Status:** Enhanced tracking system implemented, bootstrap in progress
+**Next Steps:** Complete enhanced bootstrap, integrate with site generation
