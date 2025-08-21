@@ -18,6 +18,60 @@ def month_name_filter(month_str):
     except:
         return 'Unknown'
 
+def create_justwatch_url(title):
+    """Create direct JustWatch URL from movie title with fallback to search"""
+    if not title:
+        return "https://www.justwatch.com/us"
+    
+    # Special cases for known movie URL patterns
+    special_cases = {
+        'Deadpool & Wolverine': 'deadpool-3',
+        'Deadpool 3': 'deadpool-3',
+        'Inside Out 2': 'inside-out-2',
+        'A Quiet Place: Day One': 'a-quiet-place-day-one',
+        'Beetlejuice Beetlejuice': 'beetlejuice-2',
+    }
+    
+    if title in special_cases:
+        return f"https://www.justwatch.com/us/movie/{special_cases[title]}"
+    
+    # Convert title to JustWatch URL slug
+    slug = title.lower()
+    
+    # Remove common articles from beginning only
+    articles = ['the ', 'a ', 'an ']
+    for article in articles:
+        if slug.startswith(article):
+            slug = slug[len(article):]
+    
+    # Replace special characters and spaces
+    slug = slug.replace('&', 'and')
+    slug = slug.replace("'", '')
+    slug = slug.replace('"', '')
+    slug = slug.replace(':', '')
+    slug = slug.replace('.', '')
+    slug = slug.replace(',', '')
+    slug = slug.replace('!', '')
+    slug = slug.replace('?', '')
+    slug = slug.replace('(', '')
+    slug = slug.replace(')', '')
+    slug = slug.replace('[', '')
+    slug = slug.replace(']', '')
+    slug = slug.replace('/', '')
+    slug = slug.replace('\\', '')
+    slug = slug.replace('#', '')
+    
+    # Replace spaces and multiple dashes with single dash
+    slug = '-'.join(slug.split())
+    slug = '-'.join(filter(None, slug.split('-')))  # Remove empty parts
+    
+    # If slug is too short or empty, fallback to search
+    if len(slug) < 2:
+        title_encoded = title.replace(' ', '+').replace('&', '%26')
+        return f"https://www.justwatch.com/us/search?q={title_encoded}"
+    
+    return f"https://www.justwatch.com/us/movie/{slug}"
+
 def get_tmdb_api_key():
     """Get TMDB API key from config"""
     try:
@@ -215,21 +269,14 @@ def generate_site():
             # Fallback to search if no direct trailer found
             trailer_url = f"https://www.youtube.com/results?search_query={movie.get('title', '')}+{year}+trailer"
         
-        # Create watch link from providers
-        watch_link = '#'
+        # Create direct JustWatch link
+        watch_link = create_justwatch_url(movie.get('title', ''))
+        
+        # Only show watch link if there are actual providers
         providers = movie.get('providers', {})
-        if providers.get('rent'):
-            platform = providers['rent'][0]
-            title_encoded = movie.get('title', '').replace(' ', '+')
-            watch_link = f"https://www.justwatch.com/us/search?q={title_encoded}"
-        elif providers.get('buy'):
-            platform = providers['buy'][0]
-            title_encoded = movie.get('title', '').replace(' ', '+')
-            watch_link = f"https://www.justwatch.com/us/search?q={title_encoded}"
-        elif providers.get('stream'):
-            platform = providers['stream'][0]
-            title_encoded = movie.get('title', '').replace(' ', '+')
-            watch_link = f"https://www.justwatch.com/us/search?q={title_encoded}"
+        has_providers = bool(providers.get('rent') or providers.get('buy') or providers.get('stream'))
+        if not has_providers:
+            watch_link = '#'
         
         # Combine all providers for display
         all_providers = []
