@@ -457,8 +457,8 @@ def main():
     
     scraper = ProperTMDBScraper()
     
-    # Fetch movies with proper type checking
-    movies = scraper.fetch_recent_movies(days=45, max_pages=5)
+    # Fetch movies with proper type checking - increased page limit for more data
+    movies = scraper.fetch_recent_movies(days=45, max_pages=15)
     
     # Save output
     output_file = scraper.save_output(movies)

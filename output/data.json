@@ -1,1557 +1,599 @@
 [
   {
-    "title": "Superman",
-    "year": "2025",
-    "release_date": "2025-07-11",
-    "poster": "https://image.tmdb.org/t/p/w500/ombsmhYUqR4qqOLOxAyr5V8hbyv.jpg",
-    "tmdb_id": 1061474,
-    "tmdb_vote": 7.582,
-    "rt_score": null,
-    "providers": [
-      "Amazon Video",
-      "Fandango At Home",
-      "Google Play Movies",
-      "Plex",
-      "Apple TV",
-      "YouTube"
-    ],
-    "overview": "Superman, a journalist in Metropolis, embarks on a journey to reconcile his Kryptonian heritage with his human upbringing as Clark Kent.",
-    "inclusion_reason": "Digital release: 2025-08-15 \u2022 Rentable on 5 platforms \u2022 High popularity",
-    "has_digital": true,
-    "digital_date": "2025-08-15T00:00:00.000Z",
-    "theatrical_date": "2025-07-11T00:00:00.000Z",
-    "justwatch_url": "https://www.themoviedb.org/movie/1061474-superman/watch?locale=US",
-    "director": "James Gunn",
-    "cast": "David Corenswet, Rachel Brosnahan, Nicholas Hoult",
-    "runtime": 130,
-    "studio": "DC Studios",
-    "rating": "PG-13",
-    "tmdb_url": "https://www.themoviedb.org/movie/1061474",
-    "rt_url": "https://www.rottentomatoes.com/search?search=Superman",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/Superman_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
+    "title": "F1",
+    "tmdb_id": 911430,
+    "theatrical_date": "2025-06-27",
+    "digital_date": "2025-08-22",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [
+        "Amazon Video"
+      ],
+      "buy": [],
+      "stream": []
     }
   },
   {
-    "title": "Osiris",
-    "year": "2025",
-    "release_date": "2025-07-25",
-    "poster": "https://image.tmdb.org/t/p/w500/3YtZHtXPNG5AleisgEatEfZOT2w.jpg",
-    "tmdb_id": 1241470,
-    "tmdb_vote": 6.593,
-    "rt_score": null,
-    "providers": [
-      "Amazon Video",
-      "Fandango At Home",
-      "Google Play Movies",
-      "Plex",
-      "Spectrum On Demand",
-      "Apple TV",
-      "YouTube"
-    ],
-    "overview": "Special Forces commandos on a mission are abducted mid-operation by a mysterious spacecraft. Upon waking aboard, they find themselves prey to a relentless alien race in a fight for survival.",
-    "inclusion_reason": "Digital release: 2025-07-25 \u2022 Rentable on 7 platforms \u2022 High popularity",
-    "has_digital": true,
-    "digital_date": "2025-07-25T00:00:00.000Z",
-    "theatrical_date": "2025-07-25T00:00:00.000Z",
-    "justwatch_url": "https://www.themoviedb.org/movie/1241470-osiris/watch?locale=US",
-    "director": "William Kaufman",
-    "cast": "Max Martini, Brianna Hildebrand, LaMonica Garrett",
-    "runtime": 105,
-    "studio": "Roosevelt Film Lab",
-    "rating": "NR",
-    "tmdb_url": "https://www.themoviedb.org/movie/1241470",
-    "rt_url": "https://www.rottentomatoes.com/search?search=Osiris",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/Osiris_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
+    "title": "Mission: Impossible - The Final Reckoning",
+    "tmdb_id": 575265,
+    "theatrical_date": "2025-05-23",
+    "digital_date": "2025-08-19",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube"
+      ],
+      "stream": []
     }
   },
   {
-    "title": "The Bad Guys 2",
-    "year": "2025",
-    "release_date": "2025-08-01",
-    "poster": "https://image.tmdb.org/t/p/w500/26oSPnq0ct59l07QOXZKyzsiRtN.jpg",
-    "tmdb_id": 1175942,
-    "tmdb_vote": 7.564,
-    "rt_score": null,
-    "providers": [
-      "Amazon Video",
-      "Apple TV",
-      "YouTube",
-      "Google Play Movies"
-    ],
-    "overview": "The now-reformed Bad Guys are trying (very, very hard) to be good, but instead find themselves hijacked into a high-stakes, globe-trotting heist, masterminded by a new team of criminals they never saw coming: The Bad Girls.",
-    "inclusion_reason": "Digital release: 2025-08-19 \u2022 Rentable on 4 platforms \u2022 High popularity",
-    "has_digital": true,
-    "digital_date": "2025-08-19T00:00:00.000Z",
-    "theatrical_date": "2025-08-01T00:00:00.000Z",
-    "justwatch_url": "https://www.themoviedb.org/movie/1175942-the-bad-guys-2/watch?locale=US",
-    "director": "Pierre Perifel",
-    "cast": "Sam Rockwell, Marc Maron, Craig Robinson",
-    "runtime": 104,
-    "studio": "DreamWorks Animation",
-    "rating": "PG",
-    "tmdb_url": "https://www.themoviedb.org/movie/1175942",
-    "rt_url": "https://www.rottentomatoes.com/search?search=The%20Bad%20Guys%202",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/The_Bad_Guys_2_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
+    "title": "Elio",
+    "tmdb_id": 1022787,
+    "theatrical_date": "2025-06-20",
+    "digital_date": "2025-08-19",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV"
+      ],
+      "stream": []
     }
   },
   {
-    "title": "Night Carnage",
-    "year": "2025",
-    "release_date": "2025-07-29",
-    "poster": "https://image.tmdb.org/t/p/w500/w0wjPQKhlqisSbylf1sWZiNyc2h.jpg",
-    "tmdb_id": 986206,
-    "tmdb_vote": 5.925,
-    "rt_score": null,
-    "providers": [
-      "Amazon Video",
-      "Fandango At Home",
-      "Google Play Movies",
-      "Plex",
-      "FlixFling",
-      "Apple TV",
-      "YouTube"
-    ],
-    "overview": "A blogger who is also a werewolf meets a dashing playboy with a dark secret of his own. Starring Logan Andrews and Christian Howard.",
-    "inclusion_reason": "Digital release: 2025-07-29 \u2022 Rentable on 7 platforms \u2022 High popularity",
-    "has_digital": true,
-    "digital_date": "2025-07-29T00:00:00.000Z",
+    "title": "Whisper of the Witch",
+    "tmdb_id": 1100856,
     "theatrical_date": null,
-    "justwatch_url": "https://www.themoviedb.org/movie/986206-night-carnage/watch?locale=US",
-    "director": "Thomas J. Churchill",
-    "cast": "Sadie Katz, Christian Howard, Mike Ferguson",
-    "runtime": 80,
-    "studio": "Church Hill Productions",
-    "rating": "NR",
-    "tmdb_url": "https://www.themoviedb.org/movie/986206",
-    "rt_url": "https://www.rottentomatoes.com/search?search=Night%20Carnage",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/Night_Carnage_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
-    }
-  },
-  {
-    "title": "War of the Worlds",
-    "year": "2025",
-    "release_date": "2025-07-30",
-    "poster": "https://image.tmdb.org/t/p/w500/yvirUYrva23IudARHn3mMGVxWqM.jpg",
-    "tmdb_id": 755898,
-    "tmdb_vote": 4.198,
-    "rt_score": null,
-    "providers": [
-      "Amazon Prime Video",
-      "Amazon Prime Video with Ads"
-    ],
-    "overview": "Will Radford is a top analyst for Homeland Security who tracks potential threats through a mass surveillance program, until one day an attack by an unknown entity leads him to question whether the government is hiding something from him... and from the rest of the world.",
-    "inclusion_reason": "Digital release: 2025-07-30 \u2022 Streaming on 2 platforms \u2022 High popularity",
-    "has_digital": true,
-    "digital_date": "2025-07-30T00:00:00.000Z",
-    "theatrical_date": null,
-    "justwatch_url": "https://www.themoviedb.org/movie/755898-war-of-the-worlds/watch?locale=US",
-    "director": "Rich Lee",
-    "cast": "Ice Cube, Eva Longoria, Clark Gregg",
-    "runtime": 91,
-    "studio": "Universal Pictures",
-    "rating": "PG-13",
-    "tmdb_url": "https://www.themoviedb.org/movie/755898",
-    "rt_url": "https://www.rottentomatoes.com/search?search=War%20of%20the%20Worlds",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/War_of_the_Worlds_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
-    }
-  },
-  {
-    "title": "The Pickup",
-    "year": "2025",
-    "release_date": "2025-07-27",
-    "poster": "https://image.tmdb.org/t/p/w500/vFWvWhfAvij8UIngg2Vf6JV95Cr.jpg",
-    "tmdb_id": 1106289,
-    "tmdb_vote": 6.53,
-    "rt_score": null,
-    "providers": [
-      "Amazon Prime Video",
-      "Amazon Prime Video with Ads"
-    ],
-    "overview": "A routine cash pickup takes a wild turn when mismatched armored truck drivers Russell and Travis are ambushed by ruthless criminals led by savvy mastermind Zoe.",
-    "inclusion_reason": "Digital release: 2025-08-06 \u2022 Streaming on 2 platforms \u2022 High popularity",
-    "has_digital": true,
-    "digital_date": "2025-08-06T00:00:00.000Z",
-    "theatrical_date": null,
-    "justwatch_url": "https://www.themoviedb.org/movie/1106289-the-pickup/watch?locale=US",
-    "director": "Tim Story",
-    "cast": "Eddie Murphy, Pete Davidson, Keke Palmer",
-    "runtime": 94,
-    "studio": "The Story Company",
-    "rating": "R",
-    "tmdb_url": "https://www.themoviedb.org/movie/1106289",
-    "rt_url": "https://www.rottentomatoes.com/search?search=The%20Pickup",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/The_Pickup_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
-    }
-  },
-  {
-    "title": "My Oxford Year",
-    "year": "2025",
-    "release_date": "2025-08-01",
-    "poster": "https://image.tmdb.org/t/p/w500/jrhXbIOFingzdLjkccjg9vZnqIp.jpg",
-    "tmdb_id": 1307078,
-    "tmdb_vote": 7.2,
-    "rt_score": null,
-    "providers": [
-      "Netflix",
-      "Netflix Standard with Ads"
-    ],
-    "overview": "An ambitious American fulfilling her dream of studying at Oxford falls for a charming Brit hiding a secret that may upend her perfectly planned life.",
-    "inclusion_reason": "Digital release: 2025-08-01 \u2022 Streaming on 2 platforms \u2022 High popularity",
-    "has_digital": true,
-    "digital_date": "2025-08-01T00:00:00.000Z",
-    "theatrical_date": null,
-    "justwatch_url": "https://www.themoviedb.org/movie/1307078-my-oxford-year/watch?locale=US",
-    "director": "Iain Morris",
-    "cast": "Sofia Carson, Corey Mylchreest, Esm\u00e9 Kingdom",
-    "runtime": 113,
-    "studio": "Temple Hill Entertainment",
-    "rating": "PG-13",
-    "tmdb_url": "https://www.themoviedb.org/movie/1307078",
-    "rt_url": "https://www.rottentomatoes.com/search?search=My%20Oxford%20Year",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/My_Oxford_Year_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
-    }
-  },
-  {
-    "title": "Eddington",
-    "year": "2025",
-    "release_date": "2025-07-18",
-    "poster": "https://image.tmdb.org/t/p/w500/kg7lrTWGKyzLnj0E7BXl52nro1N.jpg",
-    "tmdb_id": 648878,
-    "tmdb_vote": 6.524,
-    "rt_score": null,
-    "providers": [
-      "Amazon Video",
-      "Fandango At Home",
-      "Google Play Movies",
-      "Plex",
-      "Spectrum On Demand",
-      "Apple TV",
-      "YouTube"
-    ],
-    "overview": "In May of 2020, a standoff between a small-town sheriff and mayor sparks a powder keg as neighbor is pitted against neighbor in Eddington, New Mexico.",
-    "inclusion_reason": "Digital release: 2025-08-12 \u2022 Rentable on 7 platforms",
-    "has_digital": true,
-    "digital_date": "2025-08-12T00:00:00.000Z",
-    "theatrical_date": "2025-07-18T00:00:00.000Z",
-    "justwatch_url": "https://www.themoviedb.org/movie/648878-eddington/watch?locale=US",
-    "director": "Ari Aster",
-    "cast": "Joaquin Phoenix, Pedro Pascal, Luke Grimes",
-    "runtime": 149,
-    "studio": "A24",
-    "rating": "R",
-    "tmdb_url": "https://www.themoviedb.org/movie/648878",
-    "rt_url": "https://www.rottentomatoes.com/search?search=Eddington",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/Eddington_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
-    }
-  },
-  {
-    "title": "Night Always Comes",
-    "year": "2025",
-    "release_date": "2025-08-15",
-    "poster": "https://image.tmdb.org/t/p/w500/1jDo1nG7rtjaaQGpr6e73x9i9Xp.jpg",
-    "tmdb_id": 1254624,
-    "tmdb_vote": 6.207,
-    "rt_score": null,
-    "providers": [
-      "Netflix",
-      "Netflix Standard with Ads"
-    ],
-    "overview": "Facing eviction in a city her family can no longer afford, a woman plunges into a desperate and increasingly dangerous all-night search to raise $25,000.",
-    "inclusion_reason": "Digital release: 2025-08-15 \u2022 Streaming on 2 platforms \u2022 High popularity",
-    "has_digital": true,
-    "digital_date": "2025-08-15T00:00:00.000Z",
-    "theatrical_date": "2025-08-15T00:00:00.000Z",
-    "justwatch_url": "https://www.themoviedb.org/movie/1254624-night-always-comes/watch?locale=US",
-    "director": "Benjamin Caron",
-    "cast": "Vanessa Kirby, Jennifer Jason Leigh, Zack Gottsagen",
-    "runtime": 108,
-    "studio": "Aluna Entertainment",
-    "rating": "R",
-    "tmdb_url": "https://www.themoviedb.org/movie/1254624",
-    "rt_url": "https://www.rottentomatoes.com/search?search=Night%20Always%20Comes",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/Night_Always_Comes_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
-    }
-  },
-  {
-    "title": "Shaman",
-    "year": "2025",
-    "release_date": "2025-08-08",
-    "poster": "https://image.tmdb.org/t/p/w500/ltLqm9f9Ma3iCFmfXNHenzPEqda.jpg",
-    "tmdb_id": 1339166,
-    "tmdb_vote": 6.0,
-    "rt_score": null,
-    "providers": [
-      "Amazon Video",
-      "Fandango At Home",
-      "Google Play Movies",
-      "Plex",
-      "Apple TV",
-      "YouTube"
-    ],
-    "overview": "A Missionary converting an Indigenous Community in a remote Ecuadorian volcano must come to terms with her own Faith when her son is possessed by dark forces older than her own religion.",
-    "inclusion_reason": "Digital release: 2025-08-08 \u2022 Rentable on 6 platforms \u2022 High popularity",
-    "has_digital": true,
-    "digital_date": "2025-08-08T00:00:00.000Z",
-    "theatrical_date": "2025-08-08T00:00:00.000Z",
-    "justwatch_url": "https://www.themoviedb.org/movie/1339166-shaman/watch?locale=US",
-    "director": "Antonio Negret",
-    "cast": "Sara Canning, Daniel Gillies, Jett Klyne",
-    "runtime": 93,
-    "studio": "Night Tree",
-    "rating": "R",
-    "tmdb_url": "https://www.themoviedb.org/movie/1339166",
-    "rt_url": "https://www.rottentomatoes.com/search?search=Shaman",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/Shaman_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
-    }
-  },
-  {
-    "title": "Happy Gilmore 2",
-    "year": "2025",
-    "release_date": "2025-07-25",
-    "poster": "https://image.tmdb.org/t/p/w500/ynT06XivgBDkg7AtbDbX1dJeBGY.jpg",
-    "tmdb_id": 1263256,
-    "tmdb_vote": 6.744,
-    "rt_score": null,
-    "providers": [
-      "Netflix",
-      "Netflix Standard with Ads"
-    ],
-    "overview": "Happy Gilmore isn't done with golf \u2014 not by a long shot. Since his retirement after his first Tour Championship win, Gilmore returns to finance his daughter's ballet classes.",
-    "inclusion_reason": "Digital release: 2025-07-25 \u2022 Streaming on 2 platforms",
-    "has_digital": true,
-    "digital_date": "2025-07-25T00:00:00.000Z",
-    "theatrical_date": "2025-07-25T00:00:00.000Z",
-    "justwatch_url": "https://www.themoviedb.org/movie/1263256-happy-gilmore-2/watch?locale=US",
-    "director": "Kyle Newacheck",
-    "cast": "Adam Sandler, Julie Bowen, Christopher McDonald",
-    "runtime": 118,
-    "studio": "Happy Madison Productions",
-    "rating": "PG-13",
-    "tmdb_url": "https://www.themoviedb.org/movie/1263256",
-    "rt_url": "https://www.rottentomatoes.com/search?search=Happy%20Gilmore%202",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/Happy_Gilmore_2_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
-    }
-  },
-  {
-    "title": "Site",
-    "year": "2025",
-    "release_date": "2025-08-08",
-    "poster": "https://image.tmdb.org/t/p/w500/wydPRb0Zs4lBANfvu0iEEpxULyv.jpg",
-    "tmdb_id": 1188423,
-    "tmdb_vote": 6.3,
-    "rt_score": null,
-    "providers": [
-      "Amazon Video",
-      "Google Play Movies",
-      "Plex",
-      "Apple TV",
-      "YouTube"
-    ],
-    "overview": "After a terrifying encounter at an abandoned government test site, a small town family man begins seeing haunting visions of a past that threatens to destroy his present.",
-    "inclusion_reason": "Digital release: 2025-08-08 \u2022 Rentable on 5 platforms",
-    "has_digital": true,
-    "digital_date": "2025-08-08T00:00:00.000Z",
-    "theatrical_date": null,
-    "justwatch_url": "https://www.themoviedb.org/movie/1188423-site/watch?locale=US",
-    "director": "Jason Eric Perlman",
-    "cast": "Arielle Kebbel, Theo Rossi, Jake McLaughlin",
-    "runtime": 110,
-    "studio": "Entelekey Media",
-    "rating": "NR",
-    "tmdb_url": "https://www.themoviedb.org/movie/1188423",
-    "rt_url": "https://www.rottentomatoes.com/search?search=Site",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/Site_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
-    }
-  },
-  {
-    "title": "Death Letter Blues",
-    "year": "2025",
-    "release_date": "2025-08-08",
-    "poster": "https://image.tmdb.org/t/p/w500/57Mjy3pRlP8iWqr6iev9kAuWHug.jpg",
-    "tmdb_id": 1103411,
-    "tmdb_vote": 10.0,
-    "rt_score": null,
-    "providers": [
-      "Amazon Video",
-      "Fandango At Home",
-      "Google Play Movies",
-      "Apple TV",
-      "YouTube"
-    ],
-    "overview": "A priest with wavering faith investigates the puzzling death of a local legend known as \"Feral Boy,\" discovering eerie links to his personal demons.",
-    "inclusion_reason": "Digital release: 2025-08-08 \u2022 Rentable on 5 platforms",
-    "has_digital": true,
-    "digital_date": "2025-08-08T00:00:00.000Z",
-    "theatrical_date": "2025-08-08T00:00:00.000Z",
-    "justwatch_url": "https://www.themoviedb.org/movie/1103411-death-letter-blues/watch?locale=US",
-    "director": "Michael Stevantoni",
-    "cast": "Sherman Augustus, Karole Foreman, Ramsay Midwood",
-    "runtime": 79,
-    "studio": "Trikon Productions",
-    "rating": "NR",
-    "tmdb_url": "https://www.themoviedb.org/movie/1103411",
-    "rt_url": "https://www.rottentomatoes.com/search?search=Death%20Letter%20Blues",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/Death_Letter_Blues_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
-    }
-  },
-  {
-    "title": "The Occupant",
-    "year": "2025",
-    "release_date": "2025-08-15",
-    "poster": "https://image.tmdb.org/t/p/w500/aRWeT2UIkaWolqQ6fYeHOB1D6vA.jpg",
-    "tmdb_id": 1280444,
-    "tmdb_vote": 6.265,
-    "rt_score": null,
-    "providers": [
-      "Amazon Video",
-      "Fandango At Home",
-      "Google Play Movies",
-      "Plex",
-      "Spectrum On Demand",
-      "Apple TV",
-      "YouTube"
-    ],
-    "overview": "Desperate to save her sister, Abby takes a dangerous job in the remote Georgian wilderness. Stranded in the mountains after her helicopter crashes, she finds hope through John, a mysterious helper radioing from nearby. As he guides her through the harsh conditions, Abby struggles to survive, and her grip on reality falters until she is faced with an impossible choice.",
-    "inclusion_reason": "Digital release: 2025-08-08 \u2022 Rentable on 7 platforms",
-    "has_digital": true,
-    "digital_date": "2025-08-08T00:00:00.000Z",
-    "theatrical_date": "2025-08-15T00:00:00.000Z",
-    "justwatch_url": "https://www.themoviedb.org/movie/1280444-the-occupant/watch?locale=US",
-    "director": "Hugo Keijzer",
-    "cast": "Ella Balinska, Rob Delaney, Vanessa Ifediora",
-    "runtime": 104,
-    "studio": "Revolver Amsterdam",
-    "rating": "NR",
-    "tmdb_url": "https://www.themoviedb.org/movie/1280444",
-    "rt_url": "https://www.rottentomatoes.com/search?search=The%20Occupant",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/The_Occupant_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
-    }
-  },
-  {
-    "title": "Snoopy Presents: A Summer Musical",
-    "year": "2025",
-    "release_date": "2025-08-14",
-    "poster": "https://image.tmdb.org/t/p/w500/kK1ugxST3tCJZjZEO37sLb4Yot5.jpg",
-    "tmdb_id": 1484453,
-    "tmdb_vote": 8.222,
-    "rt_score": null,
-    "providers": [
-      "Apple TV Plus Amazon Channel",
-      "Apple TV+"
-    ],
-    "overview": "Music and glee fill the air as Charlie Brown and the gang head off to summer camp. First-timer Sally doesn't get what all the hype is about. But when the camp may be forced to close, they team up to save it so more kids can make their own special memories.",
-    "inclusion_reason": "Digital release: 2025-08-14 \u2022 Streaming on 2 platforms",
-    "has_digital": true,
-    "digital_date": "2025-08-14T00:00:00.000Z",
-    "theatrical_date": null,
-    "justwatch_url": "https://www.themoviedb.org/movie/1484453-snoopy-presents-a-summer-musical/watch?locale=US",
-    "director": "Erik Wiese",
-    "cast": "Etienne Kellici, Hattie Kragten, Terry McGurrin",
-    "runtime": 40,
-    "studio": "WildBrain Studios",
-    "rating": "G",
-    "tmdb_url": "https://www.themoviedb.org/movie/1484453",
-    "rt_url": "https://www.rottentomatoes.com/search?search=Snoopy%20Presents:%20A%20Summer%20Musical",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/Snoopy_Presents:_A_Summer_Musical_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
-    }
-  },
-  {
-    "title": "Abraham's Boys",
-    "year": "2025",
-    "release_date": "2025-07-11",
-    "poster": "https://image.tmdb.org/t/p/w500/e10AbPwcJk5b7ja3MQUVr5wHEeq.jpg",
-    "tmdb_id": 1452176,
-    "tmdb_vote": 5.143,
-    "rt_score": null,
-    "providers": [
-      "Amazon Video",
-      "Fandango At Home",
-      "Google Play Movies",
-      "Apple TV",
-      "YouTube"
-    ],
-    "overview": "Max and Rudy Van Helsing have spent their lives under the strict and overprotective rule of their father, Abraham. Unaware of his dark past, they struggle to understand his paranoia and increasingly erratic behavior. But when they begin to uncover the violent truths behind their father\u2019s history with Dracula, their world unravels, forcing them to confront the terrifying legacy they were never meant to inherit.",
-    "inclusion_reason": "Digital release: 2025-08-05 \u2022 Rentable on 5 platforms",
-    "has_digital": true,
-    "digital_date": "2025-08-05T00:00:00.000Z",
-    "theatrical_date": "2025-07-11T00:00:00.000Z",
-    "justwatch_url": "https://www.themoviedb.org/movie/1452176-abraham-s-boys/watch?locale=US",
-    "director": "Natasha Kermani",
-    "cast": "Titus Welliver, Jocelin Donahue, Brady Hepner",
-    "runtime": 89,
-    "studio": "RLJE Films",
-    "rating": "R",
-    "tmdb_url": "https://www.themoviedb.org/movie/1452176",
-    "rt_url": "https://www.rottentomatoes.com/search?search=Abraham's%20Boys",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/Abraham's_Boys_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
-    }
-  },
-  {
-    "title": "Fixed",
-    "year": "2025",
-    "release_date": "2025-08-13",
-    "poster": "https://image.tmdb.org/t/p/w500/udtlwWSJ45S0uQm29BvFvjPJGW0.jpg",
-    "tmdb_id": 537921,
-    "tmdb_vote": 6.5,
-    "rt_score": null,
-    "providers": [
-      "Netflix",
-      "Netflix Standard with Ads"
-    ],
-    "overview": "After learning he's getting neutered, a dog has 24 hours to squeeze in one last balls-to-the-wall adventure with the boys.",
-    "inclusion_reason": "Digital release: 2025-08-13 \u2022 Streaming on 2 platforms",
-    "has_digital": true,
-    "digital_date": "2025-08-13T00:00:00.000Z",
-    "theatrical_date": "2025-08-13T00:00:00.000Z",
-    "justwatch_url": "https://www.themoviedb.org/movie/537921-fixed/watch?locale=US",
-    "director": "Genndy Tartakovsky",
-    "cast": "Adam Devine, Idris Elba, Kathryn Hahn",
-    "runtime": 87,
-    "studio": "Sony Pictures Animation",
-    "rating": "R",
-    "tmdb_url": "https://www.themoviedb.org/movie/537921",
-    "rt_url": "https://www.rottentomatoes.com/search?search=Fixed",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/Fixed_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
-    }
-  },
-  {
-    "title": "Z-O-M-B-I-E-S 4: Dawn of the Vampires",
-    "year": "2025",
-    "release_date": "2025-07-10",
-    "poster": "https://image.tmdb.org/t/p/w500/krrfKguKiToDlwRexetLsRsNtH6.jpg",
-    "tmdb_id": 1243341,
-    "tmdb_vote": 7.1,
-    "rt_score": null,
-    "providers": [
-      "Amazon Video",
-      "Disney Plus",
-      "fuboTV",
-      "Fandango At Home",
-      "Google Play Movies",
-      "YouTube"
-    ],
-    "overview": "A new adventure dawns for Zed and Addison when their summer road trip takes an unexpected detour, landing them in the middle of yet another monster rivalry: Daywalkers vs. Vampires. Tensions flare when Zed and Addison find themselves acting as camp counselors between the two opposing supernatural factions. With the help of Eliza and Willa, they must convince sworn enemies Nova and Victor to try to unite their warring worlds before an even greater threat endangers them all.",
-    "inclusion_reason": "Digital release: 2025-07-10 \u2022 Streaming on 2 platforms",
-    "has_digital": true,
-    "digital_date": "2025-07-10T00:00:00.000Z",
-    "theatrical_date": null,
-    "justwatch_url": "https://www.themoviedb.org/movie/1243341-z-o-m-b-i-e-s-4-dawn-of-the-vampires/watch?locale=US",
-    "director": "Paul Hoen",
-    "cast": "Meg Donnelly, Milo Manheim, Chandler Kinney",
-    "runtime": 89,
-    "studio": "Bloor Street Productions",
-    "rating": "G",
-    "tmdb_url": "https://www.themoviedb.org/movie/1243341",
-    "rt_url": "https://www.rottentomatoes.com/search?search=Z-O-M-B-I-E-S%204:%20Dawn%20of%20the%20Vampires",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/Z-O-M-B-I-E-S_4:_Dawn_of_the_Vampires_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
-    }
-  },
-  {
-    "title": "Queen of Bones",
-    "year": "2025",
-    "release_date": "2025-08-01",
-    "poster": "https://image.tmdb.org/t/p/w500/qJSSytlQAQuyXdQwZdaNNE5WAu1.jpg",
-    "tmdb_id": 1018852,
-    "tmdb_vote": 8.0,
-    "rt_score": null,
-    "providers": [
-      "Amazon Video",
-      "Apple TV",
-      "Plex"
-    ],
-    "overview": "Twin siblings seek answers about their mother's death and her connection to the supernatural while living on a remote homestead with their father in 1931 Oregon.",
-    "inclusion_reason": "Digital release: 2025-08-01 \u2022 Rentable on 3 platforms",
-    "has_digital": true,
-    "digital_date": "2025-08-01T00:00:00.000Z",
-    "theatrical_date": "2025-08-01T00:00:00.000Z",
-    "justwatch_url": "https://www.themoviedb.org/movie/1018852-queen-of-bones/watch?locale=US",
-    "director": "Robert Budreau",
-    "cast": "Julia Butters, Jacob Tremblay, Martin Freeman",
-    "runtime": 85,
-    "studio": "Appian Way",
-    "rating": "NR",
-    "tmdb_url": "https://www.themoviedb.org/movie/1018852",
-    "rt_url": "https://www.rottentomatoes.com/search?search=Queen%20of%20Bones",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/Queen_of_Bones_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
+    "digital_date": "2025-08-19",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [
+        "Apple TV"
+      ],
+      "buy": [
+        "Apple TV"
+      ],
+      "stream": []
     }
   },
   {
     "title": "House on Eden",
-    "year": "2025",
-    "release_date": "2025-07-25",
-    "poster": "https://image.tmdb.org/t/p/w500/2xVyCvnuVVRpYohPxrvwxZiH49r.jpg",
     "tmdb_id": 1362514,
-    "tmdb_vote": 6.5,
-    "rt_score": null,
-    "providers": [
-      "Amazon Video",
-      "Google Play Movies",
-      "Plex",
-      "Apple TV",
-      "YouTube"
-    ],
-    "overview": "Paranormal investigators Kris, Celina and their videographer Jay are rerouted to an abandoned house deep in the woods, where they find themselves facing a force unlike anything they've encountered before. As the night spirals into chaos, missing crew members and eerie phenomena hint at an ancient, malevolent presence watching their every move.",
-    "inclusion_reason": "Digital release: 2025-08-19 \u2022 Rentable on 5 platforms",
-    "has_digital": true,
-    "digital_date": "2025-08-19T00:00:00.000Z",
-    "theatrical_date": "2025-07-25T00:00:00.000Z",
-    "justwatch_url": "https://www.themoviedb.org/movie/1362514-house-on-eden/watch?locale=US",
-    "director": "Kris Collins",
-    "cast": "Kris Collins, Celina Myers, Jason-Christopher Mayer",
-    "runtime": 77,
-    "studio": "Spooky AF Productions",
-    "rating": "R",
-    "tmdb_url": "https://www.themoviedb.org/movie/1362514",
-    "rt_url": "https://www.rottentomatoes.com/search?search=House%20on%20Eden",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/House_on_Eden_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
+    "theatrical_date": null,
+    "digital_date": "2025-08-19",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Plex"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube"
+      ],
+      "stream": []
     }
   },
   {
-    "title": "Stolen: Heist of the Century",
-    "year": "2025",
-    "release_date": "2025-08-08",
-    "poster": "https://image.tmdb.org/t/p/w500/aqZOJkBd3DR6ioacm136lP7BGvi.jpg",
-    "tmdb_id": 1513598,
-    "tmdb_vote": 7.5,
-    "rt_score": null,
-    "providers": [
-      "Netflix",
-      "Netflix Standard with Ads"
-    ],
-    "overview": "Antwerp, 2003. A gang of thieves rob the impenetrable Diamond Center. Who was behind one of the world's biggest heists - and how did they pull it off?",
-    "inclusion_reason": "Digital release: 2025-08-08 \u2022 Streaming on 2 platforms",
-    "has_digital": true,
-    "digital_date": "2025-08-08T00:00:00.000Z",
+    "title": "Night Always Comes",
+    "tmdb_id": 1254624,
     "theatrical_date": null,
-    "justwatch_url": "https://www.themoviedb.org/movie/1513598-stolen-heist-of-the-century/watch?locale=US",
-    "director": "Mark Lewis",
-    "cast": "Agim De Bruycker, Patrick Peys, Annie Lauwers",
-    "runtime": 96,
-    "studio": "Amblin Entertainment",
-    "rating": "PG-13",
-    "tmdb_url": "https://www.themoviedb.org/movie/1513598",
-    "rt_url": "https://www.rottentomatoes.com/search?search=Stolen:%20Heist%20of%20the%20Century",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/Stolen:_Heist_of_the_Century_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
-    }
-  },
-  {
-    "title": "Monster Island",
-    "year": "2025",
-    "release_date": "2025-04-03",
-    "poster": "https://image.tmdb.org/t/p/w500/BCEYcclrfWWLcsTzhweSVFb8tO.jpg",
-    "tmdb_id": 1214140,
-    "tmdb_vote": 6.2,
-    "rt_score": null,
-    "providers": [
-      "Shudder Apple TV Channel",
-      "AMC+",
-      "AMC+ Amazon Channel",
-      "Shudder",
-      "AMC Plus Apple TV Channel ",
-      "Philo",
-      "Shudder Amazon Channel"
-    ],
-    "overview": "In the Pacific, 1944, a Japanese soldier and a British prisoner of war are stranded on a deserted island, hunted by a deadly creature. Two mortal enemies must come together to survive the unknown.",
-    "inclusion_reason": "Digital release: 2025-07-25 \u2022 Streaming on 7 platforms",
-    "has_digital": true,
-    "digital_date": "2025-07-25T00:00:00.000Z",
-    "theatrical_date": null,
-    "justwatch_url": "https://www.themoviedb.org/movie/1214140-orang-ikan/watch?locale=US",
-    "director": "Mike Wiluan",
-    "cast": "Dean Fujioka, Callum Woodhouse, Alan Maxson",
-    "runtime": 83,
-    "studio": "Gorylah Pictures",
-    "rating": "NR",
-    "tmdb_url": "https://www.themoviedb.org/movie/1214140",
-    "rt_url": "https://www.rottentomatoes.com/search?search=Monster%20Island",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/Monster_Island_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
+    "digital_date": "2025-08-15",
+    "status": "resolved",
+    "added_to_db": "2025-08-18",
+    "last_checked": "2025-08-18",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Netflix",
+        "Netflix Standard with Ads"
+      ]
     }
   },
   {
     "title": "Descendent",
-    "year": "2025",
-    "release_date": "2025-08-08",
-    "poster": "https://image.tmdb.org/t/p/w500/Of1UCdomAu0mJY2SNHHGjhnvx9.jpg",
     "tmdb_id": 1422052,
-    "tmdb_vote": 5.6,
-    "rt_score": null,
-    "providers": [
-      "Amazon Video",
-      "Apple TV",
-      "YouTube",
-      "Fandango At Home"
-    ],
-    "overview": "After a traumatic brain injury triggers terrifying visions of extraterrestrials and a newfound talent for drawing, a father-to-be begins to question his reality and becomes obsessed with the need to protect his family from an unseen threat.",
-    "inclusion_reason": "Digital release: 2025-08-15 \u2022 Rentable on 4 platforms",
-    "has_digital": true,
-    "digital_date": "2025-08-15T00:00:00.000Z",
-    "theatrical_date": "2025-08-08T00:00:00.000Z",
-    "justwatch_url": "https://www.themoviedb.org/movie/1422052-descendent/watch?locale=US",
-    "director": "Peter Cilella",
-    "cast": "Ross Marquand, Sarah Bolger, Susan Wilder",
-    "runtime": 93,
-    "studio": "Rustic Films",
-    "rating": "NR",
-    "tmdb_url": "https://www.themoviedb.org/movie/1422052",
-    "rt_url": "https://www.rottentomatoes.com/search?search=Descendent",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/Descendent_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
+    "theatrical_date": "2025-08-08",
+    "digital_date": "2025-08-15",
+    "status": "resolved",
+    "added_to_db": "2025-08-18",
+    "last_checked": "2025-08-18",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": []
     }
   },
   {
-    "title": "Brick",
-    "year": "2025",
-    "release_date": "2025-07-10",
-    "poster": "https://image.tmdb.org/t/p/w500/vTX9CxFNEQOlfXsgqec7xmc5UtD.jpg",
-    "tmdb_id": 1425045,
-    "tmdb_vote": 5.843,
-    "rt_score": null,
-    "providers": [
-      "Netflix",
-      "Netflix Standard with Ads"
-    ],
-    "overview": "When a mysterious brick wall encloses their apartment building overnight, Tim and Olivia must unite with their wary neighbors to get out alive.",
-    "inclusion_reason": "Digital release: 2025-07-10 \u2022 Streaming on 2 platforms",
-    "has_digital": true,
-    "digital_date": "2025-07-10T00:00:00.000Z",
+    "title": "Trouble Man!",
+    "tmdb_id": 1218628,
+    "theatrical_date": "2025-08-01",
+    "digital_date": "2025-08-15",
+    "status": "resolved",
+    "added_to_db": "2025-08-18",
+    "last_checked": "2025-08-18",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home",
+        "Spectrum On Demand",
+        "Plex"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": []
+    }
+  },
+  {
+    "title": "A Spartan Dream",
+    "tmdb_id": 1511558,
     "theatrical_date": null,
-    "justwatch_url": "https://www.themoviedb.org/movie/1425045-brick/watch?locale=US",
-    "director": "Philip Koch",
-    "cast": "Matthias Schweigh\u00f6fer, Ruby O. Fee, Frederick Lau",
-    "runtime": 99,
-    "studio": "Leonine Studios",
-    "rating": "R",
-    "tmdb_url": "https://www.themoviedb.org/movie/1425045",
-    "rt_url": "https://www.rottentomatoes.com/search?search=Brick",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/Brick_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
+    "digital_date": "2025-08-15",
+    "status": "resolved",
+    "added_to_db": "2025-08-18",
+    "last_checked": "2025-08-18",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home",
+        "Spectrum On Demand"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": []
     }
   },
   {
-    "title": "Almost Cops",
-    "year": "2025",
-    "release_date": "2025-07-11",
-    "poster": "https://image.tmdb.org/t/p/w500/7bcndiaTgu1Kj5a6qyCmsWYdtI.jpg",
-    "tmdb_id": 1374534,
-    "tmdb_vote": 5.938,
-    "rt_score": null,
-    "providers": [
-      "Netflix",
-      "Netflix Standard with Ads"
-    ],
-    "overview": "When an overeager community officer and a reckless ex-detective are forced to team up, plenty of chaos ensues on the streets of Rotterdam.",
-    "inclusion_reason": "Digital release: 2025-07-11 \u2022 Streaming on 2 platforms",
-    "has_digital": true,
-    "digital_date": "2025-07-11T00:00:00.000Z",
+    "title": "Hierarchy",
+    "tmdb_id": 1461181,
     "theatrical_date": null,
-    "justwatch_url": "https://www.themoviedb.org/movie/1374534-bad-boa-s/watch?locale=US",
-    "director": "Gonzalo Fernandez Carmona",
-    "cast": "Jandino Asporaat, Werner Kolf, Mark Rietman",
-    "runtime": 95,
-    "studio": "Kaap Holland Film",
-    "rating": "R",
-    "tmdb_url": "https://www.themoviedb.org/movie/1374534",
-    "rt_url": "https://www.rottentomatoes.com/search?search=Almost%20Cops",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/Almost_Cops_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
+    "digital_date": "2025-08-15",
+    "status": "resolved",
+    "added_to_db": "2025-08-18",
+    "last_checked": "2025-08-18",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home",
+        "Plex"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": []
     }
   },
   {
-    "title": "Saint Clare",
-    "year": "2025",
-    "release_date": "2025-07-18",
-    "poster": "https://image.tmdb.org/t/p/w500/aE0q4awk7zto3Eql4cAeJuVAns9.jpg",
-    "tmdb_id": 1026222,
-    "tmdb_vote": 5.294,
-    "rt_score": null,
-    "providers": [
-      "Amazon Video",
-      "Fandango At Home",
-      "Google Play Movies",
-      "Plex",
-      "Apple TV",
-      "YouTube"
-    ],
-    "overview": "In a small town a solitary woman is haunted by voices that lead her to assassinate ill intended people and get away with it, until her last kill sucks her down a rabbit hole riddled with corruption, trafficking and visions from the beyond.",
-    "inclusion_reason": "Digital release: 2025-07-18 \u2022 Rentable on 6 platforms",
-    "has_digital": true,
-    "digital_date": "2025-07-18T00:00:00.000Z",
-    "theatrical_date": "2025-07-18T00:00:00.000Z",
-    "justwatch_url": "https://www.themoviedb.org/movie/1026222-saint-clare/watch?locale=US",
-    "director": "Mitzi Peirone",
-    "cast": "Bella Thorne, Ryan Phillippe, Rebecca De Mornay",
-    "runtime": 92,
-    "studio": null,
-    "rating": "NR",
-    "tmdb_url": "https://www.themoviedb.org/movie/1026222",
-    "rt_url": "https://www.rottentomatoes.com/search?search=Saint%20Clare",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/Saint_Clare_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
+    "title": "Superman",
+    "tmdb_id": 1061474,
+    "theatrical_date": "2025-07-11",
+    "digital_date": "2025-08-15",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home",
+        "Plex"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": []
+    }
+  },
+  {
+    "title": "The Siege at Thorn High",
+    "tmdb_id": 1280089,
+    "theatrical_date": null,
+    "digital_date": "2025-08-15",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Amazon Prime Video",
+        "Amazon Prime Video with Ads"
+      ]
+    }
+  },
+  {
+    "title": "Snoopy Presents: A Summer Musical",
+    "tmdb_id": 1484453,
+    "theatrical_date": null,
+    "digital_date": "2025-08-14",
+    "status": "resolved",
+    "added_to_db": "2025-08-18",
+    "last_checked": "2025-08-18",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Apple TV+",
+        "Apple TV Plus Amazon Channel"
+      ]
+    }
+  },
+  {
+    "title": "Mononoke the Movie: Chapter II - The Ashes of Rage",
+    "tmdb_id": 1322218,
+    "theatrical_date": null,
+    "digital_date": "2025-08-14",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Netflix",
+        "Netflix Standard with Ads"
+      ]
+    }
+  },
+  {
+    "title": "Fixed",
+    "tmdb_id": 537921,
+    "theatrical_date": null,
+    "digital_date": "2025-08-13",
+    "status": "resolved",
+    "added_to_db": "2025-08-18",
+    "last_checked": "2025-08-18",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Netflix",
+        "Netflix Standard with Ads"
+      ]
+    }
+  },
+  {
+    "title": "Songs from the Hole",
+    "tmdb_id": 1194240,
+    "theatrical_date": null,
+    "digital_date": "2025-08-13",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Netflix",
+        "Netflix Standard with Ads"
+      ]
     }
   },
   {
     "title": "Jim Jefferies: Two Limb Policy",
-    "year": "2025",
-    "release_date": "2025-08-12",
-    "poster": "https://image.tmdb.org/t/p/w500/fTtQ0Garm1BcexZIxfEdWdzE5j8.jpg",
     "tmdb_id": 1517042,
-    "tmdb_vote": 7.5,
-    "rt_score": null,
-    "providers": [
-      "Netflix",
-      "Netflix Standard with Ads"
-    ],
-    "overview": "Comedian Jim Jefferies unleashes his thoughts on tiny mustaches, straight-guy struggles and why acting doesn't count as a real job.",
-    "inclusion_reason": "Digital release: 2025-08-12 \u2022 Streaming on 2 platforms",
-    "has_digital": true,
-    "digital_date": "2025-08-12T00:00:00.000Z",
     "theatrical_date": null,
-    "justwatch_url": "https://www.themoviedb.org/movie/1517042-jim-jefferies-two-limb-policy/watch?locale=US",
-    "director": "Scott Zabielski",
-    "cast": "Jim Jefferies",
-    "runtime": 63,
-    "studio": null,
-    "rating": "R",
-    "tmdb_url": "https://www.themoviedb.org/movie/1517042",
-    "rt_url": "https://www.rottentomatoes.com/search?search=Jim%20Jefferies:%20Two%20Limb%20Policy",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/Jim_Jefferies:_Two_Limb_Policy_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
+    "digital_date": "2025-08-12",
+    "status": "resolved",
+    "added_to_db": "2025-08-18",
+    "last_checked": "2025-08-18",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Netflix",
+        "Netflix Standard with Ads"
+      ]
     }
   },
   {
-    "title": "Wall to Wall",
-    "year": "2025",
-    "release_date": "2025-07-18",
-    "poster": "https://image.tmdb.org/t/p/w500/5hlNv3Kd9xovvSgrslWhMriGpZ8.jpg",
-    "tmdb_id": 1269208,
-    "tmdb_vote": 6.255,
-    "rt_score": null,
-    "providers": [
-      "Netflix",
-      "Netflix Standard with Ads"
-    ],
-    "overview": "A man who poured his life savings into a new apartment discovers its walls are full of disturbing noises, hostile neighbors and unsettling secrets.",
-    "inclusion_reason": "Digital release: 2025-07-18 \u2022 Streaming on 2 platforms",
-    "has_digital": true,
-    "digital_date": "2025-07-18T00:00:00.000Z",
+    "title": "No Tears in Hell",
+    "tmdb_id": 1512581,
     "theatrical_date": null,
-    "justwatch_url": "https://www.themoviedb.org/movie/1269208-84/watch?locale=US",
-    "director": "Kim Tae-joon",
-    "cast": "Kang Ha-neul, Yeom Hye-ran, Seo Hyun-woo",
-    "runtime": 118,
-    "studio": "Mizi Film",
-    "rating": "R",
-    "tmdb_url": "https://www.themoviedb.org/movie/1269208",
-    "rt_url": "https://www.rottentomatoes.com/search?search=Wall%20to%20Wall",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/Wall_to_Wall_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
+    "digital_date": "2025-08-12",
+    "status": "resolved",
+    "added_to_db": "2025-08-18",
+    "last_checked": "2025-08-18",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Plex"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube"
+      ],
+      "stream": []
     }
   },
   {
-    "title": "Follow",
-    "year": "2025",
-    "release_date": "2025-07-18",
-    "poster": "https://image.tmdb.org/t/p/w500/uOQCP7RB97H2r8QELb4jaunWzNb.jpg",
-    "tmdb_id": 1236197,
-    "tmdb_vote": 8.038,
-    "rt_score": null,
-    "providers": [
-      "Amazon Prime Video",
-      "Amazon Prime Video with Ads"
-    ],
-    "overview": "Sebasti\u00e1n, a charismatic con artist who seduces women to steal their money, puts his retirement plans on hold after the sudden appearance of Carolina, an enigmatic woman who will expose him to the greatest danger of his career.",
-    "inclusion_reason": "Digital release: 2025-07-18 \u2022 Streaming on 2 platforms",
-    "has_digital": true,
-    "digital_date": "2025-07-18T00:00:00.000Z",
+    "title": "Smurfs",
+    "tmdb_id": 936108,
+    "theatrical_date": "2025-07-18",
+    "digital_date": "2025-08-12",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home",
+        "Plex"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": []
+    }
+  },
+  {
+    "title": "Eddington",
+    "tmdb_id": 648878,
+    "theatrical_date": "2025-07-18",
+    "digital_date": "2025-08-12",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home",
+        "Spectrum On Demand",
+        "Plex"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": []
+    }
+  },
+  {
+    "title": "Site",
+    "tmdb_id": 1188423,
     "theatrical_date": null,
-    "justwatch_url": "https://www.themoviedb.org/movie/1236197-juegos-de-seduccion/watch?locale=US",
-    "director": "Gonzalo Tobal",
-    "cast": "Diego Boneta, Martha Higareda, Alejandro Speitzer",
-    "runtime": 111,
-    "studio": "Range Media Partners",
-    "rating": "NR",
-    "tmdb_url": "https://www.themoviedb.org/movie/1236197",
-    "rt_url": "https://www.rottentomatoes.com/search?search=Follow",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/Follow_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
+    "digital_date": "2025-08-08",
+    "status": "resolved",
+    "added_to_db": "2025-08-18",
+    "last_checked": "2025-08-18",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Plex"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube"
+      ],
+      "stream": []
     }
   },
   {
-    "title": "Sunday Best: The Untold Story of Ed Sullivan",
-    "year": "2025",
-    "release_date": "2025-07-21",
-    "poster": "https://image.tmdb.org/t/p/w500/s8UUGZg5oqAXHWHxyZmMupuTfuG.jpg",
-    "tmdb_id": 1516539,
-    "tmdb_vote": 8.333,
-    "rt_score": null,
-    "providers": [
-      "Netflix",
-      "Netflix Standard with Ads"
-    ],
-    "overview": "Ed Sullivan broke barriers by booking Black artists on his Sunday night variety show. This documentary spotlights the TV pioneer's legacy of equality.",
-    "inclusion_reason": "Digital release: 2025-07-21 \u2022 Streaming on 2 platforms",
-    "has_digital": true,
-    "digital_date": "2025-07-21T00:00:00.000Z",
+    "title": "Stolen: Heist of the Century",
+    "tmdb_id": 1513598,
     "theatrical_date": null,
-    "justwatch_url": "https://www.themoviedb.org/movie/1516539-sunday-best-the-untold-story-of-ed-sullivan/watch?locale=US",
-    "director": "Sacha Jenkins",
-    "cast": "Smokey Robinson, Berry Gordy, Harry Belafonte",
-    "runtime": 80,
-    "studio": "MRC",
-    "rating": "NR",
-    "tmdb_url": "https://www.themoviedb.org/movie/1516539",
-    "rt_url": "https://www.rottentomatoes.com/search?search=Sunday%20Best:%20The%20Untold%20Story%20of%20Ed%20Sullivan",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/Sunday_Best:_The_Untold_Story_of_Ed_Sullivan_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
+    "digital_date": "2025-08-08",
+    "status": "resolved",
+    "added_to_db": "2025-08-18",
+    "last_checked": "2025-08-18",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Netflix",
+        "Netflix Standard with Ads"
+      ]
     }
   },
   {
-    "title": "An Honest Life",
-    "year": "2025",
-    "release_date": "2025-07-31",
-    "poster": "https://image.tmdb.org/t/p/w500/4hveI7tEISN8KU60UFJw1JRYKvv.jpg",
-    "tmdb_id": 1187436,
-    "tmdb_vote": 6.0,
-    "rt_score": null,
-    "providers": [
-      "Netflix",
-      "Netflix Standard with Ads"
-    ],
-    "overview": "When a cynical law student in search of inspiration joins a band of anarchists, he becomes entangled in a web of crime where he is more pawn than player.",
-    "inclusion_reason": "Digital release: 2025-07-31 \u2022 Streaming on 2 platforms",
-    "has_digital": true,
-    "digital_date": "2025-07-31T00:00:00.000Z",
+    "title": "The Occupant",
+    "tmdb_id": 1280444,
     "theatrical_date": null,
-    "justwatch_url": "https://www.themoviedb.org/movie/1187436-ett-arligt-liv/watch?locale=US",
-    "director": "Mikael Marcimain",
-    "cast": "Simon L\u00f6\u00f6f, Nora Rios, Willy Ramnek Petri",
-    "runtime": 122,
-    "studio": "FLX",
-    "rating": "R",
-    "tmdb_url": "https://www.themoviedb.org/movie/1187436",
-    "rt_url": "https://www.rottentomatoes.com/search?search=An%20Honest%20Life",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/An_Honest_Life_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
+    "digital_date": "2025-08-08",
+    "status": "resolved",
+    "added_to_db": "2025-08-18",
+    "last_checked": "2025-08-18",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home",
+        "Spectrum On Demand",
+        "Plex"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": []
     }
   },
   {
-    "title": "Ziam",
-    "year": "2025",
-    "release_date": "2025-07-09",
-    "poster": "https://image.tmdb.org/t/p/w500/yHYj2t3NzsjkHVYa0bPri4sMBsg.jpg",
-    "tmdb_id": 1429744,
-    "tmdb_vote": 6.591,
-    "rt_score": null,
-    "providers": [
-      "Netflix",
-      "Netflix Standard with Ads"
-    ],
-    "overview": "In a fight for survival against a horrifying army of zombies, a former Muay Thai fighter must use skill, speed and grit to save his girlfriend.",
-    "inclusion_reason": "Digital release: 2025-07-09 \u2022 Streaming on 2 platforms",
-    "has_digital": true,
-    "digital_date": "2025-07-09T00:00:00.000Z",
+    "title": "Birthrite",
+    "tmdb_id": 1236204,
     "theatrical_date": null,
-    "justwatch_url": "https://www.themoviedb.org/movie/1429744/watch?locale=US",
-    "director": "Kulp Kaljareuk",
-    "cast": "Prin Suparat, Nuttanicha Dungwattanawanich, Wanvayla Boonnithipaisit",
-    "runtime": 96,
-    "studio": "Kantana Motion Pictures",
-    "rating": "R",
-    "tmdb_url": "https://www.themoviedb.org/movie/1429744",
-    "rt_url": "https://www.rottentomatoes.com/search?search=Ziam",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/Ziam_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
+    "digital_date": "2025-08-08",
+    "status": "resolved",
+    "added_to_db": "2025-08-18",
+    "last_checked": "2025-08-18",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home",
+        "Spectrum On Demand",
+        "Plex"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": []
     }
   },
   {
-    "title": "Almost Family",
-    "year": "2025",
-    "release_date": "2025-07-18",
-    "poster": "https://image.tmdb.org/t/p/w500/sJTEJDlUwuXet2s8Ou6MUryqpQh.jpg",
-    "tmdb_id": 1429834,
-    "tmdb_vote": 6.531,
-    "rt_score": null,
-    "providers": [
-      "Netflix",
-      "Netflix Standard with Ads"
-    ],
-    "overview": "A Brazilian father finds a worthy opponent when he meets his daughter's Argentine in-laws, and a trip to Bariloche becomes the stage for a fun international rivalry.",
-    "inclusion_reason": "Digital release: 2025-07-18 \u2022 Streaming on 2 platforms",
-    "has_digital": true,
-    "digital_date": "2025-07-18T00:00:00.000Z",
+    "title": "Death Letter Blues",
+    "tmdb_id": 1103411,
     "theatrical_date": null,
-    "justwatch_url": "https://www.themoviedb.org/movie/1429834-familia-pero-no-mucho/watch?locale=US",
-    "director": "Felipe Joffily",
-    "cast": "Leandro Hassum, J\u00falia Svacinna, Gabriel Goity",
-    "runtime": 80,
-    "studio": "Camisa Listrada",
-    "rating": "PG",
-    "tmdb_url": "https://www.themoviedb.org/movie/1429834",
-    "rt_url": "https://www.rottentomatoes.com/search?search=Almost%20Family",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/Almost_Family_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
+    "digital_date": "2025-08-08",
+    "status": "resolved",
+    "added_to_db": "2025-08-18",
+    "last_checked": "2025-08-18",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": []
     }
   },
   {
-    "title": "A Normal Woman",
-    "year": "2025",
-    "release_date": "2025-07-24",
-    "poster": "https://image.tmdb.org/t/p/w500/2I8hMyZX9WXAjkvCTBLMM7XYBVL.jpg",
-    "tmdb_id": 1285728,
-    "tmdb_vote": 6.105,
-    "rt_score": null,
-    "providers": [
-      "Netflix",
-      "Netflix Standard with Ads"
-    ],
-    "overview": "When an unidentified disease starts to upend her life, a socialite must unravel the mystery behind it \u2014 before her whole sense of self falls apart.",
-    "inclusion_reason": "Digital release: 2025-07-24 \u2022 Streaming on 2 platforms",
-    "has_digital": true,
-    "digital_date": "2025-07-24T00:00:00.000Z",
+    "title": "Shaman",
+    "tmdb_id": 1339166,
     "theatrical_date": null,
-    "justwatch_url": "https://www.themoviedb.org/movie/1285728-a-normal-woman/watch?locale=US",
-    "director": "Lucky Kuswandi",
-    "cast": "Marissa Anita, Dion Wiyoko, Gisella Anastasia",
-    "runtime": 110,
-    "studio": "Soda Machine Films",
-    "rating": "R",
-    "tmdb_url": "https://www.themoviedb.org/movie/1285728",
-    "rt_url": "https://www.rottentomatoes.com/search?search=A%20Normal%20Woman",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/A_Normal_Woman_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
+    "digital_date": "2025-08-08",
+    "status": "resolved",
+    "added_to_db": "2025-08-20",
+    "last_checked": "2025-08-20",
+    "providers": {
+      "rent": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home",
+        "Plex"
+      ],
+      "buy": [
+        "Amazon Video",
+        "Apple TV",
+        "Google Play Movies",
+        "YouTube",
+        "Fandango At Home"
+      ],
+      "stream": []
     }
   },
   {
-    "title": "It's Worth It by Dani Rovira",
-    "year": "2025",
-    "release_date": "2025-07-11",
-    "poster": "https://image.tmdb.org/t/p/w500/6zXHrZ1wuOM4QRrEwzmYPQfZsUF.jpg",
-    "tmdb_id": 1506130,
-    "tmdb_vote": 8.5,
-    "rt_score": null,
-    "providers": [
-      "Netflix",
-      "Netflix Standard with Ads"
-    ],
-    "overview": "Actor and comedian Dani Rovira returns to the stage with an honest and hilarious take on finding light even in life's darkest moments.",
-    "inclusion_reason": "Digital release: 2025-07-11 \u2022 Streaming on 2 platforms",
-    "has_digital": true,
-    "digital_date": "2025-07-11T00:00:00.000Z",
+    "title": "Grounded in Love",
+    "tmdb_id": 1389234,
     "theatrical_date": null,
-    "justwatch_url": "https://www.themoviedb.org/movie/1506130-vale-la-pena-de-dani-rovira/watch?locale=US",
-    "director": "Dani Rovira",
-    "cast": "Dani Rovira",
-    "runtime": 81,
-    "studio": "Good Mood Productions",
-    "rating": "R",
-    "tmdb_url": "https://www.themoviedb.org/movie/1506130",
-    "rt_url": "https://www.rottentomatoes.com/search?search=It's%20Worth%20It%20by%20Dani%20Rovira",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/It's_Worth_It_by_Dani_Rovira_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
-    }
-  },
-  {
-    "title": "Aap Jaisa Koi",
-    "year": "2025",
-    "release_date": "2025-07-11",
-    "poster": "https://image.tmdb.org/t/p/w500/fV9dswGQCvbpVsj1JOTrYCeos8w.jpg",
-    "tmdb_id": 1391013,
-    "tmdb_vote": 6.75,
-    "rt_score": null,
-    "providers": [
-      "Netflix",
-      "Netflix Standard with Ads"
-    ],
-    "overview": "Shrirenu lives by tradition. Madhu lives unapologetically. When their paths cross, a tender romance unfolds \u2014 awkward, sweet but shadowed by patriarchy.",
-    "inclusion_reason": "Digital release: 2025-07-11 \u2022 Streaming on 2 platforms",
-    "has_digital": true,
-    "digital_date": "2025-07-11T00:00:00.000Z",
-    "theatrical_date": null,
-    "justwatch_url": "https://www.themoviedb.org/movie/1391013-aap-jaisa-koi/watch?locale=US",
-    "director": "Vivek Soni",
-    "cast": "R. Madhavan, Fatima Sana Shaikh, Namit Das",
-    "runtime": 115,
-    "studio": "Dharmatic Entertainment",
-    "rating": "PG-13",
-    "tmdb_url": "https://www.themoviedb.org/movie/1391013",
-    "rt_url": "https://www.rottentomatoes.com/search?search=Aap%20Jaisa%20Koi",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/Aap_Jaisa_Koi_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
-    }
-  },
-  {
-    "title": "Trainwreck: P.I. Moms",
-    "year": "2025",
-    "release_date": "2025-07-22",
-    "poster": "https://image.tmdb.org/t/p/w500/gACBkTDNDP2GGspeFkn7AhCpiL3.jpg",
-    "tmdb_id": 1484267,
-    "tmdb_vote": 6.0,
-    "rt_score": null,
-    "providers": [
-      "Netflix",
-      "Netflix Standard with Ads"
-    ],
-    "overview": "This tell-all documentary investigates an early 2000s reality show about private eye moms and the drug scandal that sabotaged the series and its stars.",
-    "inclusion_reason": "Digital release: 2025-07-22 \u2022 Streaming on 2 platforms",
-    "has_digital": true,
-    "digital_date": "2025-07-22T00:00:00.000Z",
-    "theatrical_date": null,
-    "justwatch_url": "https://www.themoviedb.org/movie/1484267-trainwreck-p-i-moms/watch?locale=US",
-    "director": "Phil Bowman",
-    "cast": "Lucas Platt, Denise Antoon, Ami Wiltz",
-    "runtime": 46,
-    "studio": "RAW",
-    "rating": "R",
-    "tmdb_url": "https://www.themoviedb.org/movie/1484267",
-    "rt_url": "https://www.rottentomatoes.com/search?search=Trainwreck:%20P.I.%20Moms",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/Trainwreck:_P.I._Moms_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
-    }
-  },
-  {
-    "title": "Vir Das: Fool Volume",
-    "year": "2025",
-    "release_date": "2025-07-18",
-    "poster": "https://image.tmdb.org/t/p/w500/druY5vhbnJSbFeq3V0AfDHYfXfe.jpg",
-    "tmdb_id": 1495110,
-    "tmdb_vote": 6.6,
-    "rt_score": null,
-    "providers": [
-      "Netflix",
-      "Netflix Standard with Ads"
-    ],
-    "overview": "Whether it's the police, the evil eye or a badly timed lost voice, comedian Vir Das explores how embracing foolishness has led him to shared happiness, in his fifth comedy special (sixth, if you know you know)\u2014shot by an all-Indian crew across cities in three continents: London, New York, and Mumbai.",
-    "inclusion_reason": "Digital release: 2025-07-18 \u2022 Streaming on 2 platforms",
-    "has_digital": true,
-    "digital_date": "2025-07-18T00:00:00.000Z",
-    "theatrical_date": null,
-    "justwatch_url": "https://www.themoviedb.org/movie/1495110-vir-das-fool-volume/watch?locale=US",
-    "director": "Vir Das",
-    "cast": "Vir Das",
-    "runtime": 64,
-    "studio": null,
-    "rating": "R",
-    "tmdb_url": "https://www.themoviedb.org/movie/1495110",
-    "rt_url": "https://www.rottentomatoes.com/search?search=Vir%20Das:%20Fool%20Volume",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/Vir_Das:_Fool_Volume_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
-    }
-  },
-  {
-    "title": "Madea's Destination Wedding",
-    "year": "2025",
-    "release_date": "2025-07-11",
-    "poster": "https://image.tmdb.org/t/p/w500/jwMwRucnAROgWo9WLLmIqzHmmzi.jpg",
-    "tmdb_id": 1246310,
-    "tmdb_vote": 6.008,
-    "rt_score": null,
-    "providers": [
-      "Netflix",
-      "Netflix Standard with Ads"
-    ],
-    "overview": "Madea packs her best floral dresses and a whole lot of chaos when the Simmons family heads to the Bahamas for her grandniece's whirlwind wedding.",
-    "inclusion_reason": "Digital release: 2025-07-11 \u2022 Streaming on 2 platforms",
-    "has_digital": true,
-    "digital_date": "2025-07-11T00:00:00.000Z",
-    "theatrical_date": null,
-    "justwatch_url": "https://www.themoviedb.org/movie/1246310-madea-s-destination-wedding/watch?locale=US",
-    "director": "Tyler Perry",
-    "cast": "Tyler Perry, Xavier Smalls, Diamond White",
-    "runtime": 102,
-    "studio": "Tyler Perry Studios",
-    "rating": "PG-13",
-    "tmdb_url": "https://www.themoviedb.org/movie/1246310",
-    "rt_url": "https://www.rottentomatoes.com/search?search=Madea's%20Destination%20Wedding",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/Madea's_Destination_Wedding_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
-    }
-  },
-  {
-    "title": "I'm Still a Superstar",
-    "year": "2025",
-    "release_date": "2025-07-18",
-    "poster": "https://image.tmdb.org/t/p/w500/mfuUAORL9v4hwrVes1FKdPuyf6p.jpg",
-    "tmdb_id": 1508562,
-    "tmdb_vote": 5.7,
-    "rt_score": null,
-    "providers": [
-      "Netflix",
-      "Netflix Standard with Ads"
-    ],
-    "overview": "This documentary explores Yurena's meteoric rise to fame as Tamara, the media frenzy she faced in the 2000s and the present-day lives of her TV rivals.",
-    "inclusion_reason": "Digital release: 2025-07-18 \u2022 Streaming on 2 platforms",
-    "has_digital": true,
-    "digital_date": "2025-07-18T00:00:00.000Z",
-    "theatrical_date": null,
-    "justwatch_url": "https://www.themoviedb.org/movie/1508562-sigo-siendo-la-misma/watch?locale=US",
-    "director": "Marc Pujolar",
-    "cast": "Yurena, Margarita Seisdedos, Loly Alvarez",
-    "runtime": 81,
-    "studio": "Suma Content",
-    "rating": "NR",
-    "tmdb_url": "https://www.themoviedb.org/movie/1508562",
-    "rt_url": "https://www.rottentomatoes.com/search?search=I'm%20Still%20a%20Superstar",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/I'm_Still_a_Superstar_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
-    }
-  },
-  {
-    "title": "Trainwreck: Balloon Boy",
-    "year": "2025",
-    "release_date": "2025-07-15",
-    "poster": "https://image.tmdb.org/t/p/w500/4QpWZlGZMYrAnlQizjVIMnAXnv0.jpg",
-    "tmdb_id": 1477566,
-    "tmdb_vote": 5.5,
-    "rt_score": null,
-    "providers": [
-      "Netflix",
-      "Netflix Standard with Ads"
-    ],
-    "overview": "A homemade flying saucer lifts off, and a 6-year-old boy might be inside. National panic ensues \u2014 but what truly happened? This documentary investigates.",
-    "inclusion_reason": "Digital release: 2025-07-15 \u2022 Streaming on 2 platforms",
-    "has_digital": true,
-    "digital_date": "2025-07-15T00:00:00.000Z",
-    "theatrical_date": null,
-    "justwatch_url": "https://www.themoviedb.org/movie/1477566-trainwreck-balloon-boy/watch?locale=US",
-    "director": "Gillian Pachter",
-    "cast": null,
-    "runtime": 53,
-    "studio": "RAW",
-    "rating": "R",
-    "tmdb_url": "https://www.themoviedb.org/movie/1477566",
-    "rt_url": "https://www.rottentomatoes.com/search?search=Trainwreck:%20Balloon%20Boy",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/Trainwreck:_Balloon_Boy_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
-    }
-  },
-  {
-    "title": "Highest 2 Lowest",
-    "year": "2025",
-    "release_date": "2025-08-15",
-    "poster": "https://image.tmdb.org/t/p/w500/kOzwIr0R7WhaFgoYUZFLPZA2RBZ.jpg",
-    "tmdb_id": 1242434,
-    "tmdb_vote": 7.0,
-    "rt_score": null,
-    "providers": [],
-    "overview": "When a titan music mogul, widely known as having the \"best ears in the business\", is targeted with a ransom plot, he is jammed up in a life-or-death moral dilemma.",
-    "inclusion_reason": "Digital release: 2025-09-04",
-    "has_digital": true,
-    "digital_date": "2025-09-04T00:00:00.000Z",
-    "theatrical_date": "2025-08-15T00:00:00.000Z",
-    "justwatch_url": "",
-    "director": "Spike Lee",
-    "cast": "Denzel Washington, Jeffrey Wright, Ilfenesh Hadera",
-    "runtime": 133,
-    "studio": "A24",
-    "rating": "R",
-    "tmdb_url": "https://www.themoviedb.org/movie/1242434",
-    "rt_url": "https://www.rottentomatoes.com/search?search=Highest%202%20Lowest",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/Highest_2_Lowest_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
-    }
-  },
-  {
-    "title": "The Map That Leads to You",
-    "year": "2025",
-    "release_date": "2025-08-20",
-    "poster": "https://image.tmdb.org/t/p/w500/uwvKQIjJpC37IEsEj4ZAn1ITyRy.jpg",
-    "tmdb_id": 1312946,
-    "tmdb_vote": 7.2,
-    "rt_score": null,
-    "providers": [],
-    "overview": "Heather is a young woman traveling Europe with friends before starting her perfectly planned life. A chance meeting with Jack sparks an unexpected romance that leads to deep emotional discovery. As secrets and life choices test their bond, her path changes forever.",
-    "inclusion_reason": "Digital release: 2025-08-20",
-    "has_digital": true,
-    "digital_date": "2025-08-20T00:00:00.000Z",
-    "theatrical_date": null,
-    "justwatch_url": "",
-    "director": "Lasse Hallstr\u00f6m",
-    "cast": "Madelyn Cline, K.J. Apa, Sofia Wylie",
-    "runtime": 96,
-    "studio": "Temple Hill Entertainment",
-    "rating": "PG-13",
-    "tmdb_url": "https://www.themoviedb.org/movie/1312946",
-    "rt_url": "https://www.rottentomatoes.com/search?search=The%20Map%20That%20Leads%20to%20You",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/The_Map_That_Leads_to_You_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
-    }
-  },
-  {
-    "title": "Red Sonja",
-    "year": "2025",
-    "release_date": "2025-08-13",
-    "poster": "https://image.tmdb.org/t/p/w500/l10eghFN1nQmWwMSt91MlLvZZFA.jpg",
-    "tmdb_id": 13494,
-    "tmdb_vote": 5.9,
-    "rt_score": null,
-    "providers": [],
-    "overview": "A young girl rises from the ashes of tragedy to become the most feared warrior woman of all time: the She-Devil with a Sword.",
-    "inclusion_reason": "Digital release: 2025-08-29",
-    "has_digital": true,
-    "digital_date": "2025-08-29T00:00:00.000Z",
-    "theatrical_date": "2025-08-13T00:00:00.000Z",
-    "justwatch_url": "",
-    "director": "MJ Bassett",
-    "cast": "Matilda Lutz, Robert Sheehan, Wallis Day",
-    "runtime": 110,
-    "studio": "Millennium Media",
-    "rating": "R",
-    "tmdb_url": "https://www.themoviedb.org/movie/13494",
-    "rt_url": "https://www.rottentomatoes.com/search?search=Red%20Sonja",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/Red_Sonja_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
-    }
-  },
-  {
-    "title": "Sweet Revenge",
-    "year": "2025",
-    "release_date": "2025-08-13",
-    "poster": "https://image.tmdb.org/t/p/w500/n9ap5I6VsePRAK2U67CJp2gOghI.jpg",
-    "tmdb_id": 1504382,
-    "tmdb_vote": 5.0,
-    "rt_score": null,
-    "providers": [],
-    "overview": "A group of friends staying at the Cabins at Crystal Lake find themselves stalked by a masked killer.",
-    "inclusion_reason": "Digital release: 2025-08-13",
-    "has_digital": true,
-    "digital_date": "2025-08-13T00:00:00.000Z",
-    "theatrical_date": null,
-    "justwatch_url": "",
-    "director": "Mike P. Nelson",
-    "cast": "Ally Loannides, Schuyler White, Natassia Wakey",
-    "runtime": 16,
-    "studio": "Rockford Road Pictures",
-    "rating": "NR",
-    "tmdb_url": "https://www.themoviedb.org/movie/1504382",
-    "rt_url": "https://www.rottentomatoes.com/search?search=Sweet%20Revenge",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/Sweet_Revenge_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
-    }
-  },
-  {
-    "title": "Get Off My Lawn",
-    "year": "2025",
-    "release_date": "2025-07-11",
-    "poster": "https://image.tmdb.org/t/p/w500/auCI0iFr2J40XOOetddN6TwI6Kj.jpg",
-    "tmdb_id": 1512343,
-    "tmdb_vote": 5.0,
-    "rt_score": null,
-    "providers": [],
-    "overview": "A sweet suburban couple is terrorized by a deranged teenager and his friends after they purchase his grandfather's sacred home.",
-    "inclusion_reason": "Digital release: 2025-07-11",
-    "has_digital": true,
-    "digital_date": "2025-07-11T00:00:00.000Z",
-    "theatrical_date": null,
-    "justwatch_url": "",
-    "director": "Amara Cash",
-    "cast": "Tahj Mowry, Camila Banus, Jonah Hwang",
-    "runtime": 93,
-    "studio": null,
-    "rating": "NR",
-    "tmdb_url": "https://www.themoviedb.org/movie/1512343",
-    "rt_url": "https://www.rottentomatoes.com/search?search=Get%20Off%20My%20Lawn",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/Get_Off_My_Lawn_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
-    }
-  },
-  {
-    "title": "I Know What You Did Last Summer",
-    "year": "2025",
-    "release_date": "2025-07-18",
-    "poster": "https://image.tmdb.org/t/p/w500/A06yXys3hrCWu8xiNoHCFLTG5SH.jpg",
-    "tmdb_id": 1083433,
-    "tmdb_vote": 5.8,
-    "rt_score": null,
-    "providers": [
-      "Amazon Video"
-    ],
-    "overview": "When five friends inadvertently cause a deadly car accident, they cover up their involvement and make a pact to keep it a secret rather than face the consequences. A year later, their past comes back to haunt them and they're forced to confront a horrifying truth: someone knows what they did last summer\u2026and is hell-bent on revenge.",
-    "inclusion_reason": "Theatrical 33 days ago (likely digital) \u2022 Rentable on 1 platforms",
-    "has_digital": false,
-    "digital_date": null,
-    "theatrical_date": "2025-07-18T00:00:00.000Z",
-    "justwatch_url": "https://www.themoviedb.org/movie/1083433-i-know-what-you-did-last-summer/watch?locale=US",
-    "director": "Jennifer Kaytin Robinson",
-    "cast": "Madelyn Cline, Chase Sui Wonders, Jonah Hauer-King",
-    "runtime": 111,
-    "studio": "Columbia Pictures",
-    "rating": "R",
-    "tmdb_url": "https://www.themoviedb.org/movie/1083433",
-    "rt_url": "https://www.rottentomatoes.com/search?search=I%20Know%20What%20You%20Did%20Last%20Summer",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/I_Know_What_You_Did_Last_Summer_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
-    }
-  },
-  {
-    "title": "Saiyaara",
-    "year": "2025",
-    "release_date": "2025-07-18",
-    "poster": "https://image.tmdb.org/t/p/w500/hQBIsi3ZfBYEayMc3GhcEmJVkss.jpg",
-    "tmdb_id": 1241634,
-    "tmdb_vote": 6.4,
-    "rt_score": null,
-    "providers": [],
-    "overview": "Two artistic souls find harmony through music despite their contrasting worlds. As feelings deepen, age and circumstances challenge their undeniable bond.",
-    "inclusion_reason": "Theatrical 33 days ago (likely digital)",
-    "has_digital": false,
-    "digital_date": null,
-    "theatrical_date": "2025-07-18T00:00:00.000Z",
-    "justwatch_url": "",
-    "director": "Mohit Suri",
-    "cast": "Ahaan Panday, Aneet Padda, Alam Khan",
-    "runtime": 156,
-    "studio": "Yash Raj Films",
-    "rating": "NR",
-    "tmdb_url": "https://www.themoviedb.org/movie/1241634",
-    "rt_url": "https://www.rottentomatoes.com/search?search=Saiyaara",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/Saiyaara_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
-    }
-  },
-  {
-    "title": "Skillhouse",
-    "year": "2025",
-    "release_date": "2025-07-11",
-    "poster": "https://image.tmdb.org/t/p/w500/uBW2iMkNIYCZqnzL5jhPo910fko.jpg",
-    "tmdb_id": 962354,
-    "tmdb_vote": 5.5,
-    "rt_score": null,
-    "providers": [],
-    "overview": "Ten influencers are lured into a sinister content house and forced to compete in lethal social media challenges \u2014 because in Skillhouse, clout isn\u2019t just currency, it\u2019s survival.",
-    "inclusion_reason": "Theatrical 40 days ago (likely digital)",
-    "has_digital": false,
-    "digital_date": null,
-    "theatrical_date": "2025-07-11T00:00:00.000Z",
-    "justwatch_url": "",
-    "director": "Josh Stolberg",
-    "cast": "Neal McDonough, Hannah Stocking, 50 Cent",
-    "runtime": 99,
-    "studio": "G-Unit Film & Television",
-    "rating": "NR",
-    "tmdb_url": "https://www.themoviedb.org/movie/962354",
-    "rt_url": "https://www.rottentomatoes.com/search?search=Skillhouse",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/Skillhouse_(film)",
-    "review_data": {
-      "rt_score": null,
-      "imdb_rating": null
+    "digital_date": "2025-08-07",
+    "status": "resolved",
+    "added_to_db": "2025-08-18",
+    "last_checked": "2025-08-18",
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        "Pure Flix",
+        "Great American Pure Flix Amazon Channel"
+      ]
     }
   }
 ]

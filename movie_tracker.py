@@ -17,6 +17,7 @@ class MovieTracker:
         self.db = self.load_database()
         self.config = self.load_config()
         self.api_key = self.config['tmdb_api_key']
+        self.omdb_api_key = self.config.get('omdb_api_key')
     
     def load_config(self):
         with open("config.yaml", "r") as f:
@@ -54,6 +55,18 @@ class MovieTracker:
         
         print(f"💾 Database saved: {self.db['stats']}")
     
+    def tmdb_get(self, endpoint, params):
+        """Generic TMDB API GET request"""
+        url = f"https://api.themoviedb.org/3{endpoint}"
+        params['api_key'] = self.api_key
+        try:
+            response = requests.get(url, params=params)
+            response.raise_for_status()
+            return response.json()
+        except Exception as e:
+            print(f"API error: {e}")
+            return {}
+    
     def get_release_info(self, movie_id):
         """Get release dates for a movie"""
         url = f"https://api.themoviedb.org/3/movie/{movie_id}/release_dates"
@@ -87,6 +100,27 @@ class MovieTracker:
         except Exception as e:
             print(f"Error getting release info for {movie_id}: {e}")
             return None
+    
+    def get_omdb_rt_score(self, title, year):
+        """Get Rotten Tomatoes score from OMDb API"""
+        if not self.omdb_api_key:
+            return None
+            
+        try:
+            params = {'apikey': self.omdb_api_key, 't': title}
+            if year:
+                params['y'] = str(year)
+                
+            response = requests.get('http://www.omdbapi.com/', params=params)
+            data = response.json()
+            
+            if data.get('Response') == 'True':
+                for rating in data.get('Ratings', []):
+                    if rating['Source'] == 'Rotten Tomatoes':
+                        return int(rating['Value'].rstrip('%'))
+        except Exception as e:
+            print(f"Error getting RT score for {title}: {e}")
+        return None
     
     def bootstrap_database(self, days_back=730):
         """Bootstrap database with movies from past N days"""
@@ -137,12 +171,19 @@ class MovieTracker:
             if not release_info:
                 continue
             
+            # Get RT score
+            year = None
+            if release_info['theatrical_date']:
+                year = release_info['theatrical_date'][:4]
+            rt_score = self.get_omdb_rt_score(movie['title'], year)
+            
             # Add to database
             self.db['movies'][movie_id] = {
                 'title': movie['title'],
                 'tmdb_id': movie['id'],
                 'theatrical_date': release_info['theatrical_date'],
                 'digital_date': release_info['digital_date'],
+                'rt_score': rt_score,
                 'status': 'resolved' if release_info['has_digital'] else 'tracking',
                 'added_to_db': datetime.now().isoformat()[:10],
                 'last_checked': datetime.now().isoformat()[:10]
@@ -177,17 +218,22 @@ class MovieTracker:
             if movie_id not in self.db['movies']:
                 release_info = self.get_release_info(movie['id'])
                 if release_info and release_info['theatrical_date']:
+                    # Get RT score
+                    year = release_info['theatrical_date'][:4]
+                    rt_score = self.get_omdb_rt_score(movie['title'], year)
+                    
                     self.db['movies'][movie_id] = {
                         'title': movie['title'],
                         'tmdb_id': movie['id'],
                         'theatrical_date': release_info['theatrical_date'],
                         'digital_date': release_info['digital_date'],
+                        'rt_score': rt_score,
                         'status': 'resolved' if release_info['has_digital'] else 'tracking',
                         'added_to_db': datetime.now().isoformat()[:10],
                         'last_checked': datetime.now().isoformat()[:10]
                     }
                     new_count += 1
-                    print(f"  ➕ Added: {movie['title']}")
+                    print(f"  ➕ Added: {movie['title']} (RT: {rt_score}%)" if rt_score else f"  ➕ Added: {movie['title']}")
                 
                 time.sleep(0.1)
         

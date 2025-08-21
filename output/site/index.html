@@ -1,1315 +1,1075 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Digitally Available Movies</title>
-  <style>
-    :root { --bg:#0b0d10; --card:#12161b; --ink:#e9eef5; --muted:#a8b3c2; --pill:#1f2630; --accent:#7cc3ff; }
-    *{box-sizing:border-box}
-    body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial}
-    a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
-    .wrap{max-width:1100px;margin:24px auto;padding:0 16px}
-    header h1{margin:0 0 4px}
-    header .meta{color:var(--muted);margin-bottom:20px}
-    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px;align-items:start}
-    .card{background:var(--card);border-radius:16px;padding:12px;box-shadow:0 1px 0 rgba(255,255,255,.05) inset}
-    .poster{width:100%;height:auto;border-radius:10px;background:#0e1318}
-    .poster img { width: 100%; height: auto; }
-    .title{font-weight:700;margin:10px 0 6px}
-    .meta2{color:var(--muted);font-size:14px;margin-bottom:8px}
-    .pills{display:flex;flex-wrap:wrap;gap:8px}
-    .pill{background:var(--pill);padding:4px 8px;border-radius:999px;font-size:12px;white-space:nowrap}
-    footer{color:var(--muted);font-size:12px;margin:28px 0 16px}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Release Wall</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 3rem 1rem 2rem;
+            background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+        
+        .header .date-range {
+            color: #888;
+            font-size: 1rem;
+            letter-spacing: 0.05em;
+        }
+        
+        .movie-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            align-items: flex-start;
+        }
+        
+        /* Date Card - HALF WIDTH */
+        .date-card {
+            width: 80px;
+            aspect-ratio: 2/3;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border: 1px solid #333;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0.5rem;
+        }
+        
+        .date-card .month {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #888;
+            margin-bottom: 0.3rem;
+        }
+        
+        .date-card .day {
+            font-size: 2rem;
+            font-weight: 200;
+            line-height: 1;
+            margin-bottom: 0.3rem;
+        }
+        
+        .date-card .year {
+            font-size: 0.7rem;
+            color: #666;
+        }
+        
+        /* Movie Card Container */
+        .movie-card {
+            width: 160px;
+            aspect-ratio: 2/3;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+        
+        .movie-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+        }
+        
+        .movie-card:hover .movie-card-inner {
+            transform: rotateY(180deg);
+        }
+        
+        /* Card Faces */
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .card-front {
+            background: #1a1a1a;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .card-back {
+            background: linear-gradient(135deg, #1e1e1e 0%, #2a2a2a 100%);
+            transform: rotateY(180deg);
+            padding: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            font-size: 0.65rem;
+            color: #ccc;
+            cursor: pointer;
+        }
+        
+        /* Front Card Content */
+        .movie-poster {
+            width: 100%;
+            flex: 1;
+            object-fit: cover;
+        }
+        
+        .movie-info {
+            background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
+            padding: 0.5rem;
+            min-height: 4.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .movie-title {
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+            font-size: 0.75rem;
+            line-height: 1.2;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .movie-details {
+            color: #ccc;
+            font-size: 0.65rem;
+            line-height: 1.3;
+        }
+        
+        .movie-details div {
+            overflow: visible;
+            line-height: 1.2;
+            margin-bottom: 0.1rem;
+        }
+        
+        /* Back Card Content - NO TITLE, VHS STYLE */
+        .back-synopsis {
+            flex: 1;
+            line-height: 1.3;
+            margin-bottom: 0.5rem;
+            overflow-y: auto;
+            font-size: 0.7rem;
+        }
+        
+        .back-buttons {
+            display: flex;
+            gap: 0.3rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .mini-btn {
+            padding: 0.2rem 0.4rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 2px;
+            font-size: 0.6rem;
+            transition: all 0.2s;
+            flex: 1;
+            text-align: center;
+        }
+        
+        .mini-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-trailer {
+            background: rgba(200, 0, 0, 0.3);
+            border-color: rgba(200, 0, 0, 0.5);
+        }
+        
+        .btn-rt {
+            background: rgba(230, 30, 30, 0.3);
+            border-color: rgba(230, 30, 30, 0.5);
+        }
+        
+        .btn-wiki {
+            background: rgba(50, 50, 50, 0.3);
+            border-color: rgba(100, 100, 100, 0.5);
+        }
+        
+        /* Lighter metadata for readability */
+        .back-meta {
+            font-size: 0.55rem;
+            color: #999;
+            line-height: 1.2;
+            text-align: center;
+            padding-top: 0.3rem;
+            border-top: 1px solid #444;
+        }
+    </style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <h1>Digitally Available Movies</h1>
-      <div class="meta">Window: Available for rent/purchase • Region: US • Stores: Any</div>
-    </header>
-    <main class="grid">
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/vntwlS3CAKfoLTs90GaoK6lymBC.jpg" alt="Hostile Takeover">
-        </div>
-        
-        <div class="title">Hostile Takeover (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 7.364
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1319895/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Hostile%20Takeover">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1319895">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/iyxwxDZCpIm0vIORaHpmgJv2BGF.jpg" alt="Nobody 2">
-        </div>
-        
-        <div class="title">Nobody 2 (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 7.43
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1007734/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Nobody%202">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1007734">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/jP5K3z0jFNngnA7siTk0vPLXhOV.jpg" alt="Americana">
-        </div>
-        
-        <div class="title">Americana (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 6.6
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/934456/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Americana">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/934456">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/k94kVhGoRJ1dSEzU5Gtj2qaZ539.jpg" alt="If I Run">
-        </div>
-        
-        <div class="title">If I Run (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 10.0
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1507450/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=If%20I%20Run">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1507450">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/v3ETgv42JkchzAYK4ZDI5VvsY3w.jpg" alt="Trouble Man!">
-        </div>
-        
-        <div class="title">Trouble Man! (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 6.4
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1218628/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Trouble%20Man!">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1218628">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/iRSQqEhxGJ2SbDjaJeWnZqmiywB.jpg" alt="Bang">
-        </div>
-        
-        <div class="title">Bang (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 8.0
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1491902/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Bang">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1491902">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/cWXUMfnMj4ioReprwsDZgt8sghK.jpg" alt="Sovereign">
-        </div>
-        
-        <div class="title">Sovereign (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 6.895
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1130022/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Sovereign">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1130022">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/yvirUYrva23IudARHn3mMGVxWqM.jpg" alt="War of the Worlds">
-        </div>
-        
-        <div class="title">War of the Worlds (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 4.168
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/755898/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=War%20of%20the%20Worlds">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/755898">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/3YtZHtXPNG5AleisgEatEfZOT2w.jpg" alt="Osiris">
-        </div>
-        
-        <div class="title">Osiris (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 6.492
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1241470/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Osiris">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1241470">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/vFWvWhfAvij8UIngg2Vf6JV95Cr.jpg" alt="The Pickup">
-        </div>
-        
-        <div class="title">The Pickup (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 6.515
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1106289/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=The%20Pickup">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1106289">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/8o6lkhL32xQJeB52IIG1us5BVey.jpg" alt="Smurfs">
-        </div>
-        
-        <div class="title">Smurfs (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 6.034
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/936108/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Smurfs">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/936108">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/w0wjPQKhlqisSbylf1sWZiNyc2h.jpg" alt="Night Carnage">
-        </div>
-        
-        <div class="title">Night Carnage (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 5.925
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/986206/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Night%20Carnage">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/986206">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/jrhXbIOFingzdLjkccjg9vZnqIp.jpg" alt="My Oxford Year">
-        </div>
-        
-        <div class="title">My Oxford Year (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 7.267
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1307078/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=My%20Oxford%20Year">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1307078">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/ltLqm9f9Ma3iCFmfXNHenzPEqda.jpg" alt="Shaman">
-        </div>
-        
-        <div class="title">Shaman (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 6.0
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1339166/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Shaman">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1339166">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/1jDo1nG7rtjaaQGpr6e73x9i9Xp.jpg" alt="Night Always Comes">
-        </div>
-        
-        <div class="title">Night Always Comes (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 6.136
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1254624/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Night%20Always%20Comes">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1254624">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/2qwhtWSKXDPZXVGoH0nw1uEbOcS.jpg" alt="Site">
-        </div>
-        
-        <div class="title">Site (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 6.333
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1188423/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Site">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1188423">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/kg7lrTWGKyzLnj0E7BXl52nro1N.jpg" alt="Eddington">
-        </div>
-        
-        <div class="title">Eddington (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 6.587
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/648878/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Eddington">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/648878">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/ynT06XivgBDkg7AtbDbX1dJeBGY.jpg" alt="Happy Gilmore 2">
-        </div>
-        
-        <div class="title">Happy Gilmore 2 (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 6.737
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1263256/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Happy%20Gilmore%202">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1263256">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/udtlwWSJ45S0uQm29BvFvjPJGW0.jpg" alt="Fixed">
-        </div>
-        
-        <div class="title">Fixed (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 6.53
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/537921/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Fixed">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/537921">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/kK1ugxST3tCJZjZEO37sLb4Yot5.jpg" alt="Snoopy Presents: A Summer Musical">
-        </div>
-        
-        <div class="title">Snoopy Presents: A Summer Musical (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 8.0
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1484453/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Snoopy%20Presents:%20A%20Summer%20Musical">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1484453">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/qJSSytlQAQuyXdQwZdaNNE5WAu1.jpg" alt="Queen of Bones">
-        </div>
-        
-        <div class="title">Queen of Bones (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 8.0
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1018852/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Queen%20of%20Bones">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1018852">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/aqZOJkBd3DR6ioacm136lP7BGvi.jpg" alt="Stolen: Heist of the Century">
-        </div>
-        
-        <div class="title">Stolen: Heist of the Century (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 7.4
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1513598/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Stolen:%20Heist%20of%20the%20Century">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1513598">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/aRWeT2UIkaWolqQ6fYeHOB1D6vA.jpg" alt="The Occupant">
-        </div>
-        
-        <div class="title">The Occupant (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 6.406
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1280444/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=The%20Occupant">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1280444">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/5hlNv3Kd9xovvSgrslWhMriGpZ8.jpg" alt="Wall to Wall">
-        </div>
-        
-        <div class="title">Wall to Wall (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 6.264
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1269208/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Wall%20to%20Wall">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1269208">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/sJTEJDlUwuXet2s8Ou6MUryqpQh.jpg" alt="Almost Family">
-        </div>
-        
-        <div class="title">Almost Family (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 6.6
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1429834/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Almost%20Family">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1429834">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/4hveI7tEISN8KU60UFJw1JRYKvv.jpg" alt="An Honest Life">
-        </div>
-        
-        <div class="title">An Honest Life (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 6.0
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1187436/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=An%20Honest%20Life">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1187436">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/2I8hMyZX9WXAjkvCTBLMM7XYBVL.jpg" alt="A Normal Woman">
-        </div>
-        
-        <div class="title">A Normal Woman (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 6.105
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1285728/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=A%20Normal%20Woman">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1285728">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/aE0q4awk7zto3Eql4cAeJuVAns9.jpg" alt="Saint Clare">
-        </div>
-        
-        <div class="title">Saint Clare (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 5.294
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1026222/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Saint%20Clare">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1026222">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/w3tg6Yf0Fwf8ScZWFscTVJtqXZ1.jpg" alt="Descendent">
-        </div>
-        
-        <div class="title">Descendent (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 5.333
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1422052/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Descendent">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1422052">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/uOQCP7RB97H2r8QELb4jaunWzNb.jpg" alt="Follow">
-        </div>
-        
-        <div class="title">Follow (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 8.038
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1236197/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Follow">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1236197">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/kOzwIr0R7WhaFgoYUZFLPZA2RBZ.jpg" alt="Highest 2 Lowest">
-        </div>
-        
-        <div class="title">Highest 2 Lowest (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 7.0
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1242434/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Highest%202%20Lowest">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1242434">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/mfuUAORL9v4hwrVes1FKdPuyf6p.jpg" alt="I'm Still a Superstar">
-        </div>
-        
-        <div class="title">I'm Still a Superstar (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 5.7
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1508562/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=I'm%20Still%20a%20Superstar">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1508562">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/gACBkTDNDP2GGspeFkn7AhCpiL3.jpg" alt="Trainwreck: P.I. Moms">
-        </div>
-        
-        <div class="title">Trainwreck: P.I. Moms (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 6.0
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1484267/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Trainwreck:%20P.I.%20Moms">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1484267">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/4QpWZlGZMYrAnlQizjVIMnAXnv0.jpg" alt="Trainwreck: Balloon Boy">
-        </div>
-        
-        <div class="title">Trainwreck: Balloon Boy (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 5.481
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1477566/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Trainwreck:%20Balloon%20Boy">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1477566">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/fTtQ0Garm1BcexZIxfEdWdzE5j8.jpg" alt="Jim Jefferies: Two Limb Policy">
-        </div>
-        
-        <div class="title">Jim Jefferies: Two Limb Policy (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 7.5
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1517042/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Jim%20Jefferies:%20Two%20Limb%20Policy">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1517042">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/s8UUGZg5oqAXHWHxyZmMupuTfuG.jpg" alt="Sunday Best: The Untold Story of Ed Sullivan">
-        </div>
-        
-        <div class="title">Sunday Best: The Untold Story of Ed Sullivan (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 8.333
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1516539/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Sunday%20Best:%20The%20Untold%20Story%20of%20Ed%20Sullivan">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1516539">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/qlgqhQo6m2MsiyZShHtxrYQCRcN.jpg" alt="Red Sonja">
-        </div>
-        
-        <div class="title">Red Sonja (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 5.9
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/13494/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Red%20Sonja">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/13494">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/druY5vhbnJSbFeq3V0AfDHYfXfe.jpg" alt="Vir Das: Fool Volume">
-        </div>
-        
-        <div class="title">Vir Das: Fool Volume (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 6.6
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1495110/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Vir%20Das:%20Fool%20Volume">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1495110">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/siSluERaWaMXjnLZJs4ImjIcJ6C.jpg" alt="Reclaim the Flag">
-        </div>
-        
-        <div class="title">Reclaim the Flag (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: —
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1506830/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Reclaim%20the%20Flag">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1506830">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/n9ap5I6VsePRAK2U67CJp2gOghI.jpg" alt="Sweet Revenge">
-        </div>
-        
-        <div class="title">Sweet Revenge (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 4.8
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1504382/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Sweet%20Revenge">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1504382">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/ombsmhYUqR4qqOLOxAyr5V8hbyv.jpg" alt="Superman">
-        </div>
-        
-        <div class="title">Superman (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 7.611
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1061474/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Superman">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1061474">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/e10AbPwcJk5b7ja3MQUVr5wHEeq.jpg" alt="Abraham's Boys">
-        </div>
-        
-        <div class="title">Abraham's Boys (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 5.0
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1452176/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Abraham's%20Boys">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1452176">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/7bcndiaTgu1Kj5a6qyCmsWYdtI.jpg" alt="Almost Cops">
-        </div>
-        
-        <div class="title">Almost Cops (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 5.914
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1374534/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Almost%20Cops">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1374534">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/jwMwRucnAROgWo9WLLmIqzHmmzi.jpg" alt="Madea's Destination Wedding">
-        </div>
-        
-        <div class="title">Madea's Destination Wedding (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 6.008
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1246310/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Madea's%20Destination%20Wedding">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1246310">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/fV9dswGQCvbpVsj1JOTrYCeos8w.jpg" alt="Aap Jaisa Koi">
-        </div>
-        
-        <div class="title">Aap Jaisa Koi (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 6.75
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1391013/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Aap%20Jaisa%20Koi">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1391013">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/6zXHrZ1wuOM4QRrEwzmYPQfZsUF.jpg" alt="It's Worth It by Dani Rovira">
-        </div>
-        
-        <div class="title">It's Worth It by Dani Rovira (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 8.5
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1506130/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=It's%20Worth%20It%20by%20Dani%20Rovira">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1506130">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/krrfKguKiToDlwRexetLsRsNtH6.jpg" alt="Z-O-M-B-I-E-S 4: Dawn of the Vampires">
-        </div>
-        
-        <div class="title">Z-O-M-B-I-E-S 4: Dawn of the Vampires (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 7.207
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1243341/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Z-O-M-B-I-E-S%204:%20Dawn%20of%20the%20Vampires">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1243341">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/vTX9CxFNEQOlfXsgqec7xmc5UtD.jpg" alt="Brick">
-        </div>
-        
-        <div class="title">Brick (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 5.855
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1425045/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Brick">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1425045">TMDB</a>
-        </div>
-      </article>
-      
-      <article class="card">
-        
-        <div class="poster">
-          <img src="https://image.tmdb.org/t/p/w500/yHYj2t3NzsjkHVYa0bPri4sMBsg.jpg" alt="Ziam">
-        </div>
-        
-        <div class="title">Ziam (2025)</div>
-        <div class="meta2">
-          RT: % • TMDB: 6.506
-        </div>
-        <div class="pills">
-          
-          <span class="pill">rent</span>
-          
-          <span class="pill">buy</span>
-          
-          <span class="pill">stream</span>
-          
-        </div>
-        <div class="meta2">
-          <a href="https://www.themoviedb.org/movie/1429744/watch">Watch options</a> •
-          <a href="https://www.justwatch.com/us/search?q=Ziam">JustWatch</a> •
-          <a href="https://www.themoviedb.org/movie/1429744">TMDB</a>
-        </div>
-      </article>
-      
-    </main>
-    <footer>
-      Data & images by TMDB — this product uses the TMDB API but is not endorsed or certified by TMDB.
-      <div>Generated: 2025-08-18 13:40</div>
-    </footer>
-  </div>
+    <div class="header">
+        <h1>New Release Wall</h1>
+        <div class="date-range">Digital Releases</div>
+    </div>
+    
+    <div class="movie-grid">
+        
+        <!-- Single Date Card per date -->
+        <div class="date-card">
+            <div class="month">AUG</div>
+            <div class="day">22</div>
+            <div class="year">2025</div>
+        </div>
+        
+        <!-- All movies for this date -->
+        
+        <div class="movie-card">
+            <div class="movie-card-inner">
+                <div class="card-face card-front">
+                    <img src="https://image.tmdb.org/t/p/w500/9JePWGvgg1t4BOojyZEVQdOWjXO.jpg" alt="F1" class="movie-poster">
+                    <div class="movie-info">
+                        <div class="movie-title">F1</div>
+                        <div class="movie-details">
+                            <div>Joseph Kosinski • 2025</div>
+                            <div>Brad Pitt, Damson Idris</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-face card-back" onclick="window.open('https://www.justwatch.com/us/search?q=F1', '_blank')">
+                    <div class="back-synopsis">
+                        Racing legend Sonny Hayes is coaxed out of retirement to lead a struggling Formula 1 team—and mentor a young hotshot driver—while chasing one more chance at glory.
+                    </div>
+                    <div class="back-buttons">
+                        <a href="https://www.youtube.com/watch?v=ge_ABjtYx88" class="mini-btn btn-trailer" onclick="event.stopPropagation()" target="_blank">Trailer</a>
+                        <a href="https://www.rottentomatoes.com/m/tt16311594" class="mini-btn btn-rt" onclick="event.stopPropagation()" target="_blank">RT N/A%</a>
+                        <a href="https://en.wikipedia.org/wiki/F1" class="mini-btn btn-wiki" onclick="event.stopPropagation()" target="_blank">Wiki</a>
+                    </div>
+                    <div class="back-meta">
+                        156 min • Plan B Entertainment • USA • NR
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        <!-- Single Date Card per date -->
+        <div class="date-card">
+            <div class="month">AUG</div>
+            <div class="day">19</div>
+            <div class="year">2025</div>
+        </div>
+        
+        <!-- All movies for this date -->
+        
+        <div class="movie-card">
+            <div class="movie-card-inner">
+                <div class="card-face card-front">
+                    <img src="https://image.tmdb.org/t/p/w500/z53D72EAOxGRqdr7KXXWp9dJiDe.jpg" alt="Mission: Impossible - The Final Reckoning" class="movie-poster">
+                    <div class="movie-info">
+                        <div class="movie-title">Mission: Impossible - The Final Reckoning</div>
+                        <div class="movie-details">
+                            <div>Christopher McQuarrie • 2025</div>
+                            <div>Tom Cruise, Hayley Atwell</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-face card-back" onclick="window.open('https://www.justwatch.com/us/search?q=Mission:+Impossible+-+The+Final+Reckoning', '_blank')">
+                    <div class="back-synopsis">
+                        Ethan Hunt and team continue their search for the terrifying AI known as the Entity — which has infiltrated intelligence networks all over the globe — with the world's governments and a mysterious ghost from Hunt's past on their trail. Joined by new allies and armed with the means to shut the Entity down for good, Hunt is in a race against time to prevent the world as we know it from changing forever.
+                    </div>
+                    <div class="back-buttons">
+                        <a href="https://www.youtube.com/watch?v=G1VBfMCZVkw" class="mini-btn btn-trailer" onclick="event.stopPropagation()" target="_blank">Trailer</a>
+                        <a href="https://www.rottentomatoes.com/m/tt9603208" class="mini-btn btn-rt" onclick="event.stopPropagation()" target="_blank">RT N/A%</a>
+                        <a href="https://en.wikipedia.org/wiki/Mission:_Impossible_-_The_Final_Reckoning" class="mini-btn btn-wiki" onclick="event.stopPropagation()" target="_blank">Wiki</a>
+                    </div>
+                    <div class="back-meta">
+                        170 min • Paramount Pictures • USA • NR
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="movie-card">
+            <div class="movie-card-inner">
+                <div class="card-face card-front">
+                    <img src="https://image.tmdb.org/t/p/w500/w2ARwtc1zoh0pyfwmyhpZHwuXgK.jpg" alt="Elio" class="movie-poster">
+                    <div class="movie-info">
+                        <div class="movie-title">Elio</div>
+                        <div class="movie-details">
+                            <div>Madeline Sharafian • 2025</div>
+                            <div>Yonas Kibreab, Zoe Saldaña</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-face card-back" onclick="window.open('https://www.justwatch.com/us/search?q=Elio', '_blank')">
+                    <div class="back-synopsis">
+                        Elio, a space fanatic with an active imagination, finds himself on a cosmic misadventure where he must form new bonds with eccentric alien lifeforms, navigate a crisis of intergalactic proportions and somehow discover who he is truly meant to be.
+                    </div>
+                    <div class="back-buttons">
+                        <a href="https://www.youtube.com/watch?v=yH5zbV7eweM" class="mini-btn btn-trailer" onclick="event.stopPropagation()" target="_blank">Trailer</a>
+                        <a href="https://www.rottentomatoes.com/m/tt4900148" class="mini-btn btn-rt" onclick="event.stopPropagation()" target="_blank">RT N/A%</a>
+                        <a href="https://en.wikipedia.org/wiki/Elio" class="mini-btn btn-wiki" onclick="event.stopPropagation()" target="_blank">Wiki</a>
+                    </div>
+                    <div class="back-meta">
+                        98 min • Pixar • USA • NR
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="movie-card">
+            <div class="movie-card-inner">
+                <div class="card-face card-front">
+                    <img src="https://image.tmdb.org/t/p/w500/raDMchyq3dJMqso2TVh75A123Xb.jpg" alt="Whisper of the Witch" class="movie-poster">
+                    <div class="movie-info">
+                        <div class="movie-title">Whisper of the Witch</div>
+                        <div class="movie-details">
+                            <div>Serik Beyseu • 2025</div>
+                            <div>Arthur Beschastny, Maryana Spivak</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-face card-back" onclick="window.open('https://www.justwatch.com/us/search?q=Whisper+of+the+Witch', '_blank')">
+                    <div class="back-synopsis">
+                        Mara, an ancient pagan spirit, hunts a group of teenagers taking their body parts to be reborn. A disillusioned and desperate investigator has to face his deepest fears to save the teenagers.
+                    </div>
+                    <div class="back-buttons">
+                        <a href="https://www.youtube.com/watch?v=NrNpPMEiTbc" class="mini-btn btn-trailer" onclick="event.stopPropagation()" target="_blank">Trailer</a>
+                        <a href="https://www.rottentomatoes.com/m/tt13358904" class="mini-btn btn-rt" onclick="event.stopPropagation()" target="_blank">RT N/A%</a>
+                        <a href="https://en.wikipedia.org/wiki/Whisper_of_the_Witch" class="mini-btn btn-wiki" onclick="event.stopPropagation()" target="_blank">Wiki</a>
+                    </div>
+                    <div class="back-meta">
+                        90 min • KD Studios • USA • NR
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="movie-card">
+            <div class="movie-card-inner">
+                <div class="card-face card-front">
+                    <img src="https://image.tmdb.org/t/p/w500/2xVyCvnuVVRpYohPxrvwxZiH49r.jpg" alt="House on Eden" class="movie-poster">
+                    <div class="movie-info">
+                        <div class="movie-title">House on Eden</div>
+                        <div class="movie-details">
+                            <div>Kris Collins • 2025</div>
+                            <div>Kris Collins, Celina Myers</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-face card-back" onclick="window.open('https://www.justwatch.com/us/search?q=House+on+Eden', '_blank')">
+                    <div class="back-synopsis">
+                        Paranormal investigators Kris, Celina and their videographer Jay are rerouted to an abandoned house deep in the woods, where they find themselves facing a force unlike anything they've encountered before. As the night spirals into chaos, missing crew members and eerie phenomena hint at an ancient, malevolent presence watching their every move.
+                    </div>
+                    <div class="back-buttons">
+                        <a href="https://www.youtube.com/watch?v=Pk3s4ZCqSbU" class="mini-btn btn-trailer" onclick="event.stopPropagation()" target="_blank">Trailer</a>
+                        <a href="https://www.rottentomatoes.com/m/tt33425631" class="mini-btn btn-rt" onclick="event.stopPropagation()" target="_blank">RT N/A%</a>
+                        <a href="https://en.wikipedia.org/wiki/House_on_Eden" class="mini-btn btn-wiki" onclick="event.stopPropagation()" target="_blank">Wiki</a>
+                    </div>
+                    <div class="back-meta">
+                        77 min • Spooky AF Productions • USA • NR
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        <!-- Single Date Card per date -->
+        <div class="date-card">
+            <div class="month">AUG</div>
+            <div class="day">15</div>
+            <div class="year">2025</div>
+        </div>
+        
+        <!-- All movies for this date -->
+        
+        <div class="movie-card">
+            <div class="movie-card-inner">
+                <div class="card-face card-front">
+                    <img src="https://image.tmdb.org/t/p/w500/1jDo1nG7rtjaaQGpr6e73x9i9Xp.jpg" alt="Night Always Comes" class="movie-poster">
+                    <div class="movie-info">
+                        <div class="movie-title">Night Always Comes</div>
+                        <div class="movie-details">
+                            <div>Benjamin Caron • 2025</div>
+                            <div>Vanessa Kirby, Jennifer Jason Leigh</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-face card-back" onclick="window.open('https://www.justwatch.com/us/search?q=Night+Always+Comes', '_blank')">
+                    <div class="back-synopsis">
+                        Facing eviction in a city her family can no longer afford, a woman plunges into a desperate and increasingly dangerous all-night search to raise $25,000.
+                    </div>
+                    <div class="back-buttons">
+                        <a href="https://www.youtube.com/watch?v=Gd44vTsTUhs" class="mini-btn btn-trailer" onclick="event.stopPropagation()" target="_blank">Trailer</a>
+                        <a href="https://www.rottentomatoes.com/m/tt31567422" class="mini-btn btn-rt" onclick="event.stopPropagation()" target="_blank">RT N/A%</a>
+                        <a href="https://en.wikipedia.org/wiki/Night_Always_Comes" class="mini-btn btn-wiki" onclick="event.stopPropagation()" target="_blank">Wiki</a>
+                    </div>
+                    <div class="back-meta">
+                        108 min • Aluna Entertainment • USA • NR
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="movie-card">
+            <div class="movie-card-inner">
+                <div class="card-face card-front">
+                    <img src="https://image.tmdb.org/t/p/w500/Of1UCdomAu0mJY2SNHHGjhnvx9.jpg" alt="Descendent" class="movie-poster">
+                    <div class="movie-info">
+                        <div class="movie-title">Descendent</div>
+                        <div class="movie-details">
+                            <div>Peter Cilella • 2025</div>
+                            <div>Ross Marquand, Sarah Bolger</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-face card-back" onclick="window.open('https://www.justwatch.com/us/search?q=Descendent', '_blank')">
+                    <div class="back-synopsis">
+                        After a traumatic brain injury triggers terrifying visions of extraterrestrials and a newfound talent for drawing, a father-to-be begins to question his reality and becomes obsessed with the need to protect his family from an unseen threat.
+                    </div>
+                    <div class="back-buttons">
+                        <a href="https://www.youtube.com/watch?v=HC1QwsXuO6E" class="mini-btn btn-trailer" onclick="event.stopPropagation()" target="_blank">Trailer</a>
+                        <a href="https://www.rottentomatoes.com/m/tt35521703" class="mini-btn btn-rt" onclick="event.stopPropagation()" target="_blank">RT N/A%</a>
+                        <a href="https://en.wikipedia.org/wiki/Descendent" class="mini-btn btn-wiki" onclick="event.stopPropagation()" target="_blank">Wiki</a>
+                    </div>
+                    <div class="back-meta">
+                        93 min • Rustic Films • USA • NR
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="movie-card">
+            <div class="movie-card-inner">
+                <div class="card-face card-front">
+                    <img src="https://image.tmdb.org/t/p/w500/v3ETgv42JkchzAYK4ZDI5VvsY3w.jpg" alt="Trouble Man!" class="movie-poster">
+                    <div class="movie-info">
+                        <div class="movie-title">Trouble Man!</div>
+                        <div class="movie-details">
+                            <div>Michael Jai White • 2025</div>
+                            <div>Michael Jai White, Method Man</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-face card-back" onclick="window.open('https://www.justwatch.com/us/search?q=Trouble+Man!', '_blank')">
+                    <div class="back-synopsis">
+                        Jaxen, a former cop turned Atlanta PI, is hired to find missing R&B star Jahari. His investigation uncovers her disappearance is connected to a larger conspiracy, forcing him to question those around him and his own past.
+                    </div>
+                    <div class="back-buttons">
+                        <a href="https://www.youtube.com/watch?v=ah6lrXkAwFY" class="mini-btn btn-trailer" onclick="event.stopPropagation()" target="_blank">Trailer</a>
+                        <a href="https://www.rottentomatoes.com/m/tt30459064" class="mini-btn btn-rt" onclick="event.stopPropagation()" target="_blank">RT N/A%</a>
+                        <a href="https://en.wikipedia.org/wiki/Trouble_Man!" class="mini-btn btn-wiki" onclick="event.stopPropagation()" target="_blank">Wiki</a>
+                    </div>
+                    <div class="back-meta">
+                        92 min • Samuel Goldwyn Films • USA • NR
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="movie-card">
+            <div class="movie-card-inner">
+                <div class="card-face card-front">
+                    <img src="https://image.tmdb.org/t/p/w500/4vO5IvwUXGr7LgXbBouhnakK3Uq.jpg" alt="A Spartan Dream" class="movie-poster">
+                    <div class="movie-info">
+                        <div class="movie-title">A Spartan Dream</div>
+                        <div class="movie-details">
+                            <div>M. Achilles • 2025</div>
+                            <div>Peter Bundic, Georgia Mesariti</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-face card-back" onclick="window.open('https://www.justwatch.com/us/search?q=A+Spartan+Dream', '_blank')">
+                    <div class="back-synopsis">
+                        An ancient-Greece-obsessed American travels to the land of his ancestors to sell his old family homestead. However, plans go awry when he falls in love with a beautiful Greek woman; he changes course to salvage the village and change history.
+                    </div>
+                    <div class="back-buttons">
+                        <a href="https://www.youtube.com/watch?v=wNPzvN2vA-Y" class="mini-btn btn-trailer" onclick="event.stopPropagation()" target="_blank">Trailer</a>
+                        <a href="https://www.rottentomatoes.com/m/tt30798862" class="mini-btn btn-rt" onclick="event.stopPropagation()" target="_blank">RT N/A%</a>
+                        <a href="https://en.wikipedia.org/wiki/A_Spartan_Dream" class="mini-btn btn-wiki" onclick="event.stopPropagation()" target="_blank">Wiki</a>
+                    </div>
+                    <div class="back-meta">
+                        97 min • Odyssey Entertainment • USA • NR
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="movie-card">
+            <div class="movie-card-inner">
+                <div class="card-face card-front">
+                    <img src="https://image.tmdb.org/t/p/w500/3KVq24NkOn98nrSEAFphnRWVWNd.jpg" alt="Hierarchy" class="movie-poster">
+                    <div class="movie-info">
+                        <div class="movie-title">Hierarchy</div>
+                        <div class="movie-details">
+                            <div>Russell K Reed • 2025</div>
+                            <div>Chiderah Uzowulu, Xavier Alvarado</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-face card-back" onclick="window.open('https://www.justwatch.com/us/search?q=Hierarchy', '_blank')">
+                    <div class="back-synopsis">
+                        In an undisclosed area of Texas after two adoptive brothers become entangled in criminal activity, forced to evade law enforcement and the greedy Russian mafia.
+                    </div>
+                    <div class="back-buttons">
+                        <a href="https://www.youtube.com/results?search_query=Hierarchy+2025+trailer" class="mini-btn btn-trailer" onclick="event.stopPropagation()" target="_blank">Trailer</a>
+                        <a href="https://www.rottentomatoes.com/m/tt13540044" class="mini-btn btn-rt" onclick="event.stopPropagation()" target="_blank">RT N/A%</a>
+                        <a href="https://en.wikipedia.org/wiki/Hierarchy" class="mini-btn btn-wiki" onclick="event.stopPropagation()" target="_blank">Wiki</a>
+                    </div>
+                    <div class="back-meta">
+                        98 min • Studio N/A • USA • NR
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="movie-card">
+            <div class="movie-card-inner">
+                <div class="card-face card-front">
+                    <img src="https://image.tmdb.org/t/p/w500/ombsmhYUqR4qqOLOxAyr5V8hbyv.jpg" alt="Superman" class="movie-poster">
+                    <div class="movie-info">
+                        <div class="movie-title">Superman</div>
+                        <div class="movie-details">
+                            <div>James Gunn • 2025</div>
+                            <div>David Corenswet, Rachel Brosnahan</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-face card-back" onclick="window.open('https://www.justwatch.com/us/search?q=Superman', '_blank')">
+                    <div class="back-synopsis">
+                        Superman, a journalist in Metropolis, embarks on a journey to reconcile his Kryptonian heritage with his human upbringing as Clark Kent.
+                    </div>
+                    <div class="back-buttons">
+                        <a href="https://www.youtube.com/watch?v=nZTgJy8ym34" class="mini-btn btn-trailer" onclick="event.stopPropagation()" target="_blank">Trailer</a>
+                        <a href="https://www.rottentomatoes.com/m/tt5950044" class="mini-btn btn-rt" onclick="event.stopPropagation()" target="_blank">RT N/A%</a>
+                        <a href="https://en.wikipedia.org/wiki/Superman" class="mini-btn btn-wiki" onclick="event.stopPropagation()" target="_blank">Wiki</a>
+                    </div>
+                    <div class="back-meta">
+                        130 min • DC Studios • USA • NR
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="movie-card">
+            <div class="movie-card-inner">
+                <div class="card-face card-front">
+                    <img src="https://image.tmdb.org/t/p/w500/uis9PJkI6WHRczCumsfPFaaUAxm.jpg" alt="The Siege at Thorn High" class="movie-poster">
+                    <div class="movie-info">
+                        <div class="movie-title">The Siege at Thorn High</div>
+                        <div class="movie-details">
+                            <div>Joko Anwar • 2025</div>
+                            <div>Morgan Oey, Omara Esteghlal</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-face card-back" onclick="window.open('https://www.justwatch.com/us/search?q=The+Siege+at+Thorn+High', '_blank')">
+                    <div class="back-synopsis">
+                        Edwin promised to his sister on her death bed to find her son she gave up long time ago. Edwin's quest brought him to become a substitute teacher in Duri High School, Jakarta, a school for juvenile delinquents. There he must face the most violent students to find his nephew. When he eventually finds the boy, a city-wide riot erupts and Edwin is trapped im the school with the cruel kids out for his blood.
+                    </div>
+                    <div class="back-buttons">
+                        <a href="https://www.youtube.com/watch?v=cMhJ3uS01xY" class="mini-btn btn-trailer" onclick="event.stopPropagation()" target="_blank">Trailer</a>
+                        <a href="https://www.rottentomatoes.com/m/tt33479839" class="mini-btn btn-rt" onclick="event.stopPropagation()" target="_blank">RT N/A%</a>
+                        <a href="https://en.wikipedia.org/wiki/The_Siege_at_Thorn_High" class="mini-btn btn-wiki" onclick="event.stopPropagation()" target="_blank">Wiki</a>
+                    </div>
+                    <div class="back-meta">
+                        118 min • Come and See Pictures • USA • NR
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        <!-- Single Date Card per date -->
+        <div class="date-card">
+            <div class="month">AUG</div>
+            <div class="day">14</div>
+            <div class="year">2025</div>
+        </div>
+        
+        <!-- All movies for this date -->
+        
+        <div class="movie-card">
+            <div class="movie-card-inner">
+                <div class="card-face card-front">
+                    <img src="https://image.tmdb.org/t/p/w500/kK1ugxST3tCJZjZEO37sLb4Yot5.jpg" alt="Snoopy Presents: A Summer Musical" class="movie-poster">
+                    <div class="movie-info">
+                        <div class="movie-title">Snoopy Presents: A Summer Musical</div>
+                        <div class="movie-details">
+                            <div>Erik Wiese • 2025</div>
+                            <div>Etienne Kellici, Hattie Kragten</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-face card-back" onclick="window.open('https://www.justwatch.com/us/search?q=Snoopy+Presents:+A+Summer+Musical', '_blank')">
+                    <div class="back-synopsis">
+                        Music and glee fill the air as Charlie Brown and the gang head off to summer camp. First-timer Sally doesn't get what all the hype is about. But when the camp may be forced to close, they team up to save it so more kids can make their own special memories.
+                    </div>
+                    <div class="back-buttons">
+                        <a href="https://www.youtube.com/watch?v=Bnd8wceX9ok" class="mini-btn btn-trailer" onclick="event.stopPropagation()" target="_blank">Trailer</a>
+                        <a href="https://www.rottentomatoes.com/m/tt36988583" class="mini-btn btn-rt" onclick="event.stopPropagation()" target="_blank">RT N/A%</a>
+                        <a href="https://en.wikipedia.org/wiki/Snoopy_Presents:_A_Summer_Musical" class="mini-btn btn-wiki" onclick="event.stopPropagation()" target="_blank">Wiki</a>
+                    </div>
+                    <div class="back-meta">
+                        40 min • WildBrain Studios • USA • NR
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="movie-card">
+            <div class="movie-card-inner">
+                <div class="card-face card-front">
+                    <img src="https://image.tmdb.org/t/p/w500/tPExtAM958Gx07itJ7nWqSddBQ9.jpg" alt="Mononoke the Movie: Chapter II - The Ashes of Rage" class="movie-poster">
+                    <div class="movie-info">
+                        <div class="movie-title">Mononoke the Movie: Chapter II - The Ashes of Rage</div>
+                        <div class="movie-details">
+                            <div>Kenji Nakamura • 2025</div>
+                            <div>Hiroshi Kamiya, Cho</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-face card-back" onclick="window.open('https://www.justwatch.com/us/search?q=Mononoke+the+Movie:+Chapter+II+-+The+Ashes+of+Rage', '_blank')">
+                    <div class="back-synopsis">
+                        The Medicine Seller returns as the Edo harem faces a new crisis, with family feuds, inner turmoil and fiery envy igniting the birth of a raging spirit.
+                    </div>
+                    <div class="back-buttons">
+                        <a href="https://www.youtube.com/watch?v=5gYyveM2FV4" class="mini-btn btn-trailer" onclick="event.stopPropagation()" target="_blank">Trailer</a>
+                        <a href="https://www.rottentomatoes.com/m/tt35301440" class="mini-btn btn-rt" onclick="event.stopPropagation()" target="_blank">RT N/A%</a>
+                        <a href="https://en.wikipedia.org/wiki/Mononoke_the_Movie:_Chapter_II_-_The_Ashes_of_Rage" class="mini-btn btn-wiki" onclick="event.stopPropagation()" target="_blank">Wiki</a>
+                    </div>
+                    <div class="back-meta">
+                        75 min • EOTA • USA • NR
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        <!-- Single Date Card per date -->
+        <div class="date-card">
+            <div class="month">AUG</div>
+            <div class="day">13</div>
+            <div class="year">2025</div>
+        </div>
+        
+        <!-- All movies for this date -->
+        
+        <div class="movie-card">
+            <div class="movie-card-inner">
+                <div class="card-face card-front">
+                    <img src="https://image.tmdb.org/t/p/w500/udtlwWSJ45S0uQm29BvFvjPJGW0.jpg" alt="Fixed" class="movie-poster">
+                    <div class="movie-info">
+                        <div class="movie-title">Fixed</div>
+                        <div class="movie-details">
+                            <div>Genndy Tartakovsky • 2025</div>
+                            <div>Adam Devine, Idris Elba</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-face card-back" onclick="window.open('https://www.justwatch.com/us/search?q=Fixed', '_blank')">
+                    <div class="back-synopsis">
+                        After learning he's getting neutered, a dog has 24 hours to squeeze in one last balls-to-the-wall adventure with the boys.
+                    </div>
+                    <div class="back-buttons">
+                        <a href="https://www.youtube.com/watch?v=kwczMER2yho" class="mini-btn btn-trailer" onclick="event.stopPropagation()" target="_blank">Trailer</a>
+                        <a href="https://www.rottentomatoes.com/m/tt8785038" class="mini-btn btn-rt" onclick="event.stopPropagation()" target="_blank">RT N/A%</a>
+                        <a href="https://en.wikipedia.org/wiki/Fixed" class="mini-btn btn-wiki" onclick="event.stopPropagation()" target="_blank">Wiki</a>
+                    </div>
+                    <div class="back-meta">
+                        87 min • Sony Pictures Animation • USA • NR
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="movie-card">
+            <div class="movie-card-inner">
+                <div class="card-face card-front">
+                    <img src="https://image.tmdb.org/t/p/w500/nwanTjeUvyHD1dBj1938Xhbgltq.jpg" alt="Songs from the Hole" class="movie-poster">
+                    <div class="movie-info">
+                        <div class="movie-title">Songs from the Hole</div>
+                        <div class="movie-details">
+                            <div>Contessa Gayles • 2025</div>
+                            <div>James "JJ'88" Jacobs, Indigo Mateo</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-face card-back" onclick="window.open('https://www.justwatch.com/us/search?q=Songs+from+the+Hole', '_blank')">
+                    <div class="back-synopsis">
+                        Sentenced to life in prison at 15, musician JJ'88 finds hope by writing songs during solitary confinement in this award-winning documentary visual album.
+                    </div>
+                    <div class="back-buttons">
+                        <a href="https://www.youtube.com/watch?v=T3YlxXmuDRk" class="mini-btn btn-trailer" onclick="event.stopPropagation()" target="_blank">Trailer</a>
+                        <a href="https://www.rottentomatoes.com/m/tt30835190" class="mini-btn btn-rt" onclick="event.stopPropagation()" target="_blank">RT N/A%</a>
+                        <a href="https://en.wikipedia.org/wiki/Songs_from_the_Hole" class="mini-btn btn-wiki" onclick="event.stopPropagation()" target="_blank">Wiki</a>
+                    </div>
+                    <div class="back-meta">
+                        97 min • Impact Partners • USA • NR
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        <!-- Single Date Card per date -->
+        <div class="date-card">
+            <div class="month">AUG</div>
+            <div class="day">12</div>
+            <div class="year">2025</div>
+        </div>
+        
+        <!-- All movies for this date -->
+        
+        <div class="movie-card">
+            <div class="movie-card-inner">
+                <div class="card-face card-front">
+                    <img src="https://image.tmdb.org/t/p/w500/fTtQ0Garm1BcexZIxfEdWdzE5j8.jpg" alt="Jim Jefferies: Two Limb Policy" class="movie-poster">
+                    <div class="movie-info">
+                        <div class="movie-title">Jim Jefferies: Two Limb Policy</div>
+                        <div class="movie-details">
+                            <div>Scott Zabielski • 2025</div>
+                            <div>Jim Jefferies</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-face card-back" onclick="window.open('https://www.justwatch.com/us/search?q=Jim+Jefferies:+Two+Limb+Policy', '_blank')">
+                    <div class="back-synopsis">
+                        Comedian Jim Jefferies unleashes his thoughts on tiny mustaches, straight-guy struggles and why acting doesn't count as a real job.
+                    </div>
+                    <div class="back-buttons">
+                        <a href="https://www.youtube.com/watch?v=078p_FjZC_4" class="mini-btn btn-trailer" onclick="event.stopPropagation()" target="_blank">Trailer</a>
+                        <a href="https://www.rottentomatoes.com/m/tt37649515" class="mini-btn btn-rt" onclick="event.stopPropagation()" target="_blank">RT N/A%</a>
+                        <a href="https://en.wikipedia.org/wiki/Jim_Jefferies:_Two_Limb_Policy" class="mini-btn btn-wiki" onclick="event.stopPropagation()" target="_blank">Wiki</a>
+                    </div>
+                    <div class="back-meta">
+                        63 min • Studio N/A • USA • NR
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="movie-card">
+            <div class="movie-card-inner">
+                <div class="card-face card-front">
+                    <img src="https://image.tmdb.org/t/p/w500/a0bODl3Ieix1qcGRLIx6PZvluzB.jpg" alt="No Tears in Hell" class="movie-poster">
+                    <div class="movie-info">
+                        <div class="movie-title">No Tears in Hell</div>
+                        <div class="movie-details">
+                            <div>Michael Caissie • 2025</div>
+                            <div>Luke Baines, Gwen Van Dam</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-face card-back" onclick="window.open('https://www.justwatch.com/us/search?q=No+Tears+in+Hell', '_blank')">
+                    <div class="back-synopsis">
+                        In the frozen darkness of an Alaskan winter, a mother and son turn their home into a house of nightmares — luring victims into a twisted web of abuse and cannibalism. Based on the terrifying true story of Russian serial killer Alexander Spesivtsev.
+                    </div>
+                    <div class="back-buttons">
+                        <a href="https://www.youtube.com/watch?v=QrkxcRqTIQM" class="mini-btn btn-trailer" onclick="event.stopPropagation()" target="_blank">Trailer</a>
+                        <a href="https://www.rottentomatoes.com/m/tt28321883" class="mini-btn btn-rt" onclick="event.stopPropagation()" target="_blank">RT N/A%</a>
+                        <a href="https://en.wikipedia.org/wiki/No_Tears_in_Hell" class="mini-btn btn-wiki" onclick="event.stopPropagation()" target="_blank">Wiki</a>
+                    </div>
+                    <div class="back-meta">
+                        101 min • Bulldog Brothers Entertainment • USA • NR
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="movie-card">
+            <div class="movie-card-inner">
+                <div class="card-face card-front">
+                    <img src="https://image.tmdb.org/t/p/w500/8o6lkhL32xQJeB52IIG1us5BVey.jpg" alt="Smurfs" class="movie-poster">
+                    <div class="movie-info">
+                        <div class="movie-title">Smurfs</div>
+                        <div class="movie-details">
+                            <div>Chris Miller • 2025</div>
+                            <div>Rihanna, James Corden</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-face card-back" onclick="window.open('https://www.justwatch.com/us/search?q=Smurfs', '_blank')">
+                    <div class="back-synopsis">
+                        When Papa Smurf is mysteriously taken by evil wizards, Razamel and Gargamel, Smurfette leads the Smurfs on a mission into the real world to save him. With the help of new friends, the Smurfs must discover what defines their destiny to save the universe.
+                    </div>
+                    <div class="back-buttons">
+                        <a href="https://www.youtube.com/watch?v=_N7kNc4-ZUg" class="mini-btn btn-trailer" onclick="event.stopPropagation()" target="_blank">Trailer</a>
+                        <a href="https://www.rottentomatoes.com/m/tt18069420" class="mini-btn btn-rt" onclick="event.stopPropagation()" target="_blank">RT N/A%</a>
+                        <a href="https://en.wikipedia.org/wiki/Smurfs" class="mini-btn btn-wiki" onclick="event.stopPropagation()" target="_blank">Wiki</a>
+                    </div>
+                    <div class="back-meta">
+                        89 min • Paramount Animation • USA • NR
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="movie-card">
+            <div class="movie-card-inner">
+                <div class="card-face card-front">
+                    <img src="https://image.tmdb.org/t/p/w500/kg7lrTWGKyzLnj0E7BXl52nro1N.jpg" alt="Eddington" class="movie-poster">
+                    <div class="movie-info">
+                        <div class="movie-title">Eddington</div>
+                        <div class="movie-details">
+                            <div>Ari Aster • 2025</div>
+                            <div>Joaquin Phoenix, Pedro Pascal</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-face card-back" onclick="window.open('https://www.justwatch.com/us/search?q=Eddington', '_blank')">
+                    <div class="back-synopsis">
+                        In May of 2020, a standoff between a small-town sheriff and mayor sparks a powder keg as neighbor is pitted against neighbor in Eddington, New Mexico.
+                    </div>
+                    <div class="back-buttons">
+                        <a href="https://www.youtube.com/watch?v=ytyBfsqN3eI" class="mini-btn btn-trailer" onclick="event.stopPropagation()" target="_blank">Trailer</a>
+                        <a href="https://www.rottentomatoes.com/m/tt31176520" class="mini-btn btn-rt" onclick="event.stopPropagation()" target="_blank">RT N/A%</a>
+                        <a href="https://en.wikipedia.org/wiki/Eddington" class="mini-btn btn-wiki" onclick="event.stopPropagation()" target="_blank">Wiki</a>
+                    </div>
+                    <div class="back-meta">
+                        149 min • A24 • USA • NR
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        <!-- Single Date Card per date -->
+        <div class="date-card">
+            <div class="month">AUG</div>
+            <div class="day">8</div>
+            <div class="year">2025</div>
+        </div>
+        
+        <!-- All movies for this date -->
+        
+        <div class="movie-card">
+            <div class="movie-card-inner">
+                <div class="card-face card-front">
+                    <img src="https://image.tmdb.org/t/p/w500/wydPRb0Zs4lBANfvu0iEEpxULyv.jpg" alt="Site" class="movie-poster">
+                    <div class="movie-info">
+                        <div class="movie-title">Site</div>
+                        <div class="movie-details">
+                            <div>Jason Eric Perlman • 2025</div>
+                            <div>Arielle Kebbel, Theo Rossi</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-face card-back" onclick="window.open('https://www.justwatch.com/us/search?q=Site', '_blank')">
+                    <div class="back-synopsis">
+                        After a terrifying encounter at an abandoned government test site, a small town family man begins seeing haunting visions of a past that threatens to destroy his present.
+                    </div>
+                    <div class="back-buttons">
+                        <a href="https://www.youtube.com/watch?v=gvtcNsE6oZk" class="mini-btn btn-trailer" onclick="event.stopPropagation()" target="_blank">Trailer</a>
+                        <a href="https://www.rottentomatoes.com/m/tt10278542" class="mini-btn btn-rt" onclick="event.stopPropagation()" target="_blank">RT N/A%</a>
+                        <a href="https://en.wikipedia.org/wiki/Site" class="mini-btn btn-wiki" onclick="event.stopPropagation()" target="_blank">Wiki</a>
+                    </div>
+                    <div class="back-meta">
+                        110 min • Entelekey Media • USA • NR
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="movie-card">
+            <div class="movie-card-inner">
+                <div class="card-face card-front">
+                    <img src="https://image.tmdb.org/t/p/w500/aqZOJkBd3DR6ioacm136lP7BGvi.jpg" alt="Stolen: Heist of the Century" class="movie-poster">
+                    <div class="movie-info">
+                        <div class="movie-title">Stolen: Heist of the Century</div>
+                        <div class="movie-details">
+                            <div>Mark Lewis • 2025</div>
+                            <div>Agim De Bruycker, Patrick Peys</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-face card-back" onclick="window.open('https://www.justwatch.com/us/search?q=Stolen:+Heist+of+the+Century', '_blank')">
+                    <div class="back-synopsis">
+                        Antwerp, 2003. A gang of thieves rob the impenetrable Diamond Center. Who was behind one of the world's biggest heists - and how did they pull it off?
+                    </div>
+                    <div class="back-buttons">
+                        <a href="https://www.youtube.com/watch?v=CJ_kYC14TTM" class="mini-btn btn-trailer" onclick="event.stopPropagation()" target="_blank">Trailer</a>
+                        <a href="https://www.rottentomatoes.com/m/tt37543886" class="mini-btn btn-rt" onclick="event.stopPropagation()" target="_blank">RT N/A%</a>
+                        <a href="https://en.wikipedia.org/wiki/Stolen:_Heist_of_the_Century" class="mini-btn btn-wiki" onclick="event.stopPropagation()" target="_blank">Wiki</a>
+                    </div>
+                    <div class="back-meta">
+                        96 min • Amblin Entertainment • USA • NR
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="movie-card">
+            <div class="movie-card-inner">
+                <div class="card-face card-front">
+                    <img src="https://image.tmdb.org/t/p/w500/aRWeT2UIkaWolqQ6fYeHOB1D6vA.jpg" alt="The Occupant" class="movie-poster">
+                    <div class="movie-info">
+                        <div class="movie-title">The Occupant</div>
+                        <div class="movie-details">
+                            <div>Hugo Keijzer • 2025</div>
+                            <div>Ella Balinska, Rob Delaney</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-face card-back" onclick="window.open('https://www.justwatch.com/us/search?q=The+Occupant', '_blank')">
+                    <div class="back-synopsis">
+                        Desperate to save her sister, Abby takes a dangerous job in the remote Georgian wilderness. Stranded in the mountains after her helicopter crashes, she finds hope through John, a mysterious helper radioing from nearby. As he guides her through the harsh conditions, Abby struggles to survive, and her grip on reality falters until she is faced with an impossible choice.
+                    </div>
+                    <div class="back-buttons">
+                        <a href="https://www.youtube.com/watch?v=1ekDq7HCpKA" class="mini-btn btn-trailer" onclick="event.stopPropagation()" target="_blank">Trailer</a>
+                        <a href="https://www.rottentomatoes.com/m/tt7230422" class="mini-btn btn-rt" onclick="event.stopPropagation()" target="_blank">RT N/A%</a>
+                        <a href="https://en.wikipedia.org/wiki/The_Occupant" class="mini-btn btn-wiki" onclick="event.stopPropagation()" target="_blank">Wiki</a>
+                    </div>
+                    <div class="back-meta">
+                        104 min • Revolver Amsterdam • USA • NR
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="movie-card">
+            <div class="movie-card-inner">
+                <div class="card-face card-front">
+                    <img src="https://image.tmdb.org/t/p/w500/hOzZDcOQEK5edBnVrine9n9Ht4n.jpg" alt="Birthrite" class="movie-poster">
+                    <div class="movie-info">
+                        <div class="movie-title">Birthrite</div>
+                        <div class="movie-details">
+                            <div>Ross Partridge • 2025</div>
+                            <div>Alice Kremelberg, Michael Chernus</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-face card-back" onclick="window.open('https://www.justwatch.com/us/search?q=Birthrite', '_blank')">
+                    <div class="back-synopsis">
+                        When a pregnant woman is bequeathed a home from an estranged aunt, she and her girlfriend leave the city behind to begin new chapter. But when a karmic debt threatens the life of their unborn child, they soon discover their place in the cursed history of the town.
+                    </div>
+                    <div class="back-buttons">
+                        <a href="https://www.youtube.com/watch?v=1ygTvQyCVGA" class="mini-btn btn-trailer" onclick="event.stopPropagation()" target="_blank">Trailer</a>
+                        <a href="https://www.rottentomatoes.com/m/tt28235110" class="mini-btn btn-rt" onclick="event.stopPropagation()" target="_blank">RT N/A%</a>
+                        <a href="https://en.wikipedia.org/wiki/Birthrite" class="mini-btn btn-wiki" onclick="event.stopPropagation()" target="_blank">Wiki</a>
+                    </div>
+                    <div class="back-meta">
+                        100 min • K7 Storytellers • USA • NR
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="movie-card">
+            <div class="movie-card-inner">
+                <div class="card-face card-front">
+                    <img src="https://image.tmdb.org/t/p/w500/57Mjy3pRlP8iWqr6iev9kAuWHug.jpg" alt="Death Letter Blues" class="movie-poster">
+                    <div class="movie-info">
+                        <div class="movie-title">Death Letter Blues</div>
+                        <div class="movie-details">
+                            <div>Michael Stevantoni • 2025</div>
+                            <div>Sherman Augustus, Karole Foreman</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-face card-back" onclick="window.open('https://www.justwatch.com/us/search?q=Death+Letter+Blues', '_blank')">
+                    <div class="back-synopsis">
+                        A priest with wavering faith investigates the puzzling death of a local legend known as "Feral Boy," discovering eerie links to his personal demons.
+                    </div>
+                    <div class="back-buttons">
+                        <a href="https://www.youtube.com/watch?v=uXSE0N6M0PI" class="mini-btn btn-trailer" onclick="event.stopPropagation()" target="_blank">Trailer</a>
+                        <a href="https://www.rottentomatoes.com/m/tt26238962" class="mini-btn btn-rt" onclick="event.stopPropagation()" target="_blank">RT N/A%</a>
+                        <a href="https://en.wikipedia.org/wiki/Death_Letter_Blues" class="mini-btn btn-wiki" onclick="event.stopPropagation()" target="_blank">Wiki</a>
+                    </div>
+                    <div class="back-meta">
+                        79 min • Trikon Productions • USA • NR
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="movie-card">
+            <div class="movie-card-inner">
+                <div class="card-face card-front">
+                    <img src="https://image.tmdb.org/t/p/w500/ltLqm9f9Ma3iCFmfXNHenzPEqda.jpg" alt="Shaman" class="movie-poster">
+                    <div class="movie-info">
+                        <div class="movie-title">Shaman</div>
+                        <div class="movie-details">
+                            <div>Antonio Negret • 2025</div>
+                            <div>Sara Canning, Daniel Gillies</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-face card-back" onclick="window.open('https://www.justwatch.com/us/search?q=Shaman', '_blank')">
+                    <div class="back-synopsis">
+                        A Missionary converting an Indigenous Community in a remote Ecuadorian volcano must come to terms with her own Faith when her son is possessed by dark forces older than her own religion.
+                    </div>
+                    <div class="back-buttons">
+                        <a href="https://www.youtube.com/watch?v=hQITvMvJW1M" class="mini-btn btn-trailer" onclick="event.stopPropagation()" target="_blank">Trailer</a>
+                        <a href="https://www.rottentomatoes.com/m/tt28554021" class="mini-btn btn-rt" onclick="event.stopPropagation()" target="_blank">RT N/A%</a>
+                        <a href="https://en.wikipedia.org/wiki/Shaman" class="mini-btn btn-wiki" onclick="event.stopPropagation()" target="_blank">Wiki</a>
+                    </div>
+                    <div class="back-meta">
+                        93 min • Night Tree • USA • NR
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        <!-- Single Date Card per date -->
+        <div class="date-card">
+            <div class="month">AUG</div>
+            <div class="day">7</div>
+            <div class="year">2025</div>
+        </div>
+        
+        <!-- All movies for this date -->
+        
+        <div class="movie-card">
+            <div class="movie-card-inner">
+                <div class="card-face card-front">
+                    <img src="https://image.tmdb.org/t/p/w500/71YQsPJKXsYDePe6HNMVYSt9OLL.jpg" alt="Grounded in Love" class="movie-poster">
+                    <div class="movie-info">
+                        <div class="movie-title">Grounded in Love</div>
+                        <div class="movie-details">
+                            <div>Ernie Barbarash • 2025</div>
+                            <div>Danica McKellar, Trevor Donovan</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-face card-back" onclick="window.open('https://www.justwatch.com/us/search?q=Grounded+in+Love', '_blank')">
+                    <div class="back-synopsis">
+                        Annie is a career flight attendant who loves her job and traveling the world, is dealt a blow when an airlines merger causes her to be furloughed, a setback further compounded by breaking up with a selfish boyfriend. Looking for a reprieve, Annie drives from Manhattan to her grandmother’s Kentucky farm. After a few character-building days, life on the farm ultimately brings Annie unexpected blessings in the form of rediscovering her faith, and reconnecting with her handsome childhood friend, Jake, who has just moved back from the big city to create a more grounded and intentional life for himself.
+                    </div>
+                    <div class="back-buttons">
+                        <a href="https://www.youtube.com/results?search_query=Grounded in Love+2025+trailer" class="mini-btn btn-trailer" onclick="event.stopPropagation()" target="_blank">Trailer</a>
+                        <a href="https://www.rottentomatoes.com/m/tt36514129" class="mini-btn btn-rt" onclick="event.stopPropagation()" target="_blank">RT N/A%</a>
+                        <a href="https://en.wikipedia.org/wiki/Grounded_in_Love" class="mini-btn btn-wiki" onclick="event.stopPropagation()" target="_blank">Wiki</a>
+                    </div>
+                    <div class="back-meta">
+                        86 min • Motion Picture Corporation of America • USA • NR
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
 </body>
 </html>

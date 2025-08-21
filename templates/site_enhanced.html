@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Release Wall</title>
+    <title>{{ site_title }}</title>
     <style>
         * {
             margin: 0;
@@ -20,397 +20,258 @@
         
         .header {
             text-align: center;
-            padding: 2rem 1rem;
+            padding: 3rem 1rem 2rem;
             background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
-            border-bottom: 1px solid #333;
         }
         
         .header h1 {
             font-size: 2.5rem;
             font-weight: 300;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.08em;
             margin-bottom: 0.5rem;
+            text-transform: uppercase;
         }
         
-        .header .subtitle {
+        .header .date-range {
             color: #888;
             font-size: 1rem;
-        }
-        
-        .controls {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            padding: 1.5rem;
-            flex-wrap: wrap;
-        }
-        
-        .controls button {
-            padding: 0.5rem 1.5rem;
-            background: #222;
-            color: #fff;
-            border: 1px solid #444;
-            border-radius: 2rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 0.9rem;
-        }
-        
-        .controls button:hover {
-            background: #333;
-            border-color: #666;
-        }
-        
-        .controls button.active {
-            background: #e50914;
-            border-color: #e50914;
+            letter-spacing: 0.05em;
         }
         
         .movie-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
             padding: 2rem;
             max-width: 1400px;
             margin: 0 auto;
+            align-items: flex-start;
         }
         
-        .movie-card {
-            position: relative;
-            width: 100%;
+        /* Date Card - HALF WIDTH */
+        .date-card {
+            width: 80px;
             aspect-ratio: 2/3;
-            transform-style: preserve-3d;
-            transition: transform 0.6s;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border: 1px solid #333;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0.5rem;
+        }
+        
+        .date-card .month {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #888;
+            margin-bottom: 0.3rem;
+        }
+        
+        .date-card .day {
+            font-size: 2rem;
+            font-weight: 200;
+            line-height: 1;
+            margin-bottom: 0.3rem;
+        }
+        
+        .date-card .year {
+            font-size: 0.7rem;
+            color: #666;
+        }
+        
+        /* Movie Card Container */
+        .movie-card {
+            width: 160px;
+            aspect-ratio: 2/3;
+            perspective: 1000px;
             cursor: pointer;
         }
         
-        .movie-card:hover {
+        .movie-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+        }
+        
+        .movie-card:hover .movie-card-inner {
             transform: rotateY(180deg);
         }
         
+        /* Card Faces */
         .card-face {
             position: absolute;
             width: 100%;
             height: 100%;
             backface-visibility: hidden;
-            border-radius: 8px;
+            border-radius: 4px;
             overflow: hidden;
-            background: #1a1a1a;
         }
         
         .card-front {
-            z-index: 2;
+            background: #1a1a1a;
+            display: flex;
+            flex-direction: column;
         }
         
         .card-back {
+            background: linear-gradient(135deg, #1e1e1e 0%, #2a2a2a 100%);
             transform: rotateY(180deg);
-            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-            padding: 1rem;
+            padding: 0.75rem;
             display: flex;
             flex-direction: column;
-            color: #fff;
+            font-size: 0.65rem;
+            color: #ccc;
+            cursor: pointer;
         }
         
+        /* Front Card Content */
         .movie-poster {
             width: 100%;
-            height: 75%;
+            flex: 1;
             object-fit: cover;
-            background: #2a2a2a;
         }
         
         .movie-info {
-            padding: 0.75rem;
             background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
-            height: 25%;
+            padding: 0.5rem;
+            min-height: 4.5rem;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: space-between;
         }
         
         .movie-title {
-            font-size: 0.9rem;
             font-weight: 600;
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.2rem;
+            font-size: 0.75rem;
+            line-height: 1.2;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
         
-        .movie-year {
-            font-size: 0.8rem;
-            color: #888;
-            margin-bottom: 0.25rem;
-        }
-        
-        .movie-credits {
-            font-size: 0.75rem;
-            color: #aaa;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        
-        /* Card Back Styles */
-        .back-header {
-            margin-bottom: 1rem;
-        }
-        
-        .back-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-        
-        .back-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            font-size: 0.75rem;
-            color: #aaa;
-            margin-bottom: 0.5rem;
-        }
-        
-        .rt-score {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.25rem;
-            color: #fa320a;
-            text-decoration: none;
-            font-weight: 600;
-        }
-        
-        .rt-score:hover {
-            color: #ff6b4a;
-        }
-        
-        .synopsis {
-            flex: 1;
-            font-size: 0.8rem;
-            line-height: 1.4;
+        .movie-details {
             color: #ccc;
-            overflow-y: auto;
-            margin-bottom: 1rem;
+            font-size: 0.65rem;
+            line-height: 1.3;
         }
         
-        .action-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
+        .movie-details div {
+            overflow: visible;
+            line-height: 1.2;
+            margin-bottom: 0.1rem;
         }
         
-        .action-row {
-            display: flex;
-            gap: 0.5rem;
-        }
-        
-        .btn {
+        /* Back Card Content - NO TITLE, VHS STYLE */
+        .back-synopsis {
             flex: 1;
-            padding: 0.5rem;
-            background: #333;
+            line-height: 1.3;
+            margin-bottom: 0.5rem;
+            overflow-y: auto;
+            font-size: 0.7rem;
+        }
+        
+        .back-buttons {
+            display: flex;
+            gap: 0.3rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .mini-btn {
+            padding: 0.2rem 0.4rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             color: #fff;
-            border: 1px solid #555;
-            border-radius: 4px;
             text-decoration: none;
+            border-radius: 2px;
+            font-size: 0.6rem;
+            transition: all 0.2s;
+            flex: 1;
             text-align: center;
-            font-size: 0.75rem;
-            transition: all 0.3s;
         }
         
-        .btn:hover {
-            background: #444;
-            border-color: #777;
-        }
-        
-        .btn-rent {
-            background: #2a5a2a;
-            border-color: #3a7a3a;
-        }
-        
-        .btn-rent:hover {
-            background: #3a7a3a;
-        }
-        
-        .btn-buy {
-            background: #5a2a2a;
-            border-color: #7a3a3a;
-        }
-        
-        .btn-buy:hover {
-            background: #7a3a3a;
+        .mini-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
         }
         
         .btn-trailer {
-            background: #e50914;
-            border-color: #e50914;
+            background: rgba(200, 0, 0, 0.3);
+            border-color: rgba(200, 0, 0, 0.5);
         }
         
-        .btn-trailer:hover {
-            background: #ff0a16;
+        .btn-rt {
+            background: rgba(230, 30, 30, 0.3);
+            border-color: rgba(230, 30, 30, 0.5);
         }
         
-        .featured-badge {
-            position: absolute;
-            top: 0.5rem;
-            left: 0.5rem;
-            background: gold;
-            color: #000;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            z-index: 3;
+        .btn-wiki {
+            background: rgba(50, 50, 50, 0.3);
+            border-color: rgba(100, 100, 100, 0.5);
         }
         
-        @media (max-width: 768px) {
-            .movie-grid {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-                gap: 1rem;
-                padding: 1rem;
-            }
-            
-            .header h1 {
-                font-size: 1.8rem;
-            }
+        /* Lighter metadata for readability */
+        .back-meta {
+            font-size: 0.55rem;
+            color: #999;
+            line-height: 1.2;
+            text-align: center;
+            padding-top: 0.3rem;
+            border-top: 1px solid #444;
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>The New Release Wall</h1>
-        <div class="subtitle">What's New to Digital This Week</div>
+        <h1>{{ site_title }}</h1>
+        <div class="date-range">{{ window_label }}</div>
     </div>
     
-    <div class="controls">
-        <button class="active" onclick="filterMovies('all')">All Movies</button>
-        <button onclick="filterMovies('featured')">Featured</button>
-        <button onclick="filterMovies('streaming')">Streaming</button>
-        <button onclick="filterMovies('rental')">Rental</button>
-        <button onclick="sortMovies('date')">Sort by Date</button>
-        <button onclick="sortMovies('rating')">Sort by Rating</button>
-    </div>
-    
-    <div class="movie-grid" id="movieGrid">
-        <!-- Movie cards will be generated here -->
-    </div>
-    
-    <script>
-        // Sample movie data - will be replaced with real data from generator
-        const movies = [
-            {
-                id: 1,
-                title: "Example Movie",
-                year: 2025,
-                poster: "https://via.placeholder.com/300x450",
-                director: "Director Name",
-                cast: "Actor 1, Actor 2",
-                runtime: "120 min",
-                studio: "Studio Name",
-                rtScore: 85,
-                rtUrl: "https://www.rottentomatoes.com/",
-                synopsis: "A compelling story about...",
-                trailerUrl: "https://youtube.com/",
-                rentUrl: "https://www.amazon.com/",
-                buyUrl: "https://www.apple.com/",
-                featured: false,
-                hidden: false
-            }
-        ];
+    <div class="movie-grid">
+        {% for date_info, movies in movies_by_date %}
+        <!-- Single Date Card per date -->
+        <div class="date-card">
+            <div class="month">{{ date_info.month_short }}</div>
+            <div class="day">{{ date_info.day }}</div>
+            <div class="year">{{ date_info.year }}</div>
+        </div>
         
-        function renderMovies(moviesToRender = movies) {
-            const grid = document.getElementById('movieGrid');
-            grid.innerHTML = '';
-            
-            moviesToRender.forEach(movie => {
-                if (movie.hidden) return;
-                
-                const card = document.createElement('div');
-                card.className = 'movie-card';
-                card.innerHTML = `
-                    ${movie.featured ? '<div class="featured-badge">⭐ Featured</div>' : ''}
-                    <div class="card-face card-front">
-                        <img src="${movie.poster}" alt="${movie.title}" class="movie-poster">
-                        <div class="movie-info">
-                            <div class="movie-title">${movie.title}</div>
-                            <div class="movie-year">${movie.year}</div>
-                            <div class="movie-credits">Dir: ${movie.director}</div>
-                            <div class="movie-credits">${movie.cast}</div>
+        <!-- All movies for this date -->
+        {% for movie in movies %}
+        <div class="movie-card">
+            <div class="movie-card-inner">
+                <div class="card-face card-front">
+                    <img src="{{ movie.poster_url or 'https://via.placeholder.com/160x240' }}" alt="{{ movie.title }}" class="movie-poster">
+                    <div class="movie-info">
+                        <div class="movie-title">{{ movie.title }}</div>
+                        <div class="movie-details">
+                            <div>{{ movie.director or 'Director N/A' }} • {{ movie.year or '2025' }}</div>
+                            <div>{{ movie.cast[:2] | join(', ') if movie.cast else 'Cast N/A' }}</div>
                         </div>
                     </div>
-                    <div class="card-face card-back">
-                        <div class="back-header">
-                            <div class="back-title">${movie.title}</div>
-                            <div class="back-meta">
-                                <span>${movie.runtime}</span>
-                                <span>•</span>
-                                <span>${movie.studio}</span>
-                                <span>•</span>
-                                <a href="${movie.rtUrl}" target="_blank" class="rt-score">
-                                    🍅 ${movie.rtScore}%
-                                </a>
-                            </div>
-                        </div>
-                        <div class="synopsis">${movie.synopsis}</div>
-                        <div class="action-buttons">
-                            <div class="action-row">
-                                ${movie.rentUrl ? `<a href="${movie.rentUrl}" target="_blank" class="btn btn-rent">Rent $5.99</a>` : ''}
-                                ${movie.buyUrl ? `<a href="${movie.buyUrl}" target="_blank" class="btn btn-buy">Buy $19.99</a>` : ''}
-                            </div>
-                            ${movie.trailerUrl ? `<a href="${movie.trailerUrl}" target="_blank" class="btn btn-trailer">▶ Watch Trailer</a>` : ''}
-                        </div>
+                </div>
+                <div class="card-face card-back" onclick="window.open('{{ movie.watch_link or '#' }}', '_blank')">
+                    <div class="back-synopsis">
+                        {{ movie.synopsis or 'No synopsis available. This film was recently released to digital platforms and is now available for streaming or rental.' }}
                     </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
-        
-        function filterMovies(type) {
-            // Update active button
-            document.querySelectorAll('.controls button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
-            let filtered = movies;
-            switch(type) {
-                case 'featured':
-                    filtered = movies.filter(m => m.featured);
-                    break;
-                case 'streaming':
-                    filtered = movies.filter(m => m.streamingUrl);
-                    break;
-                case 'rental':
-                    filtered = movies.filter(m => m.rentUrl);
-                    break;
-            }
-            renderMovies(filtered);
-        }
-        
-        function sortMovies(by) {
-            let sorted = [...movies];
-            switch(by) {
-                case 'date':
-                    sorted.sort((a, b) => b.year - a.year);
-                    break;
-                case 'rating':
-                    sorted.sort((a, b) => b.rtScore - a.rtScore);
-                    break;
-            }
-            renderMovies(sorted);
-        }
-        
-        // Initial render
-        renderMovies();
-        
-        // Load real data from JSON
-        fetch('data.json')
-            .then(response => response.json())
-            .then(data => {
-                // Transform data to match our structure
-                movies.length = 0;
-                movies.push(...data);
-                renderMovies();
-            })
-            .catch(err => console.log('Using sample data'));
-    </script>
+                    <div class="back-buttons">
+                        <a href="{{ movie.trailer_url or '#' }}" class="mini-btn btn-trailer" onclick="event.stopPropagation()" target="_blank">Trailer</a>
+                        <a href="{{ movie.rt_url or 'https://www.rottentomatoes.com/search?search=' + movie.title }}" class="mini-btn btn-rt" onclick="event.stopPropagation()" target="_blank">RT {{ movie.rt_score or 'N/A' }}%</a>
+                        <a href="https://en.wikipedia.org/wiki/{{ movie.title.replace(' ', '_') }}" class="mini-btn btn-wiki" onclick="event.stopPropagation()" target="_blank">Wiki</a>
+                    </div>
+                    <div class="back-meta">
+                        {{ movie.runtime or '?' }} min • {{ movie.studio or 'Studio' }} • USA • {{ movie.rating or 'NR' }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% endfor %}
+    </div>
 </body>
 </html>
