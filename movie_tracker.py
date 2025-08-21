@@ -68,33 +68,60 @@ class MovieTracker:
             return {}
     
     def get_release_info(self, movie_id):
-        """Get release dates for a movie"""
+        """Get release dates for a movie - enhanced to include premieres and limited releases"""
         url = f"https://api.themoviedb.org/3/movie/{movie_id}/release_dates"
         try:
             response = requests.get(url, params={'api_key': self.api_key})
             data = response.json()
             
             result = {
-                'theatrical_date': None,
+                'theatrical_date': None,  # Now represents earliest primary release (premiere/limited/theatrical)
                 'digital_date': None,
                 'has_digital': False
             }
             
+            # Track earliest dates globally for primary releases
+            earliest_primary_date = None
+            us_digital_date = None
+            
             if 'results' in data:
+                # First pass: Find earliest primary release date anywhere (Types 1, 2, 3)
+                for country_data in data['results']:
+                    for release in country_data.get('release_dates', []):
+                        release_type = release.get('type')
+                        date = release.get('release_date', '')[:10]
+                        
+                        if date and release_type in [1, 2, 3]:  # Premiere, Limited, Theatrical
+                            if not earliest_primary_date or date < earliest_primary_date:
+                                earliest_primary_date = date
+                
+                # Second pass: Find US digital release (Type 4)
                 for country_data in data['results']:
                     if country_data['iso_3166_1'] == 'US':
                         for release in country_data.get('release_dates', []):
                             release_type = release.get('type')
                             date = release.get('release_date', '')[:10]
                             
-                            if release_type == 3:  # Theatrical
-                                if not result['theatrical_date'] or date < result['theatrical_date']:
-                                    result['theatrical_date'] = date
-                            elif release_type == 4:  # Digital
-                                if not result['digital_date'] or date < result['digital_date']:
-                                    result['digital_date'] = date
-                                result['has_digital'] = True
+                            if release_type == 4:  # Digital
+                                if not us_digital_date or date < us_digital_date:
+                                    us_digital_date = date
                         break
+                
+                # If no US digital, check other countries as fallback
+                if not us_digital_date:
+                    for country_data in data['results']:
+                        for release in country_data.get('release_dates', []):
+                            release_type = release.get('type')
+                            date = release.get('release_date', '')[:10]
+                            
+                            if release_type == 4:  # Digital
+                                if not us_digital_date or date < us_digital_date:
+                                    us_digital_date = date
+            
+            # Set results
+            result['theatrical_date'] = earliest_primary_date
+            result['digital_date'] = us_digital_date
+            result['has_digital'] = bool(us_digital_date)
             
             return result
         except Exception as e:
