@@ -5,6 +5,7 @@ Site generator using new VHS-style template
 import json
 import os
 import requests
+import time
 from datetime import datetime
 from jinja2 import FileSystemLoader, Environment, Template
 from collections import defaultdict
@@ -30,6 +31,10 @@ def create_justwatch_url(title):
         'Inside Out 2': 'inside-out-2',
         'A Quiet Place: Day One': 'a-quiet-place-day-one',
         'Beetlejuice Beetlejuice': 'beetlejuice-2',
+        'The Bad Guys 2': 'the-bad-guys-2',
+        'Mission: Impossible - The Final Reckoning': 'mission-impossible-8',
+        'Mission Impossible - The Final Reckoning': 'mission-impossible-8',
+        'Mission: Impossible 8': 'mission-impossible-8',
     }
     
     if title in special_cases:
@@ -81,6 +86,22 @@ def get_tmdb_api_key():
             return config.get('tmdb_api_key')
     except:
         return None
+
+def get_rt_score_direct(title, year):
+    """Get RT score by scraping Rotten Tomatoes directly"""
+    try:
+        import urllib.parse
+        # Create search URL for RT
+        search_query = f"{title} {year}" if year else title
+        search_url = f"https://www.rottentomatoes.com/search?search={urllib.parse.quote(search_query)}"
+        
+        # Use WebFetch to get RT page and extract score
+        from tools import WebFetch  # This won't work in current context
+        # For now, return None and we'll use a different approach
+        return None
+    except Exception as e:
+        print(f"Error getting direct RT score for {title}: {e}")
+    return None
 
 def get_tmdb_movie_details(tmdb_id):
     """Get comprehensive movie details from TMDB"""
@@ -293,6 +314,17 @@ def generate_site():
             rt_score = movie['rt_score']
         elif movie.get('review_data') and isinstance(movie['review_data'], dict):
             rt_score = movie['review_data'].get('rt_score')
+        # else:
+        #     # Fetch RT score directly if not in database (disabled for now)
+        #     try:
+        #         from rt_score_fetcher import get_rt_score_with_fallbacks
+        #         rt_score = get_rt_score_with_fallbacks(movie.get('title', ''), year)
+        #         if rt_score:
+        #             print(f"  🍅 Fetched RT score for {movie.get('title', '')}: {rt_score}%")
+        #         time.sleep(0.5)  # Rate limiting
+        #     except Exception as e:
+        #         print(f"  ❌ Failed to fetch RT score for {movie.get('title', '')}: {e}")
+        #         rt_score = None
         
         item = {
             'title': movie.get('title', 'Unknown'),
