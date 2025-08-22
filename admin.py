@@ -503,6 +503,27 @@ def load_json(filepath, default=None):
     except:
         return default
 
+def get_poster_url(tmdb_id):
+    """Get poster URL from TMDB ID"""
+    if not tmdb_id:
+        return None
+    
+    try:
+        import requests
+        api_key = "99b122ce7fa3e9065d7b7dc6e660772d"
+        response = requests.get(
+            f"https://api.themoviedb.org/3/movie/{tmdb_id}",
+            params={"api_key": api_key}
+        )
+        if response.status_code == 200:
+            data = response.json()
+            poster_path = data.get('poster_path')
+            if poster_path:
+                return f"https://image.tmdb.org/t/p/w300{poster_path}"
+    except:
+        pass
+    return None
+
 def save_json(filepath, data):
     """Save JSON file"""
     os.makedirs(os.path.dirname(filepath) if os.path.dirname(filepath) else '.', exist_ok=True)
@@ -517,6 +538,16 @@ def index():
     featured = load_json(FEATURED_FILE, [])
     reviews = load_json(REVIEWS_FILE)
     
+    # Add poster URLs for first 20 movies (for performance)
+    movie_items = list(movies.items()) if isinstance(movies, dict) else [(str(i), m) for i, m in enumerate(movies)]
+    limited_movies = {}
+    
+    for i, (movie_id, movie) in enumerate(movie_items[:20]):  # Limit to first 20 for demo
+        movie_copy = movie.copy()
+        if not movie_copy.get('poster_url') and movie_copy.get('tmdb_id'):
+            movie_copy['poster_url'] = get_poster_url(movie_copy['tmdb_id'])
+        limited_movies[movie_id] = movie_copy
+    
     # Calculate stats
     visible_count = len([m for m in movies if m not in hidden])
     hidden_count = len(hidden)
@@ -524,7 +555,7 @@ def index():
     
     return render_template_string(
         ADMIN_TEMPLATE,
-        movies=movies,
+        movies=limited_movies,
         hidden=hidden,
         featured=featured,
         reviews=reviews,

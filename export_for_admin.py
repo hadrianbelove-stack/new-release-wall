@@ -22,7 +22,7 @@ def export_movie_data():
     
     for movie_id, movie in tracking_db['movies'].items():
         # Only include resolved movies (available digitally)
-        if movie['status'] == 'resolved':
+        if movie.get('status') == 'resolved':
             admin_data[movie_id] = {
                 'title': movie['title'],
                 'year': movie.get('release_date', '2025-01-01')[:4] if movie.get('release_date') else '2025',
