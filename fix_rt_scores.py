@@ -12,16 +12,22 @@ def fix_rt_scores(limit=10):
     
     # Load current data
     with open('output/data.json', 'r') as f:
-        movies = json.load(f)
+        movies_dict = json.load(f)
     
     print(f"Fixing RT scores using OMDb API for first {limit} movies...")
     
     updated_count = 0
-    for i, movie in enumerate(movies[:limit]):
+    processed = 0
+    
+    for movie_id, movie in movies_dict.items():
+        if processed >= limit:
+            break
+            
         title = movie.get('title', '')
         year = movie.get('digital_date', '')[:4] if movie.get('digital_date') else '2024'
         
-        print(f"\n{i+1}. Fetching RT score for: {title} ({year})")
+        processed += 1
+        print(f"\n{processed}. Fetching RT score for: {title} ({year})")
         rt_score = get_rt_score_omdb(title, year)
         
         if rt_score:
@@ -35,7 +41,7 @@ def fix_rt_scores(limit=10):
     
     # Save updated data
     with open('output/data.json', 'w') as f:
-        json.dump(movies, f, indent=2)
+        json.dump(movies_dict, f, indent=2)
     
     print(f"\n✅ Fixed {updated_count} RT scores using OMDb API")
     return updated_count
