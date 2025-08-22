@@ -1,499 +1,387 @@
 #!/usr/bin/env python3
 """
-Movie Digital Release Tracker
-Maintains a database of movies and tracks when they go digital
+Enhanced Movie Tracker that captures:
+- Type 1 (Premiere/Festival)
+- Type 2 (Limited Theatrical)  
+- Type 3 (Wide Theatrical)
+- Type 4 (Digital)
+- Direct-to-streaming releases
 """
 
 import json
-import requests
-import yaml
-from datetime import datetime, timedelta
-import time
 import os
+import requests
+import time
+from datetime import datetime, timedelta
+from typing import Dict, List, Optional
+import yaml
 
-class MovieTracker:
-    def __init__(self, db_file='movie_tracking.json'):
+class EnhancedMovieTracker:
+    """Enhanced tracker that captures all release types"""
+    
+    RELEASE_TYPES = {
+        1: "Premiere",
+        2: "Theatrical (limited)",
+        3: "Theatrical",
+        4: "Digital",
+        5: "Physical",
+        6: "TV"
+    }
+    
+    def __init__(self, db_file="movie_tracking_enhanced.json"):
         self.db_file = db_file
         self.db = self.load_database()
-        self.config = self.load_config()
-        self.api_key = self.config['tmdb_api_key']
-        self.omdb_api_key = self.config.get('omdb_api_key')
-    
-    def load_config(self):
+        
+        # Load API keys
         with open("config.yaml", "r") as f:
-            return yaml.safe_load(f)
-    
-    def load_database(self):
-        """Load existing tracking database or create new one"""
+            config = yaml.safe_load(f)
+        self.tmdb_key = config.get("tmdb_api_key", "99b122ce7fa3e9065d7b7dc6e660772d")
+        self.omdb_key = config.get("omdb_api_key", "539723d9")
+        
+    def load_database(self) -> Dict:
+        """Load or create tracking database"""
         if os.path.exists(self.db_file):
-            with open(self.db_file, 'r') as f:
+            with open(self.db_file, "r") as f:
                 return json.load(f)
         return {
-            'movies': {},
-            'last_update': None,
-            'stats': {
-                'total_tracked': 0,
-                'resolved': 0,
-                'still_tracking': 0
-            }
+            "movies": {},
+            "last_update": None,
+            "last_check": None,
+            "last_bootstrap": None
         }
     
     def save_database(self):
-        """Save tracking database to disk"""
-        self.db['last_update'] = datetime.now().isoformat()
+        """Save tracking database"""
+        with open(self.db_file, "w") as f:
+            json.dump(self.db, f, indent=2)
+        print(f"✓ Database saved to {self.db_file}")
+    
+    def tmdb_get(self, path, params=None):
+        """Make TMDB API request"""
+        url = f"https://api.themoviedb.org/3{path}"
+        params = params or {}
+        params["api_key"] = self.tmdb_key
         
-        # Update stats
-        movies = self.db['movies']
-        self.db['stats'] = {
-            'total_tracked': len(movies),
-            'resolved': len([m for m in movies.values() if m.get('status') == 'resolved']),
-            'still_tracking': len([m for m in movies.values() if m.get('status') == 'tracking'])
+        try:
+            response = requests.get(url, params=params, timeout=10)
+            time.sleep(0.5)  # Rate limiting
+            if response.status_code == 200:
+                return response.json()
+        except Exception as e:
+            print(f"  Error: {e}")
+        return None
+    
+    def get_enhanced_release_info(self, movie_id):
+        """
+        Get comprehensive release info including premieres and limited releases
+        Returns earliest primary date globally and digital availability
+        """
+        data = self.tmdb_get(f"/movie/{movie_id}/release_dates")
+        if not data:
+            return {}
+        
+        result = {
+            'primary_date': None,  # Earliest premiere/limited/theatrical anywhere
+            'digital_date': None,
+            'has_digital': False,
+            'release_types': [],
+            'us_releases': {}
         }
         
-        with open(self.db_file, 'w') as f:
-            json.dump(self.db, f, indent=2)
+        earliest_primary = None
+        digital_dates = []
         
-        print(f"💾 Database saved: {self.db['stats']}")
-    
-    def tmdb_get(self, endpoint, params):
-        """Generic TMDB API GET request"""
-        url = f"https://api.themoviedb.org/3{endpoint}"
-        params['api_key'] = self.api_key
-        try:
-            response = requests.get(url, params=params)
-            response.raise_for_status()
-            return response.json()
-        except Exception as e:
-            print(f"API error: {e}")
-            return {}
-    
-    def get_release_info(self, movie_id):
-        """Get release dates for a movie - enhanced to include premieres and limited releases"""
-        url = f"https://api.themoviedb.org/3/movie/{movie_id}/release_dates"
-        try:
-            response = requests.get(url, params={'api_key': self.api_key})
-            data = response.json()
+        # Process all countries
+        for country in data.get('results', []):
+            country_code = country['iso_3166_1']
             
-            result = {
-                'theatrical_date': None,  # Now represents earliest primary release (premiere/limited/theatrical)
-                'digital_date': None,
-                'has_digital': False
-            }
-            
-            # Track earliest dates globally for primary releases
-            earliest_primary_date = None
-            us_digital_date = None
-            
-            if 'results' in data:
-                # First pass: Find earliest primary release date anywhere (Types 1, 2, 3)
-                for country_data in data['results']:
-                    for release in country_data.get('release_dates', []):
-                        release_type = release.get('type')
-                        date = release.get('release_date', '')[:10]
-                        
-                        if date and release_type in [1, 2, 3]:  # Premiere, Limited, Theatrical
-                            if not earliest_primary_date or date < earliest_primary_date:
-                                earliest_primary_date = date
+            for release in country.get('release_dates', []):
+                release_type = release.get('type')
+                release_date = release.get('release_date', '')[:10]
                 
-                # Second pass: Find US digital release (Type 4)
-                for country_data in data['results']:
-                    if country_data['iso_3166_1'] == 'US':
-                        for release in country_data.get('release_dates', []):
-                            release_type = release.get('type')
-                            date = release.get('release_date', '')[:10]
-                            
-                            if release_type == 4:  # Digital
-                                if not us_digital_date or date < us_digital_date:
-                                    us_digital_date = date
-                        break
+                if not release_date:
+                    continue
                 
-                # If no US digital, check other countries as fallback
-                if not us_digital_date:
-                    for country_data in data['results']:
-                        for release in country_data.get('release_dates', []):
-                            release_type = release.get('type')
-                            date = release.get('release_date', '')[:10]
-                            
-                            if release_type == 4:  # Digital
-                                if not us_digital_date or date < us_digital_date:
-                                    us_digital_date = date
-            
-            # Set results
-            result['theatrical_date'] = earliest_primary_date
-            result['digital_date'] = us_digital_date
-            result['has_digital'] = bool(us_digital_date)
-            
-            return result
-        except Exception as e:
-            print(f"Error getting release info for {movie_id}: {e}")
-            return None
-    
-    def get_rt_score_direct(self, title, year):
-        """Get RT score by searching RT directly via web fetch"""
-        try:
-            import urllib.parse
-            # Create search URL for RT
-            search_query = f"{title} {year}" if year else title
-            search_url = f"https://www.rottentomatoes.com/search?search={urllib.parse.quote(search_query)}"
-            
-            # Use WebFetch to get RT scores
-            # This is a placeholder - would need WebFetch tool access
-            return None
-        except Exception as e:
-            print(f"Error getting direct RT score for {title}: {e}")
-        return None
-
-    def get_omdb_rt_score(self, title, year):
-        """Get Rotten Tomatoes score from OMDb API with direct RT fallback"""
-        # First try OMDb API
-        if self.omdb_api_key:
-            try:
-                params = {'apikey': self.omdb_api_key, 't': title}
-                if year:
-                    params['y'] = str(year)
-                    
-                response = requests.get('http://www.omdbapi.com/', params=params)
-                data = response.json()
+                # Track all release types
+                if release_type not in result['release_types']:
+                    result['release_types'].append(release_type)
                 
-                if data.get('Response') == 'True':
-                    for rating in data.get('Ratings', []):
-                        if rating['Source'] == 'Rotten Tomatoes':
-                            return int(rating['Value'].rstrip('%'))
-            except Exception as e:
-                print(f"Error getting OMDb RT score for {title}: {e}")
+                # Find earliest primary release (Types 1, 2, 3)
+                if release_type in [1, 2, 3]:
+                    if not earliest_primary or release_date < earliest_primary:
+                        earliest_primary = release_date
+                
+                # Collect all digital releases
+                if release_type == 4:
+                    digital_dates.append(release_date)
+                
+                # Track US releases specifically
+                if country_code == 'US':
+                    type_name = self.RELEASE_TYPES.get(release_type, f"Type {release_type}")
+                    result['us_releases'][type_name] = release_date
         
-        # If OMDb fails, try direct RT lookup (future enhancement)
-        # return self.get_rt_score_direct(title, year)
-        return None
+        # Set results
+        result['primary_date'] = earliest_primary
+        if digital_dates:
+            result['digital_date'] = min(digital_dates)
+            result['has_digital'] = True
+        
+        return result
     
-    def bootstrap_database(self, days_back=730):
-        """Bootstrap database with movies from past N days"""
-        print(f"🚀 Bootstrapping database with movies from last {days_back} days...")
+    def check_streaming_providers(self, movie_id):
+        """
+        Check if movie has streaming/rental providers even without Type 4 flag
+        This catches movies that are available but not properly flagged
+        """
+        data = self.tmdb_get(f"/movie/{movie_id}/watch/providers")
+        if not data:
+            return False, []
         
-        end_date = datetime.now()
-        start_date = end_date - timedelta(days=days_back)
+        providers = []
+        us_data = data.get('results', {}).get('US', {})
         
-        all_movies = []
+        # Check all provider types
+        for provider_type in ['flatrate', 'rent', 'buy']:
+            if provider_type in us_data:
+                for provider in us_data[provider_type]:
+                    providers.append({
+                        'name': provider.get('provider_name'),
+                        'type': provider_type
+                    })
+        
+        # If movie has ANY providers, it's digitally available
+        return len(providers) > 0, providers
+    
+    def should_track_movie(self, movie):
+        """
+        Determine if a movie should be tracked
+        Now includes direct-to-streaming and festival releases
+        """
+        # Get release info
+        movie_id = str(movie['id'])
+        release_info = self.get_enhanced_release_info(movie_id)
+        
+        # Track if it has ANY primary release (premiere, limited, or theatrical)
+        if release_info.get('primary_date'):
+            return True
+        
+        # Also track if it has providers (direct-to-streaming)
+        has_providers, _ = self.check_streaming_providers(movie_id)
+        if has_providers:
+            return True
+        
+        # Track if release date exists (catch-all)
+        if movie.get('release_date'):
+            return True
+        
+        return False
+    
+    def process_movie(self, movie):
+        """Process a movie with enhanced tracking"""
+        movie_id = str(movie['id'])
+        
+        # Get comprehensive release info
+        release_info = self.get_enhanced_release_info(movie_id)
+        has_providers, providers = self.check_streaming_providers(movie_id)
+        
+        # Determine if digitally available (Type 4 OR has providers)
+        is_digital = release_info.get('has_digital', False) or has_providers
+        
+        # Use earliest date as primary
+        primary_date = release_info.get('primary_date') or movie.get('release_date')
+        
+        movie_data = {
+            "title": movie.get("title"),
+            "tmdb_id": movie_id,
+            "primary_date": primary_date,
+            "release_date": movie.get("release_date"),
+            "digital_date": release_info.get('digital_date'),
+            "has_digital": is_digital,
+            "providers": providers,
+            "release_types": release_info.get('release_types', []),
+            "us_releases": release_info.get('us_releases', {}),
+            "tracking": not is_digital,
+            "first_seen": datetime.now().isoformat(),
+            "last_checked": datetime.now().isoformat(),
+            "poster_path": movie.get("poster_path"),
+            "overview": movie.get("overview", "")[:200]
+        }
+        
+        # Status for logging
+        if is_digital:
+            status = "✓ Digital"
+        elif 1 in release_info.get('release_types', []):
+            status = "🎬 Festival"
+        elif 2 in release_info.get('release_types', []):
+            status = "🎭 Limited"
+        else:
+            status = "⏳ Tracking"
+        
+        print(f"  {status}: {movie.get('title')} ({primary_date or 'No date'})")
+        
+        return movie_data
+    
+    def enhanced_bootstrap(self, days_back=730, include_upcoming=True):
+        """
+        Enhanced bootstrap that captures more movies
+        - Includes all release types
+        - Searches upcoming movies too
+        - Checks direct-to-streaming
+        """
+        print(f"🚀 Enhanced Bootstrap: Scanning {days_back} days of releases...")
+        
+        end_date = datetime.now() + timedelta(days=30) if include_upcoming else datetime.now()
+        start_date = end_date - timedelta(days=days_back + 30)
+        
+        all_movies = {}
         page = 1
-        total_pages = 999  # Will be updated from API response
+        total_pages = 999
         
-        # Standard discovery
-        while page <= total_pages:
-            print(f"  Scanning page {page} (standard discovery)...")
+        while page <= min(total_pages, 100):  # Limit for testing
+            print(f"  Page {page}/{min(total_pages, 100)}...")
             
+            # Search with broader criteria
             params = {
-                "sort_by": "primary_release_date.desc",
+                "sort_by": "popularity.desc",
                 "primary_release_date.gte": start_date.strftime("%Y-%m-%d"),
                 "primary_release_date.lte": end_date.strftime("%Y-%m-%d"),
-                "page": page
+                "page": page,
+                "include_adult": False
             }
             
             data = self.tmdb_get("/discover/movie", params)
-            all_movies.extend(data.get("results", []))
-            
-            # Update total_pages from API
-            total_pages = min(data.get("total_pages", 1), 500)  # TMDB caps at 500
-            
-            if page >= total_pages:
+            if not data:
                 break
-                
+            
+            movies = data.get('results', [])
+            if not movies:
+                break
+            
+            # Process each movie
+            for movie in movies:
+                if self.should_track_movie(movie):
+                    movie_id = str(movie['id'])
+                    if movie_id not in all_movies and movie_id not in self.db["movies"]:
+                        movie_data = self.process_movie(movie)
+                        all_movies[movie_id] = movie_data
+            
+            total_pages = min(data.get('total_pages', 1), 500)
             page += 1
-            time.sleep(0.2)
-        
-        # Enhanced discovery for indie films (no popularity filtering)
-        print(f"  Enhanced discovery for indie films...")
-        
-        # Discover by indie production companies
-        indie_companies = [41077, 2, 491, 25, 61, 11072, 7505]  # A24, Neon, Focus, IFC, etc.
-        for company_id in indie_companies:
-            for comp_page in range(1, 3):  # First 2 pages per company
-                params = {
-                    "with_companies": str(company_id),
-                    "primary_release_date.gte": start_date.strftime("%Y-%m-%d"),
-                    "primary_release_date.lte": end_date.strftime("%Y-%m-%d"),
-                    "sort_by": "release_date.desc",
-                    "page": comp_page
-                }
-                
-                comp_data = self.tmdb_get("/discover/movie", params)
-                comp_movies = comp_data.get("results", [])
-                
-                # Filter out duplicates
-                existing_ids = {str(m['id']) for m in all_movies}
-                new_movies = [m for m in comp_movies if str(m['id']) not in existing_ids]
-                all_movies.extend(new_movies)
-                
-                if new_movies:
-                    print(f"    Company {company_id}: +{len(new_movies)} indie films")
-                
-                if not comp_movies or comp_page >= comp_data.get("total_pages", 1):
-                    break
-                
-                time.sleep(0.1)
-        
-        # Discover by alternative sorting (catches low-popularity films)
-        for sort_method in ["vote_average.desc", "vote_count.asc"]:
-            for sort_page in range(1, 3):
-                params = {
-                    "sort_by": sort_method,
-                    "primary_release_date.gte": start_date.strftime("%Y-%m-%d"),
-                    "primary_release_date.lte": end_date.strftime("%Y-%m-%d"),
-                    "page": sort_page
-                }
-                
-                sort_data = self.tmdb_get("/discover/movie", params)
-                sort_movies = sort_data.get("results", [])
-                
-                # Filter out duplicates
-                existing_ids = {str(m['id']) for m in all_movies}
-                new_movies = [m for m in sort_movies if str(m['id']) not in existing_ids]
-                all_movies.extend(new_movies)
-                
-                if new_movies:
-                    print(f"    {sort_method}: +{len(new_movies)} additional films")
-                
-                if not sort_movies or sort_page >= sort_data.get("total_pages", 1):
-                    break
-                
-                time.sleep(0.1)
-        
-        print(f"  Found {len(all_movies)} movies, checking release status...")
-        
-        # Add movies to tracking database
-        for i, movie in enumerate(all_movies):
-            if i % 20 == 0:
-                print(f"    Processed {i}/{len(all_movies)} movies...")
             
-            movie_id = str(movie['id'])
-            if movie_id in self.db['movies']:
-                continue  # Already tracking
-            
-            release_info = self.get_release_info(movie['id'])
-            if not release_info:
-                continue
-            
-            # Get RT score
-            year = None
-            if release_info['theatrical_date']:
-                year = release_info['theatrical_date'][:4]
-            rt_score = self.get_omdb_rt_score(movie['title'], year)
-            
-            # Add to database
-            self.db['movies'][movie_id] = {
-                'title': movie['title'],
-                'tmdb_id': movie['id'],
-                'theatrical_date': release_info['theatrical_date'],
-                'digital_date': release_info['digital_date'],
-                'rt_score': rt_score,
-                'status': 'resolved' if release_info['has_digital'] else 'tracking',
-                'added_to_db': datetime.now().isoformat()[:10],
-                'last_checked': datetime.now().isoformat()[:10]
-            }
-            
-            time.sleep(0.1)  # Rate limiting
+            # Save periodically
+            if page % 10 == 0:
+                self.db["movies"].update(all_movies)
+                self.save_database()
+                all_movies = {}
         
+        # Final save
+        self.db["movies"].update(all_movies)
+        self.db["last_bootstrap"] = datetime.now().isoformat()
         self.save_database()
-        print(f"✅ Bootstrap complete!")
+        
+        # Summary
+        total = len(self.db["movies"])
+        digital = sum(1 for m in self.db["movies"].values() if m.get("has_digital"))
+        festival = sum(1 for m in self.db["movies"].values() if 1 in m.get("release_types", []))
+        limited = sum(1 for m in self.db["movies"].values() if 2 in m.get("release_types", []))
+        
+        print(f"\n✅ Enhanced Bootstrap Complete!")
+        print(f"  Total movies: {total}")
+        print(f"  Digital available: {digital}")
+        print(f"  Festival releases: {festival}")
+        print(f"  Limited theatrical: {limited}")
     
-    def add_new_theatrical_releases(self, days_back=7):
-        """Daily: Add new theatrical releases from last X days (including low-popularity indie films)"""
-        print(f"➕ Adding new releases from last {days_back} days...")
+    def find_missing_titles(self):
+        """Check for specific missing titles like Harvest and Familiar Touch"""
+        print("\n🔍 Checking for known missing titles...")
         
-        end_date = datetime.now()
-        start_date = end_date - timedelta(days=days_back)
+        missing_titles = [
+            ("Harvest", 2024),
+            ("Familiar Touch", 2024),
+            ("Familiar Touch", 2025)
+        ]
         
-        all_movies = []
-        
-        # Standard discovery by release date (no popularity filtering)
-        params = {
-            'api_key': self.api_key,
-            'primary_release_date.gte': start_date.strftime('%Y-%m-%d'),
-            'primary_release_date.lte': end_date.strftime('%Y-%m-%d'),
-            'sort_by': 'primary_release_date.desc',  # Changed from popularity.desc
-            'page': 1
-        }
-        
-        response = requests.get('https://api.themoviedb.org/3/discover/movie', params=params)
-        movies = response.json().get('results', [])
-        all_movies.extend(movies)
-        
-        # Enhanced discovery for indie films
-        print(f"  🎭 Also searching indie studios...")
-        indie_companies = [41077, 2, 491, 25, 61]  # A24, Neon, Focus, IFC, Magnolia
-        for company_id in indie_companies:
-            params = {
-                'api_key': self.api_key,
-                'with_companies': str(company_id),
-                'primary_release_date.gte': start_date.strftime('%Y-%m-%d'),
-                'primary_release_date.lte': end_date.strftime('%Y-%m-%d'),
-                'sort_by': 'release_date.desc',
-                'page': 1
-            }
+        for title, year in missing_titles:
+            # Search TMDB
+            params = {"query": title, "year": year}
+            data = self.tmdb_get("/search/movie", params)
             
-            response = requests.get('https://api.themoviedb.org/3/discover/movie', params=params)
-            company_movies = response.json().get('results', [])
-            
-            # Add unique movies only
-            existing_ids = {str(m['id']) for m in all_movies}
-            new_movies = [m for m in company_movies if str(m['id']) not in existing_ids]
-            all_movies.extend(new_movies)
-            
-            if new_movies:
-                print(f"    Company {company_id}: +{len(new_movies)} indie films")
-        
-        movies = all_movies  # Use combined results
-        
-        new_count = 0
-        for movie in movies:
-            movie_id = str(movie['id'])
-            if movie_id not in self.db['movies']:
-                release_info = self.get_release_info(movie['id'])
-                if release_info and release_info['theatrical_date']:
-                    # Get RT score
-                    year = release_info['theatrical_date'][:4]
-                    rt_score = self.get_omdb_rt_score(movie['title'], year)
-                    
-                    self.db['movies'][movie_id] = {
-                        'title': movie['title'],
-                        'tmdb_id': movie['id'],
-                        'theatrical_date': release_info['theatrical_date'],
-                        'digital_date': release_info['digital_date'],
-                        'rt_score': rt_score,
-                        'status': 'resolved' if release_info['has_digital'] else 'tracking',
-                        'added_to_db': datetime.now().isoformat()[:10],
-                        'last_checked': datetime.now().isoformat()[:10]
-                    }
-                    new_count += 1
-                    print(f"  ➕ Added: {movie['title']} (RT: {rt_score}%)" if rt_score else f"  ➕ Added: {movie['title']}")
+            if data and data.get('results'):
+                movie = data['results'][0]
+                movie_id = str(movie['id'])
                 
-                time.sleep(0.1)
-        
-        print(f"✅ Added {new_count} new movies")
-        return new_count
-    
-    def check_tracking_movies(self):
-        """Check digital status for movies still being tracked"""
-        tracking_movies = {k: v for k, v in self.db['movies'].items() 
-                          if v['status'] == 'tracking'}
-        
-        if not tracking_movies:
-            print("📭 No movies currently being tracked")
-            return 0
-        
-        print(f"🔍 Checking {len(tracking_movies)} movies for digital availability...")
-        
-        resolved_count = 0
-        for movie_id, movie_data in tracking_movies.items():
-            release_info = self.get_release_info(int(movie_id))
-            if release_info and release_info['has_digital']:
-                # Movie went digital!
-                movie_data['digital_date'] = release_info['digital_date']
-                movie_data['status'] = 'resolved'
-                movie_data['last_checked'] = datetime.now().isoformat()[:10]
-                resolved_count += 1
+                if movie_id in self.db["movies"]:
+                    status = "✓ In database"
+                    if self.db["movies"][movie_id].get("has_digital"):
+                        status += " (Digital)"
+                else:
+                    # Add to database
+                    movie_data = self.process_movie(movie)
+                    self.db["movies"][movie_id] = movie_data
+                    status = "➕ Added to database"
                 
-                print(f"  ✅ {movie_data['title']} went digital: {release_info['digital_date']}")
+                print(f"  {title} ({year}): {status}")
             else:
-                movie_data['last_checked'] = datetime.now().isoformat()[:10]
-            
-            time.sleep(0.1)
+                print(f"  {title} ({year}): ❌ Not found in TMDB")
         
-        print(f"✅ Found {resolved_count} newly digital movies")
-        return resolved_count
-    
-    def daily_update(self):
-        """Run daily update: add new + check existing"""
-        print("📅 Running daily update...")
-        new_movies = self.add_new_theatrical_releases()
-        newly_digital = self.check_tracking_movies()
         self.save_database()
-        
-        print(f"\n📊 Daily Summary:")
-        print(f"  New movies added: {new_movies}")
-        print(f"  Movies that went digital: {newly_digital}")
-        print(f"  Still tracking: {self.db['stats']['still_tracking']}")
-    
-    def backfill_rt_scores(self):
-        """Add RT scores to existing movies that don't have them"""
-        movies_without_rt = {k: v for k, v in self.db['movies'].items() 
-                           if not v.get('rt_score')}
-        
-        if not movies_without_rt:
-            print("✅ All movies already have RT scores")
-            return 0
-        
-        print(f"🍅 Backfilling RT scores for {len(movies_without_rt)} movies...")
-        
-        updated_count = 0
-        for movie_id, movie_data in movies_without_rt.items():
-            # Get year from theatrical or digital date
-            year = None
-            if movie_data.get('theatrical_date'):
-                year = movie_data['theatrical_date'][:4]
-            elif movie_data.get('digital_date'):
-                year = movie_data['digital_date'][:4]
-            
-            rt_score = self.get_omdb_rt_score(movie_data['title'], year)
-            if rt_score:
-                movie_data['rt_score'] = rt_score
-                updated_count += 1
-                print(f"  ✅ {movie_data['title']}: {rt_score}%")
-            else:
-                movie_data['rt_score'] = None
-                print(f"  ❌ {movie_data['title']}: No RT score found")
-            
-            time.sleep(0.2)  # Rate limiting for OMDb API
-        
-        print(f"✅ Updated {updated_count} movies with RT scores")
-        self.save_database()
-        return updated_count
 
-    def show_status(self):
-        """Show current database status"""
-        stats = self.db['stats']
-        print(f"\n📊 TRACKING DATABASE STATUS")
-        print(f"{'='*40}")
-        print(f"Total movies tracked: {stats['total_tracked']}")
-        print(f"Resolved (went digital): {stats['resolved']}")
-        print(f"Still tracking: {stats['still_tracking']}")
-        print(f"Last update: {self.db.get('last_update', 'Never')}")
-        
-        # Show some examples
-        tracking = {k: v for k, v in self.db['movies'].items() if v['status'] == 'tracking'}
-        if tracking:
-            print(f"\nCurrently tracking (sample):")
-            for movie_id, movie in list(tracking.items())[:5]:
-                days_since = (datetime.now() - datetime.fromisoformat(movie['theatrical_date'])).days
-                print(f"  • {movie['title']} - {days_since} days since theatrical")
-        
-        recent_digital = {k: v for k, v in self.db['movies'].items() 
-                         if v['status'] == 'resolved' and v.get('digital_date')}
-        if recent_digital:
-            print(f"\nRecently went digital (sample):")
-            for movie_id, movie in list(recent_digital.items())[:5]:
-                rt_text = f" (RT: {movie.get('rt_score')}%)" if movie.get('rt_score') else ""
-                print(f"  • {movie['title']} - Digital: {movie.get('digital_date')}{rt_text}")
+def run_full_update():
+    """Function to run full automated update"""
+    from colorama import init, Fore
+    init()
+    GREEN = Fore.GREEN
+    YELLOW = Fore.YELLOW
+    NC = Fore.RESET
+    
+    print(f"{GREEN}🎬 Running full update...{NC}")
+    
+    tracker = EnhancedMovieTracker()
+    
+    # First, update tracking database automatically
+    print(f"{YELLOW}Updating tracking database...{NC}")
+    tracker.enhanced_bootstrap(days_back=30)  # Look back 30 days
+    
+    # Check for new digital releases from tracking
+    print(f"{YELLOW}Checking for new digital releases...{NC}")
+    tracker.find_missing_titles()
+    
+    # Generate from tracker (last 14 days default)
+    print(f"{YELLOW}Generating current releases...{NC}")
+    os.system("python3 generate_from_tracker.py 14")
+    
+    print(f"{GREEN}✓ Full update complete{NC}")
 
 def main():
-    tracker = MovieTracker()
-    
+    """CLI interface"""
     import sys
-    if len(sys.argv) > 1:
-        command = sys.argv[1]
-        
-        if command == 'bootstrap':
-            days = int(sys.argv[2]) if len(sys.argv) > 2 else 365
-            tracker.bootstrap_database(days)
-        elif command == 'daily':
-            tracker.daily_update()
-        elif command == 'status':
-            tracker.show_status()
-        elif command == 'backfill-rt':
-            tracker.backfill_rt_scores()
-        else:
-            print("Usage: python movie_tracker.py [bootstrap|daily|status|backfill-rt]")
-    else:
-        tracker.show_status()
+    
+    tracker = EnhancedMovieTracker()
+    
+    if len(sys.argv) < 2:
+        print("Usage: python movie_tracker.py [bootstrap|check-missing|status|update|check|daily]")
+        sys.exit(1)
+    
+    command = sys.argv[1]
+    
+    if command == "bootstrap":
+        days = int(sys.argv[2]) if len(sys.argv) > 2 else 730
+        tracker.enhanced_bootstrap(days)
+        tracker.find_missing_titles()
+    
+    elif command == "check-missing":
+        tracker.find_missing_titles()
+    
+    elif command == "status":
+        total = len(tracker.db["movies"])
+        digital = sum(1 for m in tracker.db["movies"].values() if m.get("has_digital"))
+        print(f"\n📊 Enhanced Database Status:")
+        print(f"  Total movies: {total}")
+        print(f"  Digital available: {digital}")
+        print(f"  Database file: {tracker.db_file}")
+    
+    elif command in ["update", "check", "daily"]:
+        run_full_update()
 
 if __name__ == "__main__":
     main()
