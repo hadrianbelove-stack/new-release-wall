@@ -185,6 +185,40 @@
     }
   },
   {
+    "title": "The Serial Killer's Apprentice",
+    "year": "2025",
+    "release_date": "2025-08-17",
+    "poster": "https://image.tmdb.org/t/p/w500/dKdR8jQ7co3jR34hx3EoCyZ787J.jpg",
+    "tmdb_id": 1531747,
+    "tmdb_vote": 8.5,
+    "rt_score": null,
+    "providers": [
+      "Discovery+ Amazon Channel",
+      "Amazon Video",
+      "HBO Max Amazon Channel",
+      "Discovery +",
+      "HBO Max"
+    ],
+    "overview": "Dr. Katherine Ramsland interviews Elmer Wayne Henley, the sole survivor of the 1973 Houston Mass Murders, to unravel his chilling journey from manipulated teen to convicted killer \u2014 and the terrifying truth behind the line between victim and predator.",
+    "inclusion_reason": "Digital release: 2025-08-17 \u2022 Streaming on 4 platforms",
+    "has_digital": true,
+    "digital_date": "2025-08-17T00:00:00.000Z",
+    "theatrical_date": null,
+    "justwatch_url": "https://www.themoviedb.org/movie/1531747-the-serial-killer-s-apprentice/watch?locale=US",
+    "director": null,
+    "cast": "Katherine Ramsland, Elmer Wayne Henley",
+    "runtime": 0,
+    "studio": null,
+    "rating": "NR",
+    "tmdb_url": "https://www.themoviedb.org/movie/1531747",
+    "rt_url": "https://www.rottentomatoes.com/search?search=The%20Serial%20Killer's%20Apprentice",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/The_Serial_Killer's_Apprentice_(film)",
+    "review_data": {
+      "rt_score": null,
+      "imdb_rating": null
+    }
+  },
+  {
     "title": "Snoopy Presents: A Summer Musical",
     "year": "2025",
     "release_date": "2025-08-14",
@@ -272,6 +306,36 @@
     "tmdb_url": "https://www.themoviedb.org/movie/537921",
     "rt_url": "https://www.rottentomatoes.com/search?search=Fixed",
     "wikipedia_url": "https://en.wikipedia.org/wiki/Fixed_(film)",
+    "review_data": {
+      "rt_score": null,
+      "imdb_rating": null
+    }
+  },
+  {
+    "title": "TMZ Presents: The Real Hulk Hogan",
+    "year": "2025",
+    "release_date": "2025-08-12",
+    "poster": "https://image.tmdb.org/t/p/w500/sQRXjs2eP6NsJpq8odOBIpsPHCK.jpg",
+    "tmdb_id": 1529761,
+    "tmdb_vote": 5.5,
+    "rt_score": null,
+    "providers": [
+      "fuboTV"
+    ],
+    "overview": "Take a dive deep into Hulk's life in \"TMZ Presents: The Real Hulk Hogan\" ... looking back on how Hulk conquered the world. For all Hulk's massive wins, there were massive mistakes ... often involving his own family.",
+    "inclusion_reason": "Digital release: 2025-08-12 \u2022 Streaming on 1 platforms",
+    "has_digital": true,
+    "digital_date": "2025-08-12T00:00:00.000Z",
+    "theatrical_date": null,
+    "justwatch_url": "https://www.themoviedb.org/movie/1529761-tmz-presents-the-real-hulk-hogan/watch?locale=US",
+    "director": "Harvey Levin",
+    "cast": "Harvey Levin, Sylvester Stallone, Vince McMahon",
+    "runtime": 43,
+    "studio": "TMZ",
+    "rating": "NR",
+    "tmdb_url": "https://www.themoviedb.org/movie/1529761",
+    "rt_url": "https://www.rottentomatoes.com/search?search=TMZ%20Presents:%20The%20Real%20Hulk%20Hogan",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/TMZ_Presents:_The_Real_Hulk_Hogan_(film)",
     "review_data": {
       "rt_score": null,
       "imdb_rating": null
