@@ -9,6 +9,7 @@ import json
 import requests
 import time
 import argparse
+import constants
 import logging
 from datetime import datetime, timedelta
 from typing import List, Dict, Tuple, Any
@@ -459,6 +460,7 @@ def main():
     parser.add_argument("--max-pages", type=int, default=15, help="Max pages to fetch (default: 15)")
     parser.add_argument("--use-core", action="store_true", help="Use scraper_core helpers for providers/details/credits")
     parser.add_argument("--core-limit", type=int, default=100, help="When --use-core, enrich at most this many movies")
+    parser.add_argument("--providers-only", action="store_true", help="Use core enrichment for providers only (fast path)")
     
     args = parser.parse_args()
     
@@ -570,3 +572,33 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# PROVIDERS_ONLY_FASTPATH
+try:
+    import builtins
+    args = builtins.__NRW_ARGS__
+    if args.use_core and args.providers_only:
+        from scraper_core import get_providers, get_details, get_credits, get_release_types, normalize_record
+        region = args.region.upper()
+        try:
+            to_enrich = movies[: args.core_limit]
+        except Exception:
+            to_enrich = []
+        enriched = []
+        for m in to_enrich:
+            try:
+                mid = int(m.get("id"))
+                # Only providers + minimal release types; skip heavy details/credits to save calls
+                prov = get_providers(None, mid, region)
+                rtypes = get_release_types(None, mid, region)
+                det = {}
+                cre = {}
+                enriched.append(normalize_record(m, prov, rtypes, det, cre))
+            except Exception as e:
+                import logging; logging.warning("providers-only enrich failed: %s", e)
+        import json, os; os.makedirs("output", exist_ok=True)
+        with open("output/data_core.json", "w", encoding="utf-8") as f:
+            json.dump(enriched, f, ensure_ascii=False, indent=2)
+except Exception:
+    pass

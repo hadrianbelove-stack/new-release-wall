@@ -30,8 +30,37 @@ def _config_api_key_from_yaml() -> Optional[str]:
     except Exception:
         return None
 
-def get_release_types(tmdb, movie_id: int, region: str) -> List[int]:
-    data = get_tmdb_json(f"https://api.themoviedb.org/3/movie/{movie_id}/release_dates")
+class TMDB:
+    def __init__(self, bearer: Optional[str] = None, timeout: float = 10.0):
+        self.session = requests.Session()
+        # Try bearer → env API key → config.yaml API key
+        token = bearer or os.getenv("TMDB_BEARER")
+        if not token:
+            token = os.getenv("TMDB_API_KEY") or _config_api_key_from_yaml()
+        if not token:
+            raise RuntimeError("TMDB auth missing: set TMDB_BEARER or TMDB_API_KEY (env or config.yaml)")
+        # TMDB v3 key normally goes in query param; we keep header for simplicity.
+        self.session.headers.update({"Authorization": f"Bearer {token}"})
+        self.timeout = timeout
+
+    def _req(self, url: str, params: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+        last_err: Optional[Exception] = None
+        for attempt in range(1, MAX_RETRIES + 1):
+            try:
+                r = self.session.get(url, params=params or {}, timeout=self.timeout)
+                if r.status_code in (429, 500, 502, 503, 504):
+                    raise RuntimeError(f"tmdb {r.status_code}: {r.text[:200]}")
+                r.raise_for_status()
+                time.sleep(DEFAULT_SLEEP)
+                return r.json()
+            except Exception as e:
+                last_err = e
+                if attempt < MAX_RETRIES:
+                    time.sleep(DEFAULT_SLEEP * attempt)
+        raise RuntimeError(f"TMDB request failed after retries: {last_err}")
+
+def get_release_types(tmdb: TMDB, movie_id: int, region: str) -> List[int]:
+    data = tmdb._req(f"https://api.themoviedb.org/3/movie/{movie_id}/release_dates")
     types: List[int] = []
     for entry in data.get("results", []):
         if entry.get("iso_3166_1") == region.upper():
@@ -41,8 +70,8 @@ def get_release_types(tmdb, movie_id: int, region: str) -> List[int]:
                     types.append(t)
     return types
 
-def get_providers(tmdb, movie_id: int, region: str) -> Dict[str, List[Dict[str, Any]]]:
-    data = get_tmdb_json(f"https://api.themoviedb.org/3/movie/{movie_id}/watch/providers")
+def get_providers(tmdb: TMDB, movie_id: int, region: str) -> Dict[str, List[Dict[str, Any]]]:
+    data = tmdb._req(f"https://api.themoviedb.org/3/movie/{movie_id}/watch/providers")
     block = (data.get("results") or {}).get(region.upper()) or {}
     return {
         "rent": block.get("rent") or [],
@@ -50,13 +79,11 @@ def get_providers(tmdb, movie_id: int, region: str) -> Dict[str, List[Dict[str, 
         "stream": block.get("flatrate") or [],
     }
 
-def get_details(tmdb, movie_id: int) -> Dict[str, Any]:
-    response = request_tmdb(f"https://api.themoviedb.org/3/movie/{movie_id}")
-    return response.json()
+def get_details(tmdb: TMDB, movie_id: int) -> Dict[str, Any]:
+    return tmdb._req(f"https://api.themoviedb.org/3/movie/{movie_id}")
 
-def get_credits(tmdb, movie_id: int) -> Dict[str, Any]:
-    response = request_tmdb(f"https://api.themoviedb.org/3/movie/{movie_id}/credits")
-    return response.json()
+def get_credits(tmdb: TMDB, movie_id: int) -> Dict[str, Any]:
+    return tmdb._req(f"https://api.themoviedb.org/3/movie/{movie_id}/credits")
 
 def normalize_record(
     movie: Dict[str, Any],
@@ -98,62 +125,3 @@ def normalize_record(
         "overview": details.get("overview"),
         "poster_url": f"https://image.tmdb.org/t/p/w500{poster_path}" if poster_path else None,
     }
-
-# ===== TMDB JSON cache + backoff =====
-import hashlib, json, random, pathlib
-
-CACHE_DIR = pathlib.Path("cache/tmdb")
-CACHE_DIR.mkdir(parents=True, exist_ok=True)
-CACHE_TTL_SECS = 7 * 24 * 3600  # 7 days
-
-def _cache_key(url: str, params: Optional[dict]) -> str:
-    base = url + "?" + json.dumps(params or {}, sort_keys=True, separators=(",",":"))
-    return hashlib.sha256(base.encode("utf-8")).hexdigest()
-
-def _cache_get(key: str):
-    f = CACHE_DIR / f"{key}.json"
-    if not f.exists():
-        return None
-    try:
-        if (time.time() - f.stat().st_mtime) > CACHE_TTL_SECS:
-            return None
-        return json.loads(f.read_text(encoding="utf-8"))
-    except Exception:
-        return None
-
-def _cache_put(key: str, payload: dict):
-    f = CACHE_DIR / f"{key}.json"
-    try:
-        f.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
-    except Exception:
-        pass
-
-def get_tmdb_json(url: str, params: Optional[dict] = None, timeout: float = 20.0, max_retries: int = 4) -> dict:
-    # auth params
-    headers, auth_params = resolve_tmdb_auth()
-    merged = dict(auth_params)
-    if params:
-        merged.update(params)
-    key = _cache_key(url, merged)
-    hit = _cache_get(key)
-    if hit is not None:
-        return hit
-
-    last_err = None
-    for attempt in range(1, max_retries + 1):
-        try:
-            r = requests.get(url, headers=headers, params=merged, timeout=timeout)
-            if r.status_code in (429, 500, 502, 503, 504):
-                raise RuntimeError(f"tmdb {r.status_code}: {r.text[:200]}")
-            r.raise_for_status()
-            data = r.json()
-            _cache_put(key, data)
-            time.sleep(0.05)
-            return data
-        except Exception as e:
-            last_err = e
-            # exponential backoff with jitter
-            sleep = min(8.0, 0.5 * (2 ** (attempt - 1))) + random.uniform(0, 0.3)
-            time.sleep(sleep)
-    raise RuntimeError(f"TMDB request failed after retries: {last_err}")
-
