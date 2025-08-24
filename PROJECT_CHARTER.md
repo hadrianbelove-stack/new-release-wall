@@ -1,65 +1,72 @@
-# PROJECT CHARTER — IMMUTABLE OPERATING RULES
-Status: Active • Effective: 2025-08-22
+# PROJECT_CHARTER.md
 
-## A. Anti-Drift Contract
-1) Default mode = **EDIT REQUEST**. Treat every ask as a code-edit request unless the message starts with `DISCUSS ONLY`.
-2) Output format = **unified diff patch only** for any change to code or docs.
-3) **No deletions** unless the message contains the literal token: `APPROVED: DELETE`.
-4) **No context rewrites.** This Charter is immutable. Changes require an Amendment (C) and `APPROVED: CONTEXT-EDIT`.
-5) **State verification.** If pasted code or file hash seems inconsistent, stop and ask for the exact path/lines.
-6) **Options required.** For non-trivial work: present 2–3 options with pros/cons and one recommendation.
-7) **Ground truth.** Provider availability determines inclusion. Do not re-introduce release-type filtering.
+Immutable Charter — edits only via AMENDMENT blocks.
 
-## B. Edit Protocol (automatic)
-When a message mentions files, functions, or behavior:
-- Read the pasted snippet(s).
-- Return **one fenced block** containing a valid unified diff for those exact paths.
-- If more context is needed, ask for file path and line range. Do not guess.
+## Vision
+Blockbuster wall for streaming age.
 
-## C. Amendments (how this file can change)
-Assistants must propose changes using this format:
-Apply only when the user's reply includes `APPROVED: CONTEXT-EDIT`.  
-Append approved items to **Amendments.log** at the end of this file.
+## Core Strategy
+Provider availability = ground truth.
+Track all releases. Curate later via admin.
 
-## D. Approval Tokens
-- `APPROVED: DELETE` — allow code deletions in a diff.
-- `APPROVED: CONTEXT-EDIT` — allow Charter/Context changes via Amendment.
+## Invariants
+RULE-001: No code deletions without APPROVED: DELETE.
+RULE-002: Always offer multiple options with pros/cons.
+RULE-003: Context docs are append-only (no silent rewrites).
 
-## E. Working Memory Hygiene
-Keep summaries terse. Refer to file paths and line ranges. Push detail to `PROJECT_LOG.md`.
+## Current Architecture
+- movie_tracker.py: persistent database
+- new_release_wall_balanced.py: direct scraper
+- scraper_core.py: TMDB helpers + auth
+- curator_admin.py: web curation panel
+- templates/: site.html + site_enhanced.html
+- output/: data.json, data_core.json, site/
 
-## F. Non-negotiables
-No silent scope creep. No speculative refactors. No renaming without explicit request.
+## Command Cheatsheet
+```bash
+python3 new_release_wall_balanced.py --region US --days 14 --max-pages 2
+python3 new_release_wall_balanced.py --region US --days 14 --max-pages 2 --use-core --core-limit 5
+python3 movie_tracker.py daily
+python3 curator_admin.py
+python3 generate_site.py
+```
+
+## TMDB Keys Required
+Export TMDB_BEARER or configure config.yaml with tmdb.bearer.
+
+## Data Flow
+1. Scraper → output/data.json (baseline) + output/data_core.json (enriched)
+2. Tracker → movie_tracking.json (persistent database)
+3. Generator → output/site/index.html (public site)
+4. Admin → curator interface for visibility/featuring
+
+## Authentication Strategy
+Hybrid auth resolver (tmdb_auth.py):
+Priority: TMDB_BEARER env → TMDB_API_KEY env → config.yaml variants
 
 ---
 
-## Amendments.log
-<!-- Append approved amendments here in chronological order. -->
+## Session Handoff Checklist (Immutable Section)
 
-## G. Workflow & Templates
+At end of each work session:
 
-### Daily Workflow
-1. Work normally — every request is treated as an **EDIT REQUEST** unless you say `DISCUSS ONLY`.
-2. At the **end of session**, type `END SESSION`.  
-   → Assistant will generate a new `PROJECT_LOG.md` entry in the correct format.  
-   → You paste it at the **top** of `PROJECT_LOG.md`.
-3. If you forget, start of next session you can say "make a log entry for yesterday" and the assistant will reconstruct it.
+1. Run smoke tests (baseline + core).
+2. Verify outputs exist:
+   - output/data.json
+   - output/data_core.json
+   - output/site/index.html
+3. Ensure required docs exist:
+   - complete_project_context.md
+   - PROJECT_CHARTER.md
+   - PROJECT_LOG.md
+4. Run `./sync_package.sh` to produce:
+   - NRW_SYNC_<timestamp>.zip
+   - Manifest (.manifest.txt)
+   - SHA256 (.sha256)
+5. Upload NRW_SYNC_*.zip + manifest + sha256 to next session.
 
-### Log Entry Template
-Use this template when adding to `PROJECT_LOG.md` (assistant will fill it in for you):
+This guarantees continuity across assistants and prevents drift.
 
-```
-## YYYY-MM-DD
-- Summary of changes made
-- Key files touched
-- Any consolidations/archives
-- Next steps or pending work
-```
 
-### One-Command Sync File Refresh
-```bash
-./scripts/rebuild_sync.sh
-git add ALL_CODE_SYNC.py ALL_CODE_SYNC.py.sha256 ALL_CODE_SYNC.py.filelist
-git commit -m "Refresh ALL_CODE_SYNC bundle"
-git push
-```
+**Magic Word:** RESUME NRW  
+Upload the latest NRW_SYNC_<timestamp>.zip, plus manifest and sha256.
