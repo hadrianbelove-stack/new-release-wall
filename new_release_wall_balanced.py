@@ -8,8 +8,10 @@ We should include any movie that has type 4, regardless of other types
 import json
 import requests
 import time
+import argparse
+import logging
 from datetime import datetime, timedelta
-from typing import List, Dict, Tuple
+from typing import List, Dict, Tuple, Any
 
 class ProperTMDBScraper:
     """TMDB scraper that correctly handles multi-type releases"""
@@ -451,17 +453,70 @@ class ProperTMDBScraper:
 
 def main():
     """Run the fixed TMDB scraper"""
+    parser = argparse.ArgumentParser(description='TMDB scraper with proper release type handling')
+    parser.add_argument("--region", default="US", help="Region code (default: US)")
+    parser.add_argument("--days", type=int, default=45, help="Days to look back (default: 45)")
+    parser.add_argument("--max-pages", type=int, default=15, help="Max pages to fetch (default: 15)")
+    parser.add_argument("--use-core", action="store_true", help="Use scraper_core helpers for providers/details/credits")
+    parser.add_argument("--core-limit", type=int, default=100, help="When --use-core, enrich at most this many movies")
+    
+    args = parser.parse_args()
+    
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+    
     print("="*60)
     print("FIXED TMDB SCRAPER - Proper Release Type Handling")
     print("="*60)
+    print(f"Region: {args.region}, Days: {args.days}, Max Pages: {args.max_pages}")
+    if args.use_core:
+        print(f"Using scraper_core enrichment (limit: {args.core_limit})")
     
     scraper = ProperTMDBScraper()
     
-    # Fetch movies with proper type checking - increased page limit for more data
-    movies = scraper.fetch_recent_movies(days=45, max_pages=15)
+    # Fetch movies with proper type checking
+    movies = scraper.fetch_recent_movies(days=args.days, max_pages=args.max_pages)
     
     # Save output
     output_file = scraper.save_output(movies)
+    
+    # Core enrichment if requested
+    if args.use_core:
+        try:
+            from scraper_core import TMDB, get_release_types, get_providers, get_details, get_credits, normalize_record
+            tmdb = TMDB()
+            region = args.region.upper()
+            enriched: list[Dict[str, Any]] = []
+            to_enrich = movies[: args.core_limit]
+            logging.info("Core-enrichment starting for %d of %d movies (limit=%d)", len(to_enrich), len(movies), args.core_limit)
+            
+            for idx, m in enumerate(to_enrich, 1):
+                try:
+                    if "id" not in m:
+                        continue
+                    rtypes = get_release_types(tmdb, int(m["id"]), region)
+                    prov = get_providers(tmdb, int(m["id"]), region)
+                    det = get_details(tmdb, int(m["id"]))
+                    cre = get_credits(tmdb, int(m["id"]))
+                    rec = normalize_record(m, prov, rtypes, det, cre)
+                    enriched.append(rec)
+                except Exception as e:
+                    logging.warning("enrich failed for %s: %s", m.get("id"), e)
+                if idx % 10 == 0:
+                    logging.info("Core-enrichment progress: %d/%d", idx, len(to_enrich))
+            
+            # Write core-enriched output
+            try:
+                import os
+                os.makedirs("output", exist_ok=True)
+                with open("output/data_core.json", "w", encoding="utf-8") as f:
+                    json.dump(enriched, f, ensure_ascii=False, indent=2)
+                logging.info("Wrote output/data_core.json using core helpers (%d items)", len(enriched))
+            except Exception as e:
+                logging.error("Failed writing output/data_core.json: %s", e)
+        except ImportError as e:
+            logging.error("Cannot import scraper_core: %s", e)
+        except Exception as e:
+            logging.error("Core enrichment failed: %s", e)
     
     # Summary
     print("\n" + "="*60)
