@@ -1,0 +1,25 @@
+New Release Wall — Sync Manifest
+Timestamp: 20250823-222904
+Branch: setup/anti-drift-guardrails
+Commit: 3d4d3f4b
+
+Counts:
+  data.json items: 10
+  data_core.json items: 10
+
+Files included:
+  ALL_CODE_SYNC.py
+  PROJECT_LOG.md
+  templates/site.html
+  templates/site_enhanced.html
+  output/site/index.html
+  output/data.json
+  output/data_core.json
+  new_release_wall_balanced.py
+  scraper_core.py
+  tmdb_auth.py
+  constants.py
+  settings.py
+  curator_admin.py
+  tests/smoke_test.py
+  run_smoke.sh
