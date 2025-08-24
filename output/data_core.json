@@ -1,1 +1,122 @@
-[]
+[
+  {
+    "id": 1429739,
+    "title": "Gold Rush Gang",
+    "year": 2025,
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        {
+          "logo_path": "/pbpMk2JmcoNnQwx5JGpXngfoWtp.jpg",
+          "provider_id": 8,
+          "provider_name": "Netflix",
+          "display_priority": 0
+        },
+        {
+          "logo_path": "/dpR8r13zWDeUR0QkzWidrdMxa56.jpg",
+          "provider_id": 1796,
+          "provider_name": "Netflix Standard with Ads",
+          "display_priority": 156
+        }
+      ]
+    },
+    "has_digital": true,
+    "release_types": [
+      4
+    ],
+    "theatrical_date": null,
+    "digital_date": null,
+    "credits": {
+      "director": [
+        "Wisit Sasanatieng"
+      ],
+      "cast": [
+        "Petchtai Wongkamlao",
+        "Thiti Mahayotaruk"
+      ]
+    },
+    "runtime": 120,
+    "studio": "Bang Fai Film",
+    "overview": "At the tail end of World War II, a bandit leader and his crew go up against his sworn enemy and the Japanese army to rob a train full of gold.",
+    "poster_url": "https://image.tmdb.org/t/p/w500/7j6jZNhCTnsZy5QItpruDwyBWoo.jpg"
+  },
+  {
+    "id": 1151334,
+    "title": "Eenie Meanie",
+    "year": 2025,
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        {
+          "logo_path": "/bxBlRPEPpMVDc4jMhSrTf2339DW.jpg",
+          "provider_id": 15,
+          "provider_name": "Hulu",
+          "display_priority": 6
+        }
+      ]
+    },
+    "has_digital": true,
+    "release_types": [
+      4
+    ],
+    "theatrical_date": null,
+    "digital_date": null,
+    "credits": {
+      "director": [
+        "Shawn Simmons"
+      ],
+      "cast": [
+        "Samara Weaving",
+        "Karl Glusman"
+      ]
+    },
+    "runtime": 106,
+    "studio": "20th Century Studios",
+    "overview": "A former teenage getaway driver gets dragged back into her unsavory past when a former employer offers her a chance to save the life of her chronically unreliable ex-boyfriend.",
+    "poster_url": "https://image.tmdb.org/t/p/w500/12Va3oO3oYUdOd75zM57Nx1976a.jpg"
+  },
+  {
+    "id": 1312946,
+    "title": "The Map That Leads to You",
+    "year": 2025,
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        {
+          "logo_path": "/pvske1MyAoymrs5bguRfVqYiM9a.jpg",
+          "provider_id": 9,
+          "provider_name": "Amazon Prime Video",
+          "display_priority": 2
+        },
+        {
+          "logo_path": "/8aBqoNeGGr0oSA85iopgNZUOTOc.jpg",
+          "provider_id": 2100,
+          "provider_name": "Amazon Prime Video with Ads",
+          "display_priority": 207
+        }
+      ]
+    },
+    "has_digital": true,
+    "release_types": [
+      4
+    ],
+    "theatrical_date": null,
+    "digital_date": null,
+    "credits": {
+      "director": [
+        "Lasse Hallström"
+      ],
+      "cast": [
+        "Madelyn Cline",
+        "K.J. Apa"
+      ]
+    },
+    "runtime": 96,
+    "studio": "Temple Hill Entertainment",
+    "overview": "Heather is a young woman traveling Europe with friends before starting her perfectly planned life. A chance meeting with Jack sparks an unexpected romance that leads to deep emotional discovery. As secrets and life choices test their bond, her path changes forever.",
+    "poster_url": "https://image.tmdb.org/t/p/w500/uwvKQIjJpC37IEsEj4ZAn1ITyRy.jpg"
+  }
+]

@@ -30,37 +30,9 @@ def _config_api_key_from_yaml() -> Optional[str]:
     except Exception:
         return None
 
-class TMDB:
-    def __init__(self, bearer: Optional[str] = None, timeout: float = 10.0):
-        self.session = requests.Session()
-        # Try bearer → env API key → config.yaml API key
-        token = bearer or os.getenv("TMDB_BEARER")
-        if not token:
-            token = os.getenv("TMDB_API_KEY") or _config_api_key_from_yaml()
-        if not token:
-            raise RuntimeError("TMDB auth missing: set TMDB_BEARER or TMDB_API_KEY (env or config.yaml)")
-        # TMDB v3 key normally goes in query param; we keep header for simplicity.
-        self.session.headers.update({"Authorization": f"Bearer {token}"})
-        self.timeout = timeout
-
-    def _req(self, url: str, params: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
-        last_err: Optional[Exception] = None
-        for attempt in range(1, MAX_RETRIES + 1):
-            try:
-                r = self.session.get(url, params=params or {}, timeout=self.timeout)
-                if r.status_code in (429, 500, 502, 503, 504):
-                    raise RuntimeError(f"tmdb {r.status_code}: {r.text[:200]}")
-                r.raise_for_status()
-                time.sleep(DEFAULT_SLEEP)
-                return r.json()
-            except Exception as e:
-                last_err = e
-                if attempt < MAX_RETRIES:
-                    time.sleep(DEFAULT_SLEEP * attempt)
-        raise RuntimeError(f"TMDB request failed after retries: {last_err}")
-
 def get_release_types(tmdb: TMDB, movie_id: int, region: str) -> List[int]:
-    data = tmdb._req(f"https://api.themoviedb.org/3/movie/{movie_id}/release_dates")
+    response = request_tmdb(f"https://api.themoviedb.org/3/movie/{movie_id}/release_dates")
+    data = response.json()
     types: List[int] = []
     for entry in data.get("results", []):
         if entry.get("iso_3166_1") == region.upper():
@@ -71,7 +43,8 @@ def get_release_types(tmdb: TMDB, movie_id: int, region: str) -> List[int]:
     return types
 
 def get_providers(tmdb: TMDB, movie_id: int, region: str) -> Dict[str, List[Dict[str, Any]]]:
-    data = tmdb._req(f"https://api.themoviedb.org/3/movie/{movie_id}/watch/providers")
+    response = request_tmdb(f"https://api.themoviedb.org/3/movie/{movie_id}/watch/providers")
+    data = response.json()
     block = (data.get("results") or {}).get(region.upper()) or {}
     return {
         "rent": block.get("rent") or [],
@@ -80,10 +53,12 @@ def get_providers(tmdb: TMDB, movie_id: int, region: str) -> Dict[str, List[Dict
     }
 
 def get_details(tmdb: TMDB, movie_id: int) -> Dict[str, Any]:
-    return tmdb._req(f"https://api.themoviedb.org/3/movie/{movie_id}")
+    response = request_tmdb(f"https://api.themoviedb.org/3/movie/{movie_id}")
+    return response.json()
 
 def get_credits(tmdb: TMDB, movie_id: int) -> Dict[str, Any]:
-    return tmdb._req(f"https://api.themoviedb.org/3/movie/{movie_id}/credits")
+    response = request_tmdb(f"https://api.themoviedb.org/3/movie/{movie_id}/credits")
+    return response.json()
 
 def normalize_record(
     movie: Dict[str, Any],

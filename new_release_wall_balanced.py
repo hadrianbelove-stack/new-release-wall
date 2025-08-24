@@ -482,8 +482,8 @@ def main():
     # Core enrichment if requested
     if args.use_core:
         try:
-            from scraper_core import TMDB, get_release_types, get_providers, get_details, get_credits, normalize_record
-            tmdb = TMDB()
+            from scraper_core import get_release_types, get_providers, get_details, get_credits, normalize_record
+            tmdb = None
             region = args.region.upper()
             enriched: list[Dict[str, Any]] = []
             to_enrich = movies[: args.core_limit]
