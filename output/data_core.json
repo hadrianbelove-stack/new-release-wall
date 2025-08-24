@@ -118,5 +118,318 @@
     "studio": "Temple Hill Entertainment",
     "overview": "Heather is a young woman traveling Europe with friends before starting her perfectly planned life. A chance meeting with Jack sparks an unexpected romance that leads to deep emotional discovery. As secrets and life choices test their bond, her path changes forever.",
     "poster_url": "https://image.tmdb.org/t/p/w500/uwvKQIjJpC37IEsEj4ZAn1ITyRy.jpg"
+  },
+  {
+    "id": 1300116,
+    "title": "Fall for Me",
+    "year": 2025,
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        {
+          "logo_path": "/pbpMk2JmcoNnQwx5JGpXngfoWtp.jpg",
+          "provider_id": 8,
+          "provider_name": "Netflix",
+          "display_priority": 0
+        },
+        {
+          "logo_path": "/dpR8r13zWDeUR0QkzWidrdMxa56.jpg",
+          "provider_id": 1796,
+          "provider_name": "Netflix Standard with Ads",
+          "display_priority": 156
+        }
+      ]
+    },
+    "has_digital": true,
+    "release_types": [
+      4
+    ],
+    "theatrical_date": null,
+    "digital_date": null,
+    "credits": {
+      "director": [
+        "Sherry Hormann"
+      ],
+      "cast": [
+        "Svenja Jung",
+        "Theo Trebs"
+      ]
+    },
+    "runtime": 103,
+    "studio": "Wiedemann & Berg Television",
+    "overview": "Lilli is suspicious of her sister's new fiance, but when an attractive stranger enters her life, she's suddenly distracted by the thralls of desire.",
+    "poster_url": "https://image.tmdb.org/t/p/w500/nLTs9SNBuk3DuB8D0p3mSsPYN7J.jpg"
+  },
+  {
+    "id": 1254624,
+    "title": "Night Always Comes",
+    "year": 2025,
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        {
+          "logo_path": "/pbpMk2JmcoNnQwx5JGpXngfoWtp.jpg",
+          "provider_id": 8,
+          "provider_name": "Netflix",
+          "display_priority": 0
+        },
+        {
+          "logo_path": "/dpR8r13zWDeUR0QkzWidrdMxa56.jpg",
+          "provider_id": 1796,
+          "provider_name": "Netflix Standard with Ads",
+          "display_priority": 156
+        }
+      ]
+    },
+    "has_digital": true,
+    "release_types": [
+      2,
+      4
+    ],
+    "theatrical_date": null,
+    "digital_date": null,
+    "credits": {
+      "director": [
+        "Benjamin Caron"
+      ],
+      "cast": [
+        "Vanessa Kirby",
+        "Jennifer Jason Leigh"
+      ]
+    },
+    "runtime": 108,
+    "studio": "Aluna Entertainment",
+    "overview": "Facing eviction in a city her family can no longer afford, a woman plunges into a desperate and increasingly dangerous all-night search to raise $25,000.",
+    "poster_url": "https://image.tmdb.org/t/p/w500/1jDo1nG7rtjaaQGpr6e73x9i9Xp.jpg"
+  },
+  {
+    "id": 1495723,
+    "title": "Abandoned Man",
+    "year": 2025,
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        {
+          "logo_path": "/pbpMk2JmcoNnQwx5JGpXngfoWtp.jpg",
+          "provider_id": 8,
+          "provider_name": "Netflix",
+          "display_priority": 0
+        },
+        {
+          "logo_path": "/dpR8r13zWDeUR0QkzWidrdMxa56.jpg",
+          "provider_id": 1796,
+          "provider_name": "Netflix Standard with Ads",
+          "display_priority": 156
+        }
+      ]
+    },
+    "has_digital": true,
+    "release_types": [
+      4
+    ],
+    "theatrical_date": null,
+    "digital_date": null,
+    "credits": {
+      "director": [
+        "Çağrı Vila Lostuvalı"
+      ],
+      "cast": [
+        "Mert Ramazan Demir",
+        "Ada Erma"
+      ]
+    },
+    "runtime": 91,
+    "studio": "OGM Pictures",
+    "overview": "After serving time in prison for his brother's crime, a man warily reunites with family, finding hope and healing in a life-changing bond with his niece.",
+    "poster_url": "https://image.tmdb.org/t/p/w500/9jrhldzLHXia0uieyqK8UJ8PNAG.jpg"
+  },
+  {
+    "id": 1531747,
+    "title": "The Serial Killer's Apprentice",
+    "year": 2025,
+    "providers": {
+      "rent": [],
+      "buy": [
+        {
+          "logo_path": "/seGSXajazLMCKGB5hnRCidtjay1.jpg",
+          "provider_id": 10,
+          "provider_name": "Amazon Video",
+          "display_priority": 4
+        }
+      ],
+      "stream": [
+        {
+          "logo_path": "/jbe4gVSfRlbPTdESXhEKpornsfu.jpg",
+          "provider_id": 1899,
+          "provider_name": "HBO Max",
+          "display_priority": 9
+        },
+        {
+          "logo_path": "/5AkEgpCNaBP3Fbwd2m1GdQIk0vv.jpg",
+          "provider_id": 1825,
+          "provider_name": "HBO Max Amazon Channel",
+          "display_priority": 10
+        },
+        {
+          "logo_path": "/lgudHqEtTOzkMWlpTjU1oUyoUSZ.jpg",
+          "provider_id": 584,
+          "provider_name": "Discovery+ Amazon Channel",
+          "display_priority": 23
+        },
+        {
+          "logo_path": "/eMTnWwNVtThkjvQA6zwxaoJG9NE.jpg",
+          "provider_id": 520,
+          "provider_name": "Discovery +",
+          "display_priority": 163
+        }
+      ]
+    },
+    "has_digital": true,
+    "release_types": [
+      4
+    ],
+    "theatrical_date": null,
+    "digital_date": null,
+    "credits": {
+      "director": [],
+      "cast": [
+        "Katherine Ramsland",
+        "Elmer Wayne Henley"
+      ]
+    },
+    "runtime": 0,
+    "studio": null,
+    "overview": "Dr. Katherine Ramsland interviews Elmer Wayne Henley, the sole survivor of the 1973 Houston Mass Murders, to unravel his chilling journey from manipulated teen to convicted killer — and the terrifying truth behind the line between victim and predator.",
+    "poster_url": "https://image.tmdb.org/t/p/w500/dKdR8jQ7co3jR34hx3EoCyZ787J.jpg"
+  },
+  {
+    "id": 1484453,
+    "title": "Snoopy Presents: A Summer Musical",
+    "year": 2025,
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        {
+          "logo_path": "/2E03IAZsX4ZaUqM7tXlctEPMGWS.jpg",
+          "provider_id": 350,
+          "provider_name": "Apple TV+",
+          "display_priority": 3
+        },
+        {
+          "logo_path": "/yFrZVSC4UnDpeIzX2svcRPgV5P5.jpg",
+          "provider_id": 2243,
+          "provider_name": "Apple TV Plus Amazon Channel",
+          "display_priority": 223
+        }
+      ]
+    },
+    "has_digital": true,
+    "release_types": [
+      4
+    ],
+    "theatrical_date": null,
+    "digital_date": null,
+    "credits": {
+      "director": [
+        "Erik Wiese"
+      ],
+      "cast": [
+        "Etienne Kellici",
+        "Hattie Kragten"
+      ]
+    },
+    "runtime": 40,
+    "studio": "WildBrain Studios",
+    "overview": "Music and glee fill the air as Charlie Brown and the gang head off to summer camp. First-timer Sally doesn't get what all the hype is about. But when the camp may be forced to close, they team up to save it so more kids can make their own special memories.",
+    "poster_url": "https://image.tmdb.org/t/p/w500/kK1ugxST3tCJZjZEO37sLb4Yot5.jpg"
+  },
+  {
+    "id": 1428210,
+    "title": "One Hit Wonder",
+    "year": 2025,
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        {
+          "logo_path": "/pbpMk2JmcoNnQwx5JGpXngfoWtp.jpg",
+          "provider_id": 8,
+          "provider_name": "Netflix",
+          "display_priority": 0
+        },
+        {
+          "logo_path": "/dpR8r13zWDeUR0QkzWidrdMxa56.jpg",
+          "provider_id": 1796,
+          "provider_name": "Netflix Standard with Ads",
+          "display_priority": 156
+        }
+      ]
+    },
+    "has_digital": true,
+    "release_types": [
+      4
+    ],
+    "theatrical_date": null,
+    "digital_date": null,
+    "credits": {
+      "director": [
+        "Marla Ancheta"
+      ],
+      "cast": [
+        "Khalil Ramos",
+        "Sue Ramirez"
+      ]
+    },
+    "runtime": 112,
+    "studio": "Lucid Dreams Creatives",
+    "overview": "When big dreams meet second chances, two dreamers Entoy and Lorina chase fame in the world of '90s OPM. Will they make it?",
+    "poster_url": "https://image.tmdb.org/t/p/w500/kdHEtyOoB8cyFDwqFMMGK1q0RlM.jpg"
+  },
+  {
+    "id": 537921,
+    "title": "Fixed",
+    "year": 2025,
+    "providers": {
+      "rent": [],
+      "buy": [],
+      "stream": [
+        {
+          "logo_path": "/pbpMk2JmcoNnQwx5JGpXngfoWtp.jpg",
+          "provider_id": 8,
+          "provider_name": "Netflix",
+          "display_priority": 0
+        },
+        {
+          "logo_path": "/dpR8r13zWDeUR0QkzWidrdMxa56.jpg",
+          "provider_id": 1796,
+          "provider_name": "Netflix Standard with Ads",
+          "display_priority": 156
+        }
+      ]
+    },
+    "has_digital": true,
+    "release_types": [
+      2,
+      4
+    ],
+    "theatrical_date": null,
+    "digital_date": null,
+    "credits": {
+      "director": [
+        "Genndy Tartakovsky"
+      ],
+      "cast": [
+        "Adam Devine",
+        "Idris Elba"
+      ]
+    },
+    "runtime": 87,
+    "studio": "Sony Pictures Animation",
+    "overview": "After learning he's getting neutered, a dog has 24 hours to squeeze in one last balls-to-the-wall adventure with the boys.",
+    "poster_url": "https://image.tmdb.org/t/p/w500/udtlwWSJ45S0uQm29BvFvjPJGW0.jpg"
   }
 ]

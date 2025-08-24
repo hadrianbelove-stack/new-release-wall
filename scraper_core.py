@@ -30,7 +30,7 @@ def _config_api_key_from_yaml() -> Optional[str]:
     except Exception:
         return None
 
-def get_release_types(tmdb: TMDB, movie_id: int, region: str) -> List[int]:
+def get_release_types(tmdb, movie_id: int, region: str) -> List[int]:
     response = request_tmdb(f"https://api.themoviedb.org/3/movie/{movie_id}/release_dates")
     data = response.json()
     types: List[int] = []
@@ -42,7 +42,7 @@ def get_release_types(tmdb: TMDB, movie_id: int, region: str) -> List[int]:
                     types.append(t)
     return types
 
-def get_providers(tmdb: TMDB, movie_id: int, region: str) -> Dict[str, List[Dict[str, Any]]]:
+def get_providers(tmdb, movie_id: int, region: str) -> Dict[str, List[Dict[str, Any]]]:
     response = request_tmdb(f"https://api.themoviedb.org/3/movie/{movie_id}/watch/providers")
     data = response.json()
     block = (data.get("results") or {}).get(region.upper()) or {}
@@ -52,11 +52,11 @@ def get_providers(tmdb: TMDB, movie_id: int, region: str) -> Dict[str, List[Dict
         "stream": block.get("flatrate") or [],
     }
 
-def get_details(tmdb: TMDB, movie_id: int) -> Dict[str, Any]:
+def get_details(tmdb, movie_id: int) -> Dict[str, Any]:
     response = request_tmdb(f"https://api.themoviedb.org/3/movie/{movie_id}")
     return response.json()
 
-def get_credits(tmdb: TMDB, movie_id: int) -> Dict[str, Any]:
+def get_credits(tmdb, movie_id: int) -> Dict[str, Any]:
     response = request_tmdb(f"https://api.themoviedb.org/3/movie/{movie_id}/credits")
     return response.json()
 
